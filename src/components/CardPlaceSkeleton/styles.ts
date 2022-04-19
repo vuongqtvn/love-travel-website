@@ -18,6 +18,7 @@ export const PlaceCard = styled.div`
   transition: color 0.15s ease, border-color 0.15s ease;
   .link-image {
     padding: 8px 0 8px 8px;
+    overflow: hidden;
   }
   .place-body {
     flex: 1;

@@ -1,3 +1,4 @@
+import { BackTop } from "antd";
 import React from "react";
 import { ErrorBoundary, Footer, Header, Navbar } from "../../components";
 
@@ -13,6 +14,7 @@ const MainLayout = ({ children }: Props) => {
         <Navbar />
         {children}
         <Footer />
+        <BackTop />
       </div>
     </ErrorBoundary>
   );

@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { Checkbox, Collapse, Radio, Slider } from "antd";
+import { Checkbox, Collapse, Radio, Skeleton, Slider } from "antd";
 import { useAppSelector, useAppDispatch } from "../../../../redux/hooks";
 import * as Styled from "./styles";
 import { getCategories, getPurposes, getRegions } from "../../searchSlice";
@@ -117,7 +117,6 @@ const FilterSearch = ({ search, setSearch }: Props) => {
       <div className="filter-title">
         <h2>Lọc kết quả</h2>
       </div>
-
       <Styled.FilterCollapse
         defaultActiveKey={["1", "2", "3", "4", "5", "6"]}
         expandIconPosition="right"
@@ -137,44 +136,56 @@ const FilterSearch = ({ search, setSearch }: Props) => {
         </Collapse.Panel>
         <Collapse.Panel header="Khu vực" key="2">
           <div className="search__filter-list">
-            <Checkbox.Group
-              value={checkboxSelect.regionsSelect}
-              onChange={(value) => onchangeCheckbox(value, "regions")}
-            >
-              {regions.map((region) => (
-                <div className="search__filter-item" key={region._id}>
-                  <Checkbox value={region._id}>{region.name}</Checkbox>
-                </div>
-              ))}
-            </Checkbox.Group>
+            {api.getRegions.status === "pending" ? (
+              <Skeleton active />
+            ) : (
+              <Checkbox.Group
+                value={checkboxSelect.regionsSelect}
+                onChange={(value) => onchangeCheckbox(value, "regions")}
+              >
+                {regions.map((region) => (
+                  <div className="search__filter-item" key={region._id}>
+                    <Checkbox value={region._id}>{region.name}</Checkbox>
+                  </div>
+                ))}
+              </Checkbox.Group>
+            )}
           </div>
         </Collapse.Panel>
         <Collapse.Panel header="Mục đích" key="3">
           <div className="search__filter-list">
-            <Checkbox.Group
-              value={checkboxSelect.purposesSelect}
-              onChange={(value) => onchangeCheckbox(value, "purposes")}
-            >
-              {purposes.map((purpose) => (
-                <div className="search__filter-item" key={purpose._id}>
-                  <Checkbox value={purpose._id}>{purpose.name}</Checkbox>
-                </div>
-              ))}
-            </Checkbox.Group>
+            {api.getPurposes.status === "pending" ? (
+              <Skeleton active />
+            ) : (
+              <Checkbox.Group
+                value={checkboxSelect.purposesSelect}
+                onChange={(value) => onchangeCheckbox(value, "purposes")}
+              >
+                {purposes.map((purpose) => (
+                  <div className="search__filter-item" key={purpose._id}>
+                    <Checkbox value={purpose._id}>{purpose.name}</Checkbox>
+                  </div>
+                ))}
+              </Checkbox.Group>
+            )}
           </div>
         </Collapse.Panel>
         <Collapse.Panel header="Kiểu quán" key="4">
           <div className="search__filter-list">
-            <Checkbox.Group
-              value={checkboxSelect.categoriesSelect}
-              onChange={(value) => onchangeCheckbox(value, "categories")}
-            >
-              {categories.map((category) => (
-                <div className="search__filter-item" key={category._id}>
-                  <Checkbox value={category._id}>{category.name}</Checkbox>
-                </div>
-              ))}
-            </Checkbox.Group>
+            {api.getCategories.status === "pending" ? (
+              <Skeleton active />
+            ) : (
+              <Checkbox.Group
+                value={checkboxSelect.categoriesSelect}
+                onChange={(value) => onchangeCheckbox(value, "categories")}
+              >
+                {categories.map((category) => (
+                  <div className="search__filter-item" key={category._id}>
+                    <Checkbox value={category._id}>{category.name}</Checkbox>
+                  </div>
+                ))}
+              </Checkbox.Group>
+            )}
           </div>
         </Collapse.Panel>
         <Collapse.Panel header="Khoảng giá" key="5">

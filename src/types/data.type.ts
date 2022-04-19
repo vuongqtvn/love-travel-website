@@ -64,8 +64,8 @@ export type PlaceType = {
   description?: string;
   address: string;
   location: {
-    lat: Number;
-    lng: Number;
+    lat: number;
+    lng: number;
   };
   categories: [] | CategoryType[] | any[];
   benefits: [] | BenefitType[] | any[];
@@ -74,3 +74,10 @@ export type PlaceType = {
   region: string;
   [x: string]: any;
 };
+
+export type SearchArrayType =
+  | CategoryType[]
+  | BenefitType[]
+  | TagType[]
+  | RegionType[]
+  | PurposeType[];

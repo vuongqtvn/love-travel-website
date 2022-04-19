@@ -13,3 +13,5 @@ export { default as Navbar } from "./Navbar";
 export { default as Empty } from "./Empty";
 export { default as CardPlace } from "./CardPlace";
 export { default as CardPlaceSkeleton } from "./CardPlaceSkeleton";
+export { default as Wrapper } from "./Wrapper";
+export { default as MapModal } from "./MapModal";

@@ -11,13 +11,25 @@ const CardPlaceSkeleton = (props: Props) => {
     <Styled.PlaceItem>
       <Styled.PlaceCard>
         <div className="link-image">
-          <SkeletonImage
-            style={{
-              borderRadius: 6,
-            }}
-            width={screens.lg ? "270px" : "120px"}
-            height={screens.lg ? "100%" : "110px"}
-          />
+          {screens.lg ? (
+            <SkeletonImage
+              width={"270px"}
+              height={"100%"}
+              style={{
+                transform: "translateY(-2.5px)",
+                borderRadius: 6,
+              }}
+            />
+          ) : (
+            <SkeletonImage
+              width={"120px"}
+              height={"110px"}
+              style={{
+                transform: "translateY(-2.5px)",
+                borderRadius: 6,
+              }}
+            />
+          )}
         </div>
         <div className="place-body">
           <Skeleton
