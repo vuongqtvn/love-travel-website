@@ -72,7 +72,7 @@ const MapModal = ({ data, title }: Props) => {
           />
         </Marker>
       )),
-    [data]
+    [data, onSelectCity]
   );
 
   if (!show) return null;
@@ -105,7 +105,7 @@ const MapModal = ({ data, title }: Props) => {
                 width: "100%",
               }}
               mapStyle="mapbox://styles/mapbox/streets-v11"
-              mapboxAccessToken={MAP_TOKEN}
+              mapboxAccessToken={process.env.REACT_APP_MAPBOX_TOKEN}
             >
               <GeolocateControl position="top-left" />
               <FullscreenControl position="top-right" />
