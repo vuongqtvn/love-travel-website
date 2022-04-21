@@ -184,12 +184,12 @@ const PlaceDetail = (props: Props) => {
                 ? Array(4)
                     .fill(0)
                     .map((_, key) => (
-                      <Col span={6}>
+                      <Col lg={6} md={8} sm={12} xs={24} key={key}>
                         <PlaceSkeleton />
                       </Col>
                     ))
                 : placesRelated.map((place) => (
-                    <Col span={6} key={place._id}>
+                    <Col lg={6} md={8} sm={12} xs={24} key={place._id}>
                       <Place
                         place={place}
                         onClick={(place) => {
