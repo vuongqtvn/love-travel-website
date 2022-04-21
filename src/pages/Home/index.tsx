@@ -2,7 +2,7 @@ import { Section } from "../../components";
 import Search from "./components/Search";
 import Categories from "./components/Categories";
 import Regions from "./components/Regions";
-import Place from "./components/Place";
+import Places from "./components/Places";
 import Purposes from "./components/Purposes";
 import SuggestPlace from "./components/SuggestPlace";
 
@@ -18,7 +18,7 @@ const Home = (props: Props) => {
         <Purposes />
         <Categories />
         <Regions />
-        <Place />
+        <Places />
         <SuggestPlace />
       </Styled.HomeWrapper>
     </Section>

@@ -1,31 +1,32 @@
-import React from "react";
+import {
+  ClockCircleOutlined,
+  DollarCircleOutlined,
+  DownOutlined,
+  FacebookOutlined,
+  InstagramOutlined,
+  PhoneOutlined,
+  TagsOutlined,
+} from "@ant-design/icons";
 import {
   Anchor,
   Button,
-  Card,
   Col,
   Dropdown,
   Menu,
   Row,
-  Space,
   Skeleton,
+  Space,
   Typography,
 } from "antd";
-import { Link } from "react-router-dom";
-import { Box, Section } from "../../components";
-import {
-  DownOutlined,
-  DollarCircleOutlined,
-  ClockCircleOutlined,
-  PhoneOutlined,
-  FacebookOutlined,
-  InstagramOutlined,
-  TagsOutlined,
-} from "@ant-design/icons";
+import { useEffect } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { Box, Place, PlaceSkeleton, Section } from "../../components";
+import path from "../../constants/path";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 
-import * as Styled from "./styles";
 import PlaceTop from "./components/PlaceTop";
-import SkeletonLoading from "react-loading-skeleton";
+import { getPlace, getPlaceRelated } from "./placeSlice";
+import * as Styled from "./styles";
 
 type Props = {};
 
@@ -39,7 +40,18 @@ const menu = (
   </Menu>
 );
 
-const Place = (props: Props) => {
+const PlaceDetail = (props: Props) => {
+  const { id } = useParams();
+  const { place, placesRelated, api } = useAppSelector((state) => state.place);
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (id) {
+      dispatch(getPlace(id));
+      dispatch(getPlaceRelated());
+    }
+  }, [id, dispatch]);
   return (
     <Section>
       <Styled.PlaceWrapper>
@@ -116,7 +128,11 @@ const Place = (props: Props) => {
                     target="_blank"
                     rel="noreferrer"
                   >
-                    Jouri Dessert & Tea
+                    {api.getPlace.status === "pending" ? (
+                      <Skeleton.Input active size="small" block />
+                    ) : (
+                      place?.name
+                    )}
                   </a>
                 </Space>
                 <Space align="center">
@@ -126,7 +142,11 @@ const Place = (props: Props) => {
                     target="_blank"
                     rel="noreferrer"
                   >
-                    Jouri Dessert & Tea
+                    {api.getPlace.status === "pending" ? (
+                      <Skeleton.Input active size="small" block />
+                    ) : (
+                      place?.name
+                    )}
                   </a>
                 </Space>
                 <Space className="info-tags">
@@ -160,46 +180,24 @@ const Place = (props: Props) => {
             <Typography.Title level={3}>Gợi ý ở gần</Typography.Title>
 
             <Row style={{ marginTop: 12 }} gutter={[10, 10]}>
-              <Col span={6}>
-                <Card cover={<SkeletonLoading height={"240px"} />}>
-                  <Skeleton loading={true} paragraph={{ rows: 1 }} active>
-                    <Card.Meta
-                      title="Europe Street beat"
-                      description="www.instagram.com"
-                    />
-                  </Skeleton>
-                </Card>
-              </Col>
-              <Col span={6}>
-                <Card cover={<SkeletonLoading height={"240px"} />}>
-                  <Skeleton loading={true} paragraph={{ rows: 1 }} active>
-                    <Card.Meta
-                      title="Europe Street beat"
-                      description="www.instagram.com"
-                    />
-                  </Skeleton>
-                </Card>
-              </Col>
-              <Col span={6}>
-                <Card cover={<SkeletonLoading height={"240px"} />}>
-                  <Skeleton loading={true} paragraph={{ rows: 1 }} active>
-                    <Card.Meta
-                      title="Europe Street beat"
-                      description="www.instagram.com"
-                    />
-                  </Skeleton>
-                </Card>
-              </Col>
-              <Col span={6}>
-                <Card cover={<SkeletonLoading height={"240px"} />}>
-                  <Skeleton loading={true} paragraph={{ rows: 1 }} active>
-                    <Card.Meta
-                      title="Europe Street beat"
-                      description="www.instagram.com"
-                    />
-                  </Skeleton>
-                </Card>
-              </Col>
+              {api.getPlaceRelated.status === "pending"
+                ? Array(4)
+                    .fill(0)
+                    .map((_, key) => (
+                      <Col span={6}>
+                        <PlaceSkeleton />
+                      </Col>
+                    ))
+                : placesRelated.map((place) => (
+                    <Col span={6} key={place._id}>
+                      <Place
+                        place={place}
+                        onClick={(place) => {
+                          navigate(`${path.place}/${place._id}`);
+                        }}
+                      />
+                    </Col>
+                  ))}
             </Row>
           </Styled.PlaceRelated>
         </Styled.PlaceContainer>
@@ -208,4 +206,4 @@ const Place = (props: Props) => {
   );
 };
 
-export default Place;
+export default PlaceDetail;

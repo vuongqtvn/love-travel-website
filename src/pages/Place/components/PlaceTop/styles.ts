@@ -139,7 +139,7 @@ export const PlaceTopGallery = styled.div`
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    background-color: ${colors.white};
+    background-color: ${colors.white} !important;
 
     & > div {
       width: 100%;

@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { CSSProperties, useEffect, useRef } from "react";
+import React, { CSSProperties } from "react";
 import * as Styled from "./styles";
 
 type Props = {

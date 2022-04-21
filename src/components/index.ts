@@ -15,3 +15,6 @@ export { default as CardPlace } from "./CardPlace";
 export { default as CardPlaceSkeleton } from "./CardPlaceSkeleton";
 export { default as Wrapper } from "./Wrapper";
 export { default as MapModal } from "./MapModal";
+export { default as ImageSkeleton } from "./ImageSkeleton";
+export { default as Place } from "./Place";
+export { default as PlaceSkeleton } from "./PlaceSkeleton";

@@ -7,7 +7,7 @@ const placeApi = {
     });
   },
   getPlace(id: string) {
-    return axiosClient.post(`/places/${id}`);
+    return axiosClient.get(`/places/${id}`);
   },
 };
 
