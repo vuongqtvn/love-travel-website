@@ -1,4 +1,7 @@
-import React, { useCallback, useMemo, useRef, useState } from "react";
+import { CloseOutlined, EnvironmentFilled } from "@ant-design/icons";
+import { Button } from "antd";
+import { getCenter } from "geolib";
+import { useCallback, useMemo, useRef, useState } from "react";
 import Map, {
   FullscreenControl,
   GeolocateControl,
@@ -7,16 +10,11 @@ import Map, {
   Popup,
   ScaleControl,
 } from "react-map-gl";
-import { Button } from "antd";
-import { getCenter } from "geolib";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { hideMapModal } from "./mapModalSlice";
-import { CloseOutlined, EnvironmentFilled } from "@ant-design/icons";
-import * as Styled from "./styles";
-import { MAP_TOKEN } from "../../constants/map";
-import { PlaceType } from "../../types";
 import { colors } from "../../theme/colors";
-import { images } from "../../assets";
+import { PlaceType } from "../../types";
+import { hideMapModal } from "./mapModalSlice";
+import * as Styled from "./styles";
 
 type Props = {
   data: PlaceType[];

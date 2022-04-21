@@ -1,9 +1,15 @@
-import React, { useEffect, useMemo, useState } from "react";
 import { Checkbox, Collapse, Radio, Skeleton, Slider } from "antd";
-import { useAppSelector, useAppDispatch } from "../../../../redux/hooks";
-import * as Styled from "./styles";
-import { getCategories, getPurposes, getRegions } from "../../searchSlice";
 import { CheckboxValueType } from "antd/lib/checkbox/Group";
+import { useEffect, useMemo, useState } from "react";
+import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
+import {
+  getBenefits,
+  getCategories,
+  getPurposes,
+  getRegions,
+  getTags,
+} from "../../searchSlice";
+import * as Styled from "./styles";
 
 type Props = {
   search: any;
@@ -31,6 +37,8 @@ const FilterSearch = ({ search, setSearch }: Props) => {
       purposesSelect: [],
       categoriesSelect: [],
       regionsSelect: [],
+      tagsSelect: [],
+      benefitsSelect: [],
     };
     if (search.purposes?.trim()) {
       result.purposesSelect = search.purposes.split("-");
@@ -41,6 +49,12 @@ const FilterSearch = ({ search, setSearch }: Props) => {
     if (search.regions?.trim()) {
       result.regionsSelect = search.regions.split("-");
     }
+    if (search.benefits?.trim()) {
+      result.benefitsSelect = search.benefits.split("-");
+    }
+    if (search.tags?.trim()) {
+      result.tagsSelect = search.tags.split("-");
+    }
     return result;
   }, [search]);
 
@@ -48,6 +62,8 @@ const FilterSearch = ({ search, setSearch }: Props) => {
     dispatch(getPurposes());
     dispatch(getRegions());
     dispatch(getCategories());
+    dispatch(getBenefits());
+    dispatch(getTags());
   }, [dispatch]);
 
   const onchangeCheckbox = (
@@ -100,6 +116,36 @@ const FilterSearch = ({ search, setSearch }: Props) => {
         }
         break;
       }
+      case "benefits": {
+        if (value.length > 0) {
+          const benefits = value.join("-");
+          setSearch({
+            ...search,
+            benefits,
+          });
+        } else {
+          delete search?.benefits;
+          setSearch({
+            ...search,
+          });
+        }
+        break;
+      }
+      case "tags": {
+        if (value.length > 0) {
+          const tags = value.join("-");
+          setSearch({
+            ...search,
+            tags,
+          });
+        } else {
+          delete search?.tags;
+          setSearch({
+            ...search,
+          });
+        }
+        break;
+      }
       default:
         break;
     }
@@ -118,7 +164,7 @@ const FilterSearch = ({ search, setSearch }: Props) => {
         <h2>Lọc kết quả</h2>
       </div>
       <Styled.FilterCollapse
-        defaultActiveKey={["1", "2", "3", "4", "5", "6"]}
+        defaultActiveKey={["1", "2", "3", "4", "5", "6", "7"]}
         expandIconPosition="right"
         ghost
       >
@@ -188,7 +234,25 @@ const FilterSearch = ({ search, setSearch }: Props) => {
             )}
           </div>
         </Collapse.Panel>
-        <Collapse.Panel header="Khoảng giá" key="5">
+        <Collapse.Panel header="Tiện ích" key="5">
+          <div className="search__filter-list">
+            {api.getBenefits.status === "pending" ? (
+              <Skeleton active />
+            ) : (
+              <Checkbox.Group
+                value={checkboxSelect.benefitsSelect}
+                onChange={(value) => onchangeCheckbox(value, "benefits")}
+              >
+                {benefits.map((benefit) => (
+                  <div className="search__filter-item" key={benefit._id}>
+                    <Checkbox value={benefit._id}>{benefit.name}</Checkbox>
+                  </div>
+                ))}
+              </Checkbox.Group>
+            )}
+          </div>
+        </Collapse.Panel>
+        <Collapse.Panel header="Khoảng giá" key="6">
           <div className="search__filter-item">
             <span className="price-number">
               {price[0].toLocaleString()}~{price[1].toLocaleString()} VNĐ
@@ -207,13 +271,22 @@ const FilterSearch = ({ search, setSearch }: Props) => {
             />
           </div>
         </Collapse.Panel>
-        <Collapse.Panel header="Tiện ích" key="6">
+        <Collapse.Panel header="Tiện ích" key="7">
           <div className="search__filter-list">
-            {tags.map((_, key) => (
-              <div className="search__filter-item" key={key}>
-                <Checkbox>Checkbox</Checkbox>
-              </div>
-            ))}
+            {api.getTags.status === "pending" ? (
+              <Skeleton active />
+            ) : (
+              <Checkbox.Group
+                value={checkboxSelect.tagsSelect}
+                onChange={(value) => onchangeCheckbox(value, "tags")}
+              >
+                {tags.map((tag) => (
+                  <div className="search__filter-item" key={tag._id}>
+                    <Checkbox value={tag._id}>{tag.name}</Checkbox>
+                  </div>
+                ))}
+              </Checkbox.Group>
+            )}
           </div>
         </Collapse.Panel>
       </Styled.FilterCollapse>

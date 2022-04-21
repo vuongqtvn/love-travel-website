@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { PlaceType } from "../../types";
 
 interface MapModalState {
   show: boolean;

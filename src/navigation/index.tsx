@@ -8,12 +8,8 @@ const Home = lazy(() => import("../pages/Home"));
 const Search = lazy(() => import("../pages/Search"));
 const Explore = lazy(() => import("../pages/Explore"));
 const Map = lazy(() => import("../pages/Map"));
+const Place = lazy(() => import("../pages/Place"));
 const NotFound = lazy(() => import("../pages/NotFound"));
-// const User = lazy(() => import("./pages/User/User"));
-// const Login = lazy(() => import("./pages/Auth/Login/Login"));
-// const Register = lazy(() => import("./pages/Auth/Register/Register"));
-// const NotFound = lazy(() => import("./pages/NotFound/NotFound"));
-// const Cart = lazy(() => import("./pages/Cart/Cart"));
 
 const Navigation = () => {
   return (
@@ -46,6 +42,17 @@ const Navigation = () => {
           <MainLayout>
             <Suspense fallback={<FallBack />}>
               <Explore />
+            </Suspense>
+          </MainLayout>
+        }
+      />
+
+      <Route
+        path={path.placeDetail}
+        element={
+          <MainLayout>
+            <Suspense fallback={<FallBack />}>
+              <Place />
             </Suspense>
           </MainLayout>
         }
