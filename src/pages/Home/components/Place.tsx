@@ -33,10 +33,36 @@ const Place = (props: Props) => {
             .fill(0)
             .map((_, key) => {
               return (
-                <SkeletonCard
+                <Card
                   key={key}
-                  height={screens.lg ? "240px" : "220px"}
-                />
+                  size="small"
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    height: "100%",
+                    borderRadius: 15,
+                    overflow: "hidden",
+                    boxShadow: "rgba(0, 0, 0, 0.09) 0px 3px 12px",
+                  }}
+                  bodyStyle={{
+                    flex: 1,
+                    padding: 8,
+                  }}
+                  // cover={
+                  //   <ImageLazy
+                  //     src=""
+                  //     alt="lazy loading"
+                  //     height={screens.lg ? "240px" : "220px"}
+                  //     radius="0"
+                  //   />
+                  // }
+                >
+                  <h1>
+                    <SkeletonCard />
+                  </h1>
+
+                  <SkeletonCard count={1} />
+                </Card>
               );
             })}
         </Styled.PlaceList>
@@ -74,24 +100,22 @@ const Place = (props: Props) => {
               />
             }
           >
-            <Skeleton loading={false} paragraph={{ rows: 1 }} active>
-              <Card.Meta
-                title={
-                  <Typography.Text
-                    style={{
-                      fontSize: "18px",
-                      fontWeight: "bold",
-                    }}
-                    ellipsis
-                  >
-                    {place.name}
-                  </Typography.Text>
-                }
-                description={
-                  <Typography.Text ellipsis>{place.address}</Typography.Text>
-                }
-              />
-            </Skeleton>
+            <Card.Meta
+              title={
+                <Typography.Text
+                  style={{
+                    fontSize: "18px",
+                    fontWeight: "bold",
+                  }}
+                  ellipsis
+                >
+                  {place.name}
+                </Typography.Text>
+              }
+              description={
+                <Typography.Text ellipsis>{place.address}</Typography.Text>
+              }
+            />
           </Card>
         ))}
       </Styled.PlaceList>

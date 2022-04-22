@@ -22,6 +22,7 @@ type Props = {
   alignItems?: Item;
   flexWrap?: Wrap;
   gap?: string | number;
+  className?: string;
 };
 
 const Box = ({
@@ -33,6 +34,7 @@ const Box = ({
   justifyContent,
   flexWrap,
   gap,
+  className,
 }: Props) => {
   return (
     <Styled.BoxWrap
@@ -43,6 +45,7 @@ const Box = ({
       flexWrap={flexWrap}
       gap={gap}
       style={style}
+      className={className}
     >
       {children}
     </Styled.BoxWrap>
