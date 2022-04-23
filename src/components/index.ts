@@ -18,3 +18,4 @@ export { default as MapModal } from "./MapModal";
 export { default as ImageSkeleton } from "./ImageSkeleton";
 export { default as Place } from "./Place";
 export { default as PlaceSkeleton } from "./PlaceSkeleton";
+export { default as LightBoxImages } from "./LightBoxImages";

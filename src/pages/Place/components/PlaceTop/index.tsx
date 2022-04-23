@@ -1,10 +1,11 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
+/* eslint-disable react-hooks/exhaustive-deps */
 import React from "react";
 import { Link } from "react-router-dom";
 
 import { Skeleton } from "antd";
 import { useKeenSlider } from "keen-slider/react";
-import Lightbox from "react-image-lightbox";
-import { MapModal } from "../../../../components";
+import { LightBoxImages, MapModal } from "../../../../components";
 import { showMapModal } from "../../../../components/MapModal/mapModalSlice";
 import path from "../../../../constants/path";
 import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
@@ -17,7 +18,6 @@ const PlaceTop = (props: Props) => {
   const [loaded, setLoaded] = React.useState<boolean[]>([]);
   const [currentSlide, setCurrentSlide] = React.useState(0);
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
-  const [photoIndex, setPhotoIndex] = React.useState<number>(0);
 
   const dispatch = useAppDispatch();
 
@@ -159,28 +159,11 @@ const PlaceTop = (props: Props) => {
         </Link>
         <span className="total-photo">{`5/9`}</span>
       </Styled.PlaceTopGalleryMobile>
-      {isOpen && (
-        <Lightbox
-          mainSrc={place?.images[photoIndex].url}
-          nextSrc={place?.images[(photoIndex + 1) % place?.images.length].url}
-          prevSrc={
-            place?.images[
-              (photoIndex + place?.images.length - 1) % place?.images.length
-            ].url
-          }
-          onCloseRequest={() => setIsOpen(false)}
-          onMovePrevRequest={() => {
-            setPhotoIndex(
-              Number(
-                (photoIndex + place?.images.length - 1) % place?.images.length
-              )
-            );
-          }}
-          onMoveNextRequest={() => {
-            setPhotoIndex(Number((photoIndex + 1) % place?.images.length));
-          }}
-        />
-      )}
+      <LightBoxImages
+        isOpen={isOpen}
+        onClick={() => setIsOpen(false)}
+        images={place?.images}
+      />
       <MapModal place={place} title={place?.name} />
     </Styled.PlaceTop>
   );
