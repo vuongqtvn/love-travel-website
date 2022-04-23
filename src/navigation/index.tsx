@@ -9,6 +9,7 @@ const Search = lazy(() => import("../pages/Search"));
 const Explore = lazy(() => import("../pages/Explore"));
 const Map = lazy(() => import("../pages/Map"));
 const Place = lazy(() => import("../pages/Place"));
+const Login = lazy(() => import("../pages/Login"));
 const NotFound = lazy(() => import("../pages/NotFound"));
 
 const Navigation = () => {
@@ -64,6 +65,16 @@ const Navigation = () => {
           <MainLayout>
             <Suspense fallback={<FallBack />}>
               <Map />
+            </Suspense>
+          </MainLayout>
+        }
+      />
+      <Route
+        path={path.login}
+        element={
+          <MainLayout>
+            <Suspense fallback={<FallBack />}>
+              <Login />
             </Suspense>
           </MainLayout>
         }

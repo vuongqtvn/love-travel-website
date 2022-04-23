@@ -17,11 +17,12 @@ import { hideMapModal } from "./mapModalSlice";
 import * as Styled from "./styles";
 
 type Props = {
-  data: PlaceType[];
-  title: string;
+  data?: PlaceType[];
+  place?: PlaceType | undefined;
+  title?: string;
 };
 
-const MapModal = ({ data, title }: Props) => {
+const MapModal = ({ data, place, title = "Tìm kiếm địa điểm" }: Props) => {
   const { show } = useAppSelector((state) => state.mapModal);
   const dispatch = useAppDispatch();
 
@@ -30,27 +31,37 @@ const MapModal = ({ data, title }: Props) => {
   const [popupInfo, setPopupInfo] = useState<PlaceType | null>(null);
 
   const center: any = useMemo(() => {
-    const newData = data.map((place) => {
-      return {
-        latitude: place.location.lat,
-        longitude: place.location.lng,
-      };
-    });
-    return getCenter(newData);
-  }, [data]);
+    if (data) {
+      const newData = data.map((place) => {
+        return {
+          latitude: place?.location?.lat,
+          longitude: place?.location?.lng,
+        };
+      });
+      return getCenter(newData);
+    }
+    if (place) {
+      return getCenter([
+        {
+          latitude: place?.location?.lat,
+          longitude: place?.location?.lng,
+        },
+      ]);
+    }
+  }, [data, place]);
 
   const onSelectCity = useCallback(({ longitude, latitude }) => {
     mapRef.current?.flyTo({ center: [longitude, latitude], duration: 500 });
   }, []);
 
-  const markers = useMemo(
-    () =>
-      data.map((place) => (
+  const markers = useMemo(() => {
+    if (data) {
+      return data.map((place) => (
         <Marker
           color={colors.primary}
-          key={place._id}
-          longitude={place.location.lng}
-          latitude={place.location.lat}
+          key={place?._id}
+          longitude={place?.location?.lng}
+          latitude={place?.location?.lat}
           anchor="bottom"
         >
           <EnvironmentFilled
@@ -63,15 +74,42 @@ const MapModal = ({ data, title }: Props) => {
               e.stopPropagation();
               setPopupInfo(place);
               onSelectCity({
-                longitude: place.location.lng,
-                latitude: place.location.lat,
+                longitude: place?.location?.lng,
+                latitude: place?.location?.lat,
               });
             }}
           />
         </Marker>
-      )),
-    [data, onSelectCity]
-  );
+      ));
+    }
+    if (place) {
+      return (
+        <Marker
+          color={colors.primary}
+          key={place?._id}
+          longitude={place?.location?.lng}
+          latitude={place?.location?.lat}
+          anchor="bottom"
+        >
+          <EnvironmentFilled
+            style={{
+              fontSize: 24,
+              color: colors.primary,
+              cursor: "pointer",
+            }}
+            onClick={(e) => {
+              e.stopPropagation();
+              setPopupInfo(place);
+              onSelectCity({
+                longitude: place?.location?.lng,
+                latitude: place?.location?.lat,
+              });
+            }}
+          />
+        </Marker>
+      );
+    }
+  }, [data, place, onSelectCity]);
 
   if (!show) return null;
   return (
@@ -115,13 +153,13 @@ const MapModal = ({ data, title }: Props) => {
               {popupInfo !== null && (
                 <Popup
                   anchor="top"
-                  longitude={popupInfo.location.lng}
-                  latitude={popupInfo.location.lat}
+                  longitude={popupInfo?.location?.lng}
+                  latitude={popupInfo?.location?.lat}
                   closeOnClick={true}
                   onClose={() => setPopupInfo(null)}
                 >
-                  <div>{popupInfo.name}</div>
-                  <div>{popupInfo.address}</div>
+                  <div>{popupInfo?.name}</div>
+                  <div>{popupInfo?.address}</div>
                 </Popup>
               )}
             </Map>

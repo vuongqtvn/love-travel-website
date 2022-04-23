@@ -26,6 +26,7 @@
     "query-string": "^7.1.1",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
+    "react-image-lightbox": "^5.1.4",
     "react-loading-skeleton": "^3.1.0",
     "react-map-gl": "^7.0.10",
     "react-redux": "^7.2.8",

@@ -72,7 +72,7 @@ const Header = (props: Props) => {
               </Styled.Button>
             </div>
             <div className="nav-item">
-              <Styled.Button className="custom" to="/">
+              <Styled.Button className="custom" to="/login">
                 Đăng nhập
               </Styled.Button>
             </div>

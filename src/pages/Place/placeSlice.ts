@@ -3,7 +3,7 @@ import { placeApi } from "../../api";
 import { PlaceType, RequestState } from "../../types";
 
 export interface PlaceState {
-  place: PlaceType | null;
+  place: PlaceType | undefined;
   placesRelated: PlaceType[] | [];
   api: {
     getPlace: RequestState;
@@ -12,7 +12,7 @@ export interface PlaceState {
 }
 
 const initialState: PlaceState = {
-  place: null,
+  place: undefined,
   placesRelated: [],
   api: {
     getPlace: {

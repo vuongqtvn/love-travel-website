@@ -3,6 +3,10 @@ import { colors } from "../../theme/colors";
 
 export const PlaceWrapper = styled.div`
   padding-top: 10px;
+  h1,
+  h2 {
+    margin-bottom: 0 !important;
+  }
 `;
 
 export const PlaceContainer = styled.div`
@@ -98,18 +102,18 @@ export const PlaceDetail = styled.div`
     flex: 1;
     align-self: stretch;
     overflow: hidden;
-    padding: 8px 16px 10px;
+    padding: 4px 14px 10px;
     background-color: ${colors.white};
     border-radius: 10px;
     box-shadow: 0 2px 8px rgb(0 0 0 / 15%);
     :not(:last-child) {
-      margin: 0 16px 0 0;
+      margin: 0px 16px 0px 0px;
     }
     @media (max-width: 991px) {
       min-height: auto;
       box-shadow: 0 1px 4px rgb(0 0 0 / 15%);
       :not(:last-child) {
-        margin: 0 0 6px;
+        margin: 0px 0px 6px;
       }
     }
   }
@@ -137,6 +141,70 @@ export const PlaceDetail = styled.div`
   @media (max-width: 991px) {
     display: block;
     margin-bottom: 6px;
+  }
+`;
+
+export const PlaceDetailAddress = styled.div``;
+
+export const PlaceMap = styled.div`
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: calc(100% - 33px);
+  @media (max-width: 991px) {
+    height: 300px;
+  }
+
+  .place-imageWrapper {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    flex-grow: 1;
+    margin: 4px 0;
+    background-color: #eee;
+    cursor: pointer;
+    img {
+      background-position: 50%;
+      background-size: cover;
+      height: 100%;
+      width: 100%;
+      object-fit: cover;
+      image-rendering: -webkit-optimize-contrast;
+    }
+  }
+  .place-specific {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: auto;
+    right: 16px;
+    bottom: 16px;
+    left: 16px;
+    font-size: 16px;
+    padding: 6px 10px;
+    border-radius: 10px;
+    background: #fff;
+    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 20%);
+    @media (max-width: 500px) {
+      right: 8px;
+      bottom: 8px;
+      left: 8px;
+    }
+    a {
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      word-break: break-word;
+      color: ${colors.black};
+      transition: all 0.2s linear;
+      :hover {
+        color: ${colors.primary};
+      }
+    }
   }
 `;
 

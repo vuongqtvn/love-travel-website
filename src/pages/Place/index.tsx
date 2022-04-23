@@ -9,7 +9,6 @@ import {
 } from "@ant-design/icons";
 import {
   Anchor,
-  Button,
   Col,
   Dropdown,
   Menu,
@@ -72,7 +71,7 @@ const PlaceDetail = (props: Props) => {
           <PlaceTop />
           <Styled.PlaceDetail id="detail">
             <div className="review">
-              <Typography.Title level={3}>Đánh giá</Typography.Title>
+              <h2>Đánh giá</h2>
               <Box
                 justifyContent="center"
                 alignItems="center"
@@ -89,7 +88,7 @@ const PlaceDetail = (props: Props) => {
               </Box>
             </div>
             <div className="detail-info">
-              <Typography.Title level={3}>Thông tin chi tiết</Typography.Title>
+              <h2>Thông tin chi tiết</h2>
 
               <Box
                 style={{ marginTop: 12 }}
@@ -149,35 +148,52 @@ const PlaceDetail = (props: Props) => {
                     )}
                   </a>
                 </Space>
-                <Space className="info-tags">
+                <Space className="info-tags" wrap>
                   <TagsOutlined className="icon" />
-                  <Space>
-                    <Link to="/search?q=&tags=cafe-view-dep">
-                      Cafe View Đẹp
-                    </Link>
-                    <Link to="/search?q=&tags=cafe-view-dep">
-                      Cafe Ngoài trời
-                    </Link>
+                  <Space wrap>
+                    {api.getPlace.status === "pending" ? (
+                      <Skeleton.Input active size="small" block />
+                    ) : (
+                      place?.categories.map((category) => (
+                        <Link
+                          key={category?._id}
+                          to={`/search?categories=${category?._id}`}
+                        >
+                          {category?.name}
+                        </Link>
+                      ))
+                    )}
                   </Space>
                 </Space>
               </Box>
             </div>
-            <Box
-              alignItems="center"
-              justifyContent="center"
-              className="detail-address"
-            >
-              <Button type="primary" shape="round">
-                Xem chỉ đường
-              </Button>
-            </Box>
+            <Styled.PlaceDetailAddress>
+              <h2>Địa điểm cụ thể</h2>
+              <Styled.PlaceMap>
+                <div className="place-imageWrapper">
+                  <img
+                    src={`https://api.mapbox.com/styles/v1/mapbox/outdoors-v11/static/pin-l+f74e4e(${place?.location.lng},${place?.location.lat})/${place?.location.lng},${place?.location.lat},13,0/400x210?access_token=${process.env.REACT_APP_MAPBOX_TOKEN}`}
+                    alt={place?.name}
+                  />
+                </div>
+                <div className="place-specific">
+                  <a
+                    href={`https://www.google.com/maps/dir/?api=1&destination=${place?.location?.lat},${place?.location?.lng}`}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    {place?.address}
+                  </a>
+                </div>
+              </Styled.PlaceMap>
+            </Styled.PlaceDetailAddress>
           </Styled.PlaceDetail>
           <Styled.PlaceBenefit id="benefit">
-            <Typography.Title level={3}>Lợi ích</Typography.Title>
+            <h2>Lợi ích</h2>
           </Styled.PlaceBenefit>
           <Styled.PlaceReview id="review"></Styled.PlaceReview>
           <Styled.PlaceRelated id="related">
-            <Typography.Title level={3}>Gợi ý ở gần</Typography.Title>
+            <h2>Gợi ý ở gần</h2>
 
             <Row style={{ marginTop: 12 }} gutter={[10, 10]}>
               {api.getPlaceRelated.status === "pending"
