@@ -6,6 +6,7 @@ import footer from "./images/footer-bg.jpg";
 import contact from "./images/contact.webp";
 import bg_404 from "./images/404.svg";
 import map from "./images/img_map.png";
+import review from "./images/reivew.svg";
 import iconMarker from "./images/mapbox-marker-icon-20px-red.png";
 
 export const images = {
@@ -18,4 +19,5 @@ export const images = {
   bg_404,
   map,
   iconMarker,
+  review,
 };

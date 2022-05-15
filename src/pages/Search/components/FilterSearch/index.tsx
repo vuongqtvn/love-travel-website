@@ -29,7 +29,7 @@ const FilterSearch = ({ search, setSearch }: Props) => {
   );
 
   const dispatch = useAppDispatch();
-  const [radio, setRadio] = useState<any>(1);
+  const [radio] = useState<any>(1);
   const [price, setPrice] = useState<[number, number]>([0, 300000]);
 
   const checkboxSelect = useMemo(() => {
@@ -187,7 +187,7 @@ const FilterSearch = ({ search, setSearch }: Props) => {
             ) : (
               <Checkbox.Group
                 value={checkboxSelect.regionsSelect}
-                onChange={(value) => onchangeCheckbox(value, "regions")}
+                onChange={(value: any) => onchangeCheckbox(value, "regions")}
               >
                 {regions.map((region) => (
                   <div className="search__filter-item" key={region._id}>
@@ -205,7 +205,7 @@ const FilterSearch = ({ search, setSearch }: Props) => {
             ) : (
               <Checkbox.Group
                 value={checkboxSelect.purposesSelect}
-                onChange={(value) => onchangeCheckbox(value, "purposes")}
+                onChange={(value: any) => onchangeCheckbox(value, "purposes")}
               >
                 {purposes.map((purpose) => (
                   <div className="search__filter-item" key={purpose._id}>
@@ -223,7 +223,7 @@ const FilterSearch = ({ search, setSearch }: Props) => {
             ) : (
               <Checkbox.Group
                 value={checkboxSelect.categoriesSelect}
-                onChange={(value) => onchangeCheckbox(value, "categories")}
+                onChange={(value: any) => onchangeCheckbox(value, "categories")}
               >
                 {categories.map((category) => (
                   <div className="search__filter-item" key={category._id}>
@@ -241,7 +241,7 @@ const FilterSearch = ({ search, setSearch }: Props) => {
             ) : (
               <Checkbox.Group
                 value={checkboxSelect.benefitsSelect}
-                onChange={(value) => onchangeCheckbox(value, "benefits")}
+                onChange={(value: any) => onchangeCheckbox(value, "benefits")}
               >
                 {benefits.map((benefit) => (
                   <div className="search__filter-item" key={benefit._id}>
@@ -278,7 +278,7 @@ const FilterSearch = ({ search, setSearch }: Props) => {
             ) : (
               <Checkbox.Group
                 value={checkboxSelect.tagsSelect}
-                onChange={(value) => onchangeCheckbox(value, "tags")}
+                onChange={(value: any) => onchangeCheckbox(value, "tags")}
               >
                 {tags.map((tag) => (
                   <div className="search__filter-item" key={tag._id}>

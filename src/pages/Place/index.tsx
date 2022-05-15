@@ -1,14 +1,6 @@
 import {
-  ClockCircleOutlined,
-  DollarCircleOutlined,
-  DownOutlined,
-  FacebookOutlined,
-  InstagramOutlined,
-  PhoneOutlined,
-  TagsOutlined,
-} from "@ant-design/icons";
-import {
   Anchor,
+  Button,
   Col,
   Dropdown,
   Menu,
@@ -17,6 +9,15 @@ import {
   Space,
   Typography,
 } from "antd";
+import {
+  ClockCircleOutlined,
+  DollarCircleOutlined,
+  DownOutlined,
+  FacebookOutlined,
+  InstagramOutlined,
+  PhoneOutlined,
+  TagsOutlined,
+} from "@ant-design/icons";
 import { useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { Box, Place, PlaceSkeleton, Section } from "../../components";
@@ -25,17 +26,19 @@ import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 
 import PlaceTop from "./components/PlaceTop";
 import { getPlace, getPlaceRelated } from "./placeSlice";
+import PlaceReview from "./components/PlaceReview";
 import * as Styled from "./styles";
+import { images } from "../../assets";
 
 type Props = {};
 
 const menu = (
   <Menu>
-    <Menu.Item>Hello</Menu.Item>
-    <Menu.Item>Hello</Menu.Item>
-    <Menu.Item>Hello</Menu.Item>
-    <Menu.Item>Hello</Menu.Item>
-    <Menu.Item>Hello</Menu.Item>
+    <Menu.Item>08:00 - 21:00</Menu.Item>
+    <Menu.Item>08:00 - 21:00</Menu.Item>
+    <Menu.Item>08:00 - 21:00</Menu.Item>
+    <Menu.Item>08:00 - 21:00</Menu.Item>
+    <Menu.Item>08:00 - 21:00</Menu.Item>
   </Menu>
 );
 
@@ -72,24 +75,10 @@ const PlaceDetail = (props: Props) => {
           <Styled.PlaceDetail id="detail">
             <div className="review">
               <h2>Đánh giá</h2>
-              <Box
-                justifyContent="center"
-                alignItems="center"
-                gap="5px"
-                className="place__review-score"
-              >
-                <strong>0</strong>
-                <div>
-                  <Typography.Title level={4}>
-                    Chưa có đánh giá
-                  </Typography.Title>
-                  <span>{`/5 (0 đánh giá)`}</span>
-                </div>
-              </Box>
+              <PlaceReview />
             </div>
             <div className="detail-info">
               <h2>Thông tin chi tiết</h2>
-
               <Box
                 style={{ marginTop: 12 }}
                 flexDirection="column"
@@ -191,7 +180,55 @@ const PlaceDetail = (props: Props) => {
           <Styled.PlaceBenefit id="benefit">
             <h2>Lợi ích</h2>
           </Styled.PlaceBenefit>
-          <Styled.PlaceReview id="review"></Styled.PlaceReview>
+          <Styled.PlaceReview id="review">
+            <div className="review-container">
+              <div className="review-container-top">
+                <h2>
+                  Đánh giá từ cộng đồng
+                  <span>{` (${0})`}</span>
+                </h2>
+                <Button type="primary" shape="round">
+                  Viết đánh giá
+                </Button>
+              </div>
+              <div className="review-overview">
+                <div className="review-overview-img">
+                  <img src={images.review} alt="review" />
+                </div>
+                <div className="review-overview-slogan">
+                  <h2>Bạn đã từng đến đây?</h2>
+                  <span>
+                    Chia sẻ trải nghiệm và cảm nhận của bản thân cho mọi người
+                    cùng biết <i className="fas fa-heart"></i>
+                  </span>
+                  <span>
+                    Những review chất lượng sẽ được xuất hiện ở bảng tin đấy!
+                  </span>
+                </div>
+              </div>
+              <div className="review-list">
+                {true ? (
+                  <div className="review-list-empty">
+                    <p>{`
+                     Chưa có đánh giá nào cho ${
+                       api.getPlace.status === "pending"
+                         ? "đang tải..."
+                         : place?.name
+                     }. Hãy là người đầu tiên làm chuyện ấy!
+                   `}</p>
+                  </div>
+                ) : (
+                  <div></div>
+                )}
+              </div>
+            </div>
+            <div className="review-ads">
+              <div className="review-ads-box">
+                <PlaceReview />
+              </div>
+              <div className="review-ads-box">Quảng cáo</div>
+            </div>
+          </Styled.PlaceReview>
           <Styled.PlaceRelated id="related">
             <h2>Gợi ý ở gần</h2>
 

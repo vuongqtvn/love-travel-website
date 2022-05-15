@@ -9,87 +9,42 @@ const Search = lazy(() => import("../pages/Search"));
 const Explore = lazy(() => import("../pages/Explore"));
 const Map = lazy(() => import("../pages/Map"));
 const Place = lazy(() => import("../pages/Place"));
+const Review = lazy(() => import("../pages/Review"));
 const Login = lazy(() => import("../pages/Login"));
 const NotFound = lazy(() => import("../pages/NotFound"));
+
+const publicRoute = [
+  { path: path.home, component: Home, layout: MainLayout },
+  { path: path.search, component: Search, layout: MainLayout },
+  { path: path.explore, component: Explore, layout: MainLayout },
+  { path: path.review, component: Review, layout: MainLayout },
+  { path: path.placeDetail, component: Place, layout: MainLayout },
+  { path: path.map, component: Map, layout: MainLayout },
+  { path: path.login, component: Login, layout: MainLayout },
+  { path: path.notFound, component: NotFound, layout: MainLayout },
+];
 
 const Navigation = () => {
   return (
     <Routes>
-      <Route
-        path={path.home}
-        element={
-          <MainLayout>
-            <Suspense fallback={<FallBack />}>
-              <Home />
-            </Suspense>
-          </MainLayout>
-        }
-      />
+      {publicRoute.map((route, index) => {
+        const Layout = route.layout;
+        const Page = route.component;
+        return (
+          <Route
+            key={index}
+            path={route.path}
+            element={
+              <Layout>
+                <Suspense fallback={<FallBack />}>
+                  <Page />
+                </Suspense>
+              </Layout>
+            }
+          />
+        );
+      })}
 
-      <Route
-        path={path.search}
-        element={
-          <MainLayout>
-            <Suspense fallback={<FallBack />}>
-              <Search />
-            </Suspense>
-          </MainLayout>
-        }
-      />
-
-      <Route
-        path={path.explore}
-        element={
-          <MainLayout>
-            <Suspense fallback={<FallBack />}>
-              <Explore />
-            </Suspense>
-          </MainLayout>
-        }
-      />
-
-      <Route
-        path={path.placeDetail}
-        element={
-          <MainLayout>
-            <Suspense fallback={<FallBack />}>
-              <Place />
-            </Suspense>
-          </MainLayout>
-        }
-      />
-
-      <Route
-        path={path.map}
-        element={
-          <MainLayout>
-            <Suspense fallback={<FallBack />}>
-              <Map />
-            </Suspense>
-          </MainLayout>
-        }
-      />
-      <Route
-        path={path.login}
-        element={
-          <MainLayout>
-            <Suspense fallback={<FallBack />}>
-              <Login />
-            </Suspense>
-          </MainLayout>
-        }
-      />
-
-      <Route
-        path={path.notFound}
-        element={
-          <MainLayout>
-            <Suspense fallback={<FallBack />}>
-              <NotFound />
-            </Suspense>
-          </MainLayout>
-        }
-      />
       {/* <Route path={path.cart} exact>
         <AuthenticatedGuard>
           <CartLayout>

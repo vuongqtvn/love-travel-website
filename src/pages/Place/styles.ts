@@ -118,24 +118,14 @@ export const PlaceDetail = styled.div`
     }
   }
   .review {
-    .place__review-score {
-      margin: 8px 0;
-      strong {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 28px;
-        min-width: 50px;
-        padding: 4px 8px;
-        color: ${colors.white};
-        background: ${colors.primary};
-        border-radius: 10px;
-      }
-    }
   }
   .detail-info {
     .icon {
       font-size: 18px;
+    }
+    .ant-typography,
+    a {
+      font-size: 16px;
     }
   }
   @media (max-width: 991px) {
@@ -229,6 +219,152 @@ export const PlaceReview = styled.div`
   align-items: center;
   justify-content: flex-start;
   align-items: flex-start;
+  .review-container {
+    width: 66.66%;
+    position: relative;
+    padding: 8px 16px;
+    margin-bottom: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgb(0 0 0 / 15%);
+    @media (max-width: 991px) {
+      width: 100%;
+      padding: 8px 14px;
+      margin-bottom: 6px;
+      box-shadow: 0 1px 4px rgb(0 0 0 / 15%);
+    }
+    .review-container-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 6px;
+      h2 {
+        font-size: 24px;
+        padding: 0;
+        margin: 0;
+        color: rgba(0, 0, 0, 0.85);
+        font-weight: 500;
+        line-height: 1.5715;
+        span {
+          color: #8a8a8a;
+        }
+        @media (max-width: 991px) {
+          font-size: 20px;
+        }
+      }
+    }
+    .review-overview {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 180px;
+      padding: 10px 16px;
+      position: relative;
+      background: linear-gradient(90deg, #ffb8b8, #ffddd8);
+      border-radius: 20px;
+      .review-overview-img {
+        width: 30%;
+        height: 100%;
+        text-align: center;
+        position: relative;
+        img {
+          max-height: 100%;
+        }
+      }
+      .review-overview-slogan {
+        flex-grow: 1;
+        padding: 10px 8px;
+        h2 {
+          padding: 0;
+          margin: 0;
+          color: rgba(0, 0, 0, 0.85);
+          font-weight: 500;
+          line-height: 1.5715;
+          font-size: 24px;
+          margin-bottom: 12px;
+        }
+        span {
+          display: block;
+          line-height: 1.7;
+          margin-bottom: 2px;
+          i {
+            font-size: 12px;
+            color: #f44336;
+          }
+        }
+      }
+      @media (max-width: 991px) {
+        height: auto;
+        padding: 0 2px;
+        margin-top: 4px;
+        margin-bottom: 8px;
+        .review-overview-img {
+          display: flex;
+          width: 65%;
+          img {
+            text-align: center;
+            max-width: 100%;
+            max-height: 160px;
+          }
+        }
+        .review-overview-slogan {
+          padding: 10px 4px;
+          h2 {
+            font-size: 16px;
+            margin-bottom: 4px;
+          }
+          span {
+            font-size: 12px;
+          }
+        }
+      }
+    }
+    .review-list {
+      padding: 20px 0;
+      margin-top: 20px;
+      border-top: 1px solid #ddd;
+      .review-list-empty {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100px;
+        text-align: center;
+        font-size: 18px;
+        p {
+          padding: 0;
+          margin: 0;
+        }
+      }
+      @media (max-width: 991px) {
+        margin-top: 4px;
+        padding: 16px 0 0;
+        .review-list-empty {
+          font-size: 16px;
+          min-height: 80px;
+        }
+      }
+    }
+  }
+  .review-ads {
+    flex-grow: 1;
+    position: relative;
+    margin-left: 20px;
+    margin-bottom: 20px;
+    position: sticky;
+    top: 73px;
+    .review-ads-box {
+      padding: 16px;
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgb(0 0 0 / 15%);
+      :not(:last-child) {
+        margin-bottom: 20px;
+      }
+    }
+    @media (max-width: 991px) {
+      display: none;
+    }
+  }
 `;
 
 export const PlaceRelated = styled.div`

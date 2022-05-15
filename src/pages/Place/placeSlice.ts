@@ -84,6 +84,4 @@ const placeSlice = createSlice({
   },
 });
 
-export const {} = placeSlice.actions;
-
 export default placeSlice.reducer;

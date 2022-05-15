@@ -50,9 +50,12 @@ const MapModal = ({ data, place, title = "Tìm kiếm địa điểm" }: Props) 
     }
   }, [data, place]);
 
-  const onSelectCity = useCallback(({ longitude, latitude }) => {
-    mapRef.current?.flyTo({ center: [longitude, latitude], duration: 500 });
-  }, []);
+  const onSelectCity = useCallback(
+    ({ longitude, latitude }: { longitude: number; latitude: number }) => {
+      mapRef.current?.flyTo({ center: [longitude, latitude], duration: 500 });
+    },
+    []
+  );
 
   const markers = useMemo(() => {
     if (data) {
