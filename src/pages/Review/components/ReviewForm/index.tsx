@@ -6,11 +6,21 @@ import { colors } from "../../../../theme/colors";
 import { imageShow, videoShow } from "../../../../utils/mediaShow";
 
 const ReviewForm = () => {
-  const desc = ["Quá tệ", "Khá tệ", "Trung bình", "Tốt", "Tuyệt vời"];
-  const [rate, setRate] = useState(5);
+  const desc = ["Tệ", "Khá tệ", "Trung bình", "Tốt", "Tuyệt vời"];
 
-  const handleChange = (value: number) => {
-    setRate(value);
+  const [rate, setRate] = useState({
+    rateDrink: 5,
+    ratePosition: 5,
+    ratePrice: 5,
+    rateService: 5,
+    rateView: 5,
+  });
+
+  const handleChange = (name: string, value: number) => {
+    setRate((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
   const fileRef = useRef<any>();
@@ -70,13 +80,19 @@ const ReviewForm = () => {
           <div className="rate-item-cate">Vị trí</div>
           <Rate
             style={{ color: colors.primary, fontSize: 32 }}
-            onChange={handleChange}
-            value={rate}
+            onChange={(value: number) => handleChange("ratePosition", value)}
+            value={rate.ratePosition}
           />
-          {rate && (
+          {rate.ratePosition ? (
             <div className="rate-type">
               <div className="rate-type-text">
-                <span>{desc[rate - 1]}</span>
+                <span>{desc[rate.ratePosition - 1]}</span>
+              </div>
+            </div>
+          ) : (
+            <div className="rate-type">
+              <div className="rate-type-text">
+                <span>Rất tệ</span>
               </div>
             </div>
           )}
@@ -85,68 +101,84 @@ const ReviewForm = () => {
           <div className="rate-item-cate">Không gian</div>
           <Rate
             style={{ color: colors.primary, fontSize: 32 }}
-            onChange={handleChange}
-            value={rate}
+            onChange={(value: number) => handleChange("rateView", value)}
+            value={rate.rateView}
           />
-          {rate ? (
+          {rate.rateView ? (
             <div className="rate-type">
               <div className="rate-type-text">
-                <span>{desc[rate - 1]}</span>
+                <span>{desc[rate.rateView - 1]}</span>
               </div>
             </div>
           ) : (
-            ""
+            <div className="rate-type">
+              <div className="rate-type-text">
+                <span>Rất tệ</span>
+              </div>
+            </div>
           )}
         </div>
         <div className="rate-item">
           <div className="rate-item-cate">Đồ uống</div>
           <Rate
             style={{ color: colors.primary, fontSize: 32 }}
-            onChange={handleChange}
-            value={rate}
+            onChange={(value: number) => handleChange("rateDrink", value)}
+            value={rate.rateDrink}
           />
-          {rate ? (
+          {rate.rateDrink ? (
             <div className="rate-type">
               <div className="rate-type-text">
-                <span>{desc[rate - 1]}</span>
+                <span>{desc[rate.rateDrink - 1]}</span>
               </div>
             </div>
           ) : (
-            ""
+            <div className="rate-type">
+              <div className="rate-type-text">
+                <span>Rất tệ</span>
+              </div>
+            </div>
           )}
         </div>
         <div className="rate-item">
           <div className="rate-item-cate">Phục vụ</div>
           <Rate
             style={{ color: colors.primary, fontSize: 32 }}
-            onChange={handleChange}
-            value={rate}
+            onChange={(value: number) => handleChange("rateService", value)}
+            value={rate.rateService}
           />
-          {rate ? (
+          {rate.rateService ? (
             <div className="rate-type">
               <div className="rate-type-text">
-                <span>{desc[rate - 1]}</span>
+                <span>{desc[rate.rateService - 1]}</span>
               </div>
             </div>
           ) : (
-            ""
+            <div className="rate-type">
+              <div className="rate-type-text">
+                <span>Rất tệ</span>
+              </div>
+            </div>
           )}
         </div>
         <div className="rate-item">
           <div className="rate-item-cate">Giá cả</div>
           <Rate
             style={{ color: colors.primary, fontSize: 32 }}
-            onChange={handleChange}
-            value={rate}
+            onChange={(value: number) => handleChange("ratePrice", value)}
+            value={rate.ratePrice}
           />
-          {rate ? (
+          {rate.ratePrice ? (
             <div className="rate-type">
               <div className="rate-type-text">
-                <span>{desc[rate - 1]}</span>
+                <span>{desc[rate.ratePrice - 1]}</span>
               </div>
             </div>
           ) : (
-            ""
+            <div className="rate-type">
+              <div className="rate-type-text">
+                <span>Rất tệ</span>
+              </div>
+            </div>
           )}
         </div>
       </div>
@@ -178,6 +210,7 @@ const ReviewForm = () => {
           hidden
           onChange={handleChangeImages}
         />
+
         <div className="show_images">
           {images.map((img: any, index: number) => (
             <div key={index} className="media-show">

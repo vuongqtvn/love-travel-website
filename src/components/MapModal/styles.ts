@@ -42,6 +42,9 @@ export const MapModal = styled.div`
       background-color: #fff;
       border-bottom: 1px solid #111;
       text-align: center;
+      @media (max-width: 991px) {
+        height: 44px;
+      }
       .map-close {
         position: absolute;
         top: 50%;
@@ -63,6 +66,9 @@ export const MapModal = styled.div`
           overflow: hidden;
           text-overflow: ellipsis;
           word-break: break-word;
+          @media (max-width: 991px) {
+            font-size: 18px;
+          }
         }
       }
     }

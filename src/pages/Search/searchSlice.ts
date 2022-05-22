@@ -19,18 +19,18 @@ import {
 } from "../../types";
 
 export interface SearchState {
-  regions: RegionType[] | [];
-  purposes: PurposeType[] | [];
-  categories: CategoryType[] | [];
-  places: PlaceType[] | [];
+  regions: RegionType[];
+  purposes: PurposeType[];
+  categories: CategoryType[];
+  places: PlaceType[];
   placesOptions: {
     total: number;
     pageSize: number;
     limit: number;
     page: number;
   };
-  benefits: BenefitType[] | [];
-  tags: TagType[] | [];
+  benefits: BenefitType[];
+  tags: TagType[];
   api: {
     getRegions: RequestState;
     getPurposes: RequestState;

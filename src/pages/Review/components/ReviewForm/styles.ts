@@ -93,6 +93,7 @@ export const ReviewForm = styled.div`
   }
 
   .show_images {
+    margin-top: 10px;
     max-height: 300px;
     width: 100%;
     overflow-y: auto;
@@ -100,7 +101,7 @@ export const ReviewForm = styled.div`
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     place-items: center;
-    padding: 10px 0;
+    padding: 0 10px 10px 0;
     grid-gap: 10px;
     ::-webkit-scrollbar {
       width: 6px;
@@ -130,6 +131,7 @@ export const ReviewForm = styled.div`
     position: relative;
     width: 100%;
     padding-top: 100%;
+    border: 1px solid ${colors.primary};
     .btn {
       position: absolute;
       top: 0;

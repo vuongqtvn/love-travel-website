@@ -68,6 +68,18 @@ const FilterSelectedTag = ({ search, setSearch }: Props) => {
               {tagItem.name}
             </Styled.TagFilter>
           ))}
+          {search.q && (
+            <Styled.TagFilter
+              closable
+              onClose={() => {
+                const obj = { ...search };
+                delete obj.q;
+                setSearch(obj);
+              }}
+            >
+              {search.q}
+            </Styled.TagFilter>
+          )}
         </Space>
       </Styled.FilterSelect>
     );

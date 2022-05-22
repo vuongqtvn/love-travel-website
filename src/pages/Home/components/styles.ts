@@ -78,7 +78,7 @@ export const HomeHero = styled.section`
   }
 `;
 
-export const HeroContent = styled.div<{ focusInput: Boolean }>`
+export const HeroContent = styled.div`
   &::before {
     content: "";
     position: fixed;
@@ -86,10 +86,10 @@ export const HeroContent = styled.div<{ focusInput: Boolean }>`
     right: 0;
     bottom: 0;
     left: 0;
-    opacity: ${({ focusInput }) => (focusInput ? 0.92 : 0)};
+    opacity: 0;
     z-index: 2;
     background: ${colors.mask};
-    pointer-events: ${({ focusInput }) => (focusInput ? "all" : "none")};
+    pointer-events: none;
     transition: all 0.2s ease-out;
     @media (max-width: 991px) {
       display: none;
@@ -97,14 +97,14 @@ export const HeroContent = styled.div<{ focusInput: Boolean }>`
   }
 `;
 
-export const HeroContentTop = styled.div<{ focusInput: Boolean }>`
+export const HeroContentTop = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
-  margin-top: ${({ focusInput }) => (focusInput ? "20px" : "-10px")};
+  margin-top: -10px;
   margin-bottom: 40px;
   text-align: center;
-  z-index: ${({ focusInput }) => (focusInput ? 2 : "unset")};
+
   @media (max-width: 991px) {
     margin-bottom: 20px;
     margin-top: -10px;
@@ -126,10 +126,10 @@ export const HeroContentTop = styled.div<{ focusInput: Boolean }>`
   }
 `;
 
-export const HeroSearch = styled.div<{ focusInput: Boolean }>`
+export const HeroSearch = styled.form`
   display: flex;
   position: relative;
-  z-index: ${({ focusInput }) => (focusInput ? 2 : "unset")};
+
   .search-input {
     display: block;
     width: 100%;
@@ -174,12 +174,12 @@ export const HeroSearch = styled.div<{ focusInput: Boolean }>`
       @media (max-width: 991px) {
         height: 50px;
         font-size: 16px;
-        padding: 10px 30px 10px 40px;
+        padding: 10px 20px 10px 20px;
         border-radius: 24px;
       }
     }
   }
-  a {
+  .search-btn {
     height: 100%;
     @media (max-width: 991px) {
       display: none;
@@ -198,6 +198,7 @@ export const HeroSearch = styled.div<{ focusInput: Boolean }>`
       height: 65px;
       width: 200px;
       box-shadow: 0 2px 8px rgb(0 0 0 / 15%);
+      cursor: pointer;
       &:hover {
         color: ${colors.white};
         background-color: ${colors.hover};
