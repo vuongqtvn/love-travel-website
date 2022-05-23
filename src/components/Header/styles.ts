@@ -136,7 +136,8 @@ export const NavRight = styled.div`
     margin-right: 14px;
   }
 `;
-export const Button = styled(Link)`
+
+export const Button = styled.button`
   display: inline-flex;
   align-items: center;
   justify-content: center;

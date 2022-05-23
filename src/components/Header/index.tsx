@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { images } from "../../assets";
 import * as Styled from "./styles";
 import { EnvironmentFilled } from "@ant-design/icons";
@@ -15,10 +15,15 @@ import {
   BellOutlined,
 } from "@ant-design/icons";
 import Box from "../Box";
+import { useAppDispatch } from "../../redux/hooks";
+import { openAuth } from "../../pages/Auth/authSlice";
 
 type Props = {};
 
 const Header = (props: Props) => {
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+
   const [visible, setVisible] = useState(false);
 
   const showDrawer = () => {
@@ -27,6 +32,39 @@ const Header = (props: Props) => {
   const onClose = () => {
     setVisible(false);
   };
+
+  const menuList = [
+    {
+      name: "Trang chủ",
+      path: "/",
+      icon: HomeOutlined,
+    },
+    {
+      name: "Khám phá",
+      path: "/explore",
+      icon: CompassOutlined,
+    },
+    {
+      name: "Khuyến mãi",
+      path: "/promo",
+      icon: TagOutlined,
+    },
+    {
+      name: "Địa điểm",
+      path: "/search",
+      icon: EnvironmentOutlined,
+    },
+    {
+      name: "Nhắn tin",
+      path: "/message",
+      icon: CommentOutlined,
+    },
+    {
+      name: "Thông báo",
+      path: "/notification",
+      icon: BellOutlined,
+    },
+  ];
 
   return (
     <Styled.HeaderWrapper>
@@ -38,7 +76,7 @@ const Header = (props: Props) => {
         </Styled.Logo>
         <Styled.NavMobile>
           <div className="nav-icon">
-            <Link to={`/search?q=""`}>
+            <Link to={`/search`}>
               <EnvironmentFilled className="icon" />
             </Link>
           </div>
@@ -67,12 +105,15 @@ const Header = (props: Props) => {
           </Styled.NavLeft>
           <Styled.NavRight>
             <div className="nav-item">
-              <Styled.Button to="/review">
+              <Styled.Button onClick={() => navigate("/review")}>
                 <i className="bx bx-pencil"></i> Viết Review
               </Styled.Button>
             </div>
             <div className="nav-item">
-              <Styled.Button className="custom" to="/login">
+              <Styled.Button
+                className="custom"
+                onClick={() => dispatch(openAuth())}
+              >
                 Đăng nhập
               </Styled.Button>
             </div>
@@ -90,31 +131,36 @@ const Header = (props: Props) => {
         }}
       >
         <Menu mode="inline" style={{ width: "100%" }}>
-          <Menu.Item key="1" icon={<HomeOutlined />}>
-            Trang chủ
-          </Menu.Item>
-          <Menu.Item key="2" icon={<CompassOutlined />}>
-            Khám phá
-          </Menu.Item>
-          <Menu.Item key="3" icon={<TagOutlined />}>
-            Khuyến mãi
-          </Menu.Item>
-          <Menu.Item key="4" icon={<EnvironmentOutlined />}>
-            Địa điểm
-          </Menu.Item>
-          <Menu.Item key="5" icon={<CommentOutlined />}>
-            Nhắn tin
-          </Menu.Item>
-          <Menu.Item key="6" icon={<BellOutlined />}>
-            Thông báo
-          </Menu.Item>
+          {menuList.map((menu, index) => {
+            const Icon = menu.icon;
+            return (
+              <Menu.Item
+                onClick={() => {
+                  navigate(menu.path);
+                  onClose();
+                }}
+                key={index}
+                icon={<Icon />}
+              >
+                {menu.name}
+              </Menu.Item>
+            );
+          })}
         </Menu>
         <Box
           style={{
             padding: 20,
           }}
         >
-          <Button type="primary" block size="middle">
+          <Button
+            type="primary"
+            block
+            size="middle"
+            onClick={() => {
+              dispatch(openAuth());
+              onClose();
+            }}
+          >
             Đăng nhập / Đăng ký
           </Button>
         </Box>

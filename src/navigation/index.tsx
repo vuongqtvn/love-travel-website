@@ -10,7 +10,6 @@ const Explore = lazy(() => import("../pages/Explore"));
 const Map = lazy(() => import("../pages/Map"));
 const Place = lazy(() => import("../pages/Place"));
 const Review = lazy(() => import("../pages/Review"));
-const Login = lazy(() => import("../pages/Login"));
 const NotFound = lazy(() => import("../pages/NotFound"));
 
 const publicRoute = [
@@ -20,7 +19,6 @@ const publicRoute = [
   { path: path.review, component: Review, layout: MainLayout },
   { path: path.placeDetail, component: Place, layout: MainLayout },
   { path: path.map, component: Map, layout: MainLayout },
-  { path: path.login, component: Login, layout: MainLayout },
   { path: path.notFound, component: NotFound, layout: MainLayout },
 ];
 

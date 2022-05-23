@@ -8,6 +8,7 @@ import bg_404 from "./images/404.svg";
 import map from "./images/img_map.png";
 import review from "./images/reivew.svg";
 import iconMarker from "./images/mapbox-marker-icon-20px-red.png";
+import login from "./images/login.svg";
 
 export const images = {
   logo,
@@ -20,4 +21,5 @@ export const images = {
   map,
   iconMarker,
   review,
+  login,
 };
