@@ -17,6 +17,15 @@ const path = {
   prefixRegion: "/search?regions",
   prefixCategory: "/search?categories",
   prefixPurpose: "/search?purposes",
+  admin: {
+    home: "/admin",
+    place: "/admin/place",
+    addPlace: "/admin/add-place",
+    editPlace: "/admin/edit-place/:id",
+    post: "/admin/post",
+    promo: "/admin/promo",
+    account: "/admin/account",
+  },
   notFound: "*",
 };
 
