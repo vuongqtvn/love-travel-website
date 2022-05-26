@@ -1,28 +1,65 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState } from "react";
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { images } from "../../assets";
 import * as Styled from "./styles";
-import { EnvironmentFilled } from "@ant-design/icons";
-import { Button, Drawer, Menu } from "antd";
-
+import * as Icons from "@ant-design/icons";
 import {
-  EnvironmentOutlined,
-  TagOutlined,
-  CompassOutlined,
-  HomeOutlined,
-  CommentOutlined,
-  BellOutlined,
-} from "@ant-design/icons";
+  Avatar,
+  Button,
+  Drawer,
+  Dropdown,
+  Menu,
+  Space,
+  Typography,
+} from "antd";
+
 import Box from "../Box";
-import { useAppDispatch } from "../../redux/hooks";
-import { openAuth } from "../../pages/Auth/authSlice";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { logout, openAuth } from "../../pages/Auth/authSlice";
+import path from "../../constants/path";
 
 type Props = {};
+
+const menuList = [
+  {
+    name: "Trang chủ",
+    path: "/",
+    icon: Icons.HomeOutlined,
+  },
+  {
+    name: "Khám phá",
+    path: "/explore",
+    icon: Icons.CompassOutlined,
+  },
+  {
+    name: "Khuyến mãi",
+    path: "/promo",
+    icon: Icons.TagOutlined,
+  },
+  {
+    name: "Địa điểm",
+    path: "/search",
+    icon: Icons.EnvironmentOutlined,
+  },
+  {
+    name: "Nhắn tin",
+    path: "/message",
+    icon: Icons.CommentOutlined,
+  },
+  {
+    name: "Thông báo",
+    path: "/notification",
+    icon: Icons.BellOutlined,
+  },
+];
 
 const Header = (props: Props) => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const location = useLocation();
+
+  const { user } = useAppSelector((state) => state.auth);
 
   const [visible, setVisible] = useState(false);
 
@@ -32,39 +69,6 @@ const Header = (props: Props) => {
   const onClose = () => {
     setVisible(false);
   };
-
-  const menuList = [
-    {
-      name: "Trang chủ",
-      path: "/",
-      icon: HomeOutlined,
-    },
-    {
-      name: "Khám phá",
-      path: "/explore",
-      icon: CompassOutlined,
-    },
-    {
-      name: "Khuyến mãi",
-      path: "/promo",
-      icon: TagOutlined,
-    },
-    {
-      name: "Địa điểm",
-      path: "/search",
-      icon: EnvironmentOutlined,
-    },
-    {
-      name: "Nhắn tin",
-      path: "/message",
-      icon: CommentOutlined,
-    },
-    {
-      name: "Thông báo",
-      path: "/notification",
-      icon: BellOutlined,
-    },
-  ];
 
   return (
     <Styled.HeaderWrapper>
@@ -77,7 +81,7 @@ const Header = (props: Props) => {
         <Styled.NavMobile>
           <div className="nav-icon">
             <Link to={`/search`}>
-              <EnvironmentFilled className="icon" />
+              <Icons.EnvironmentFilled className="icon" />
             </Link>
           </div>
           <div className="nav-icon" onClick={showDrawer}>
@@ -110,12 +114,59 @@ const Header = (props: Props) => {
               </Styled.Button>
             </div>
             <div className="nav-item">
-              <Styled.Button
-                className="custom"
-                onClick={() => dispatch(openAuth())}
-              >
-                Đăng nhập
-              </Styled.Button>
+              {user?.email ? (
+                <Dropdown
+                  overlay={
+                    <Menu>
+                      {user.role === "admin" && (
+                        <Menu.Item>
+                          <Space
+                            size={5}
+                            align="center"
+                            onClick={() => navigate(path.admin.home)}
+                          >
+                            <Icons.SafetyCertificateOutlined />
+                            <span>Trang Admin</span>
+                          </Space>
+                        </Menu.Item>
+                      )}
+                      <Menu.Item>
+                        <Space
+                          size={5}
+                          align="center"
+                          onClick={() => navigate(path.profile)}
+                        >
+                          <Icons.FireOutlined /> <span>Xem hồ sơ</span>
+                        </Space>
+                      </Menu.Item>
+
+                      <Menu.Item>
+                        <Space
+                          size={5}
+                          align="center"
+                          onClick={() => dispatch(logout())}
+                        >
+                          <Icons.LogoutOutlined /> <span>Đăng xuất</span>
+                        </Space>
+                      </Menu.Item>
+                    </Menu>
+                  }
+                  placement="bottomRight"
+                  arrow
+                  trigger={["click"]}
+                >
+                  <Space align="center" style={{ cursor: "pointer" }}>
+                    <Avatar size="large" shape="circle" src={user.avatar} />
+                  </Space>
+                </Dropdown>
+              ) : (
+                <Styled.Button
+                  className="custom"
+                  onClick={() => dispatch(openAuth())}
+                >
+                  Đăng nhập
+                </Styled.Button>
+              )}
             </div>
           </Styled.NavRight>
         </Styled.Nav>
@@ -130,8 +181,21 @@ const Header = (props: Props) => {
           padding: 0,
         }}
       >
-        <Menu mode="inline" style={{ width: "100%" }}>
-          {menuList.map((menu, index) => {
+        {user?.email && (
+          <Space
+            align="center"
+            style={{ cursor: "pointer", padding: "10px 20px" }}
+          >
+            <Avatar shape="circle" size="large" src={user.avatar} />
+            <Typography.Title level={5}>{user.name}</Typography.Title>
+          </Space>
+        )}
+        <Menu
+          selectedKeys={[location.pathname]}
+          mode="inline"
+          style={{ width: "100%" }}
+        >
+          {menuList.map((menu) => {
             const Icon = menu.icon;
             return (
               <Menu.Item
@@ -139,7 +203,7 @@ const Header = (props: Props) => {
                   navigate(menu.path);
                   onClose();
                 }}
-                key={index}
+                key={menu.path}
                 icon={<Icon />}
               >
                 {menu.name}
@@ -152,17 +216,31 @@ const Header = (props: Props) => {
             padding: 20,
           }}
         >
-          <Button
-            type="primary"
-            block
-            size="middle"
-            onClick={() => {
-              dispatch(openAuth());
-              onClose();
-            }}
-          >
-            Đăng nhập / Đăng ký
-          </Button>
+          {user?.email ? (
+            <Button
+              type="primary"
+              block
+              size="middle"
+              onClick={() => {
+                dispatch(logout());
+                onClose();
+              }}
+            >
+              Đăng xuất
+            </Button>
+          ) : (
+            <Button
+              type="primary"
+              block
+              size="middle"
+              onClick={() => {
+                dispatch(openAuth());
+                onClose();
+              }}
+            >
+              Đăng nhập / Đăng ký
+            </Button>
+          )}
         </Box>
       </Drawer>
     </Styled.HeaderWrapper>

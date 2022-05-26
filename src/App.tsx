@@ -1,6 +1,7 @@
 import React from "react";
 import { BrowserRouter } from "react-router-dom";
-import { Loading, Wrapper } from "./components";
+import { Loading, Wrapper, Authentication } from "./components";
+
 import Navigation from "./navigation";
 import "./App.less";
 import "keen-slider/keen-slider.min.css";
@@ -13,6 +14,7 @@ const App = () => {
   return (
     <BrowserRouter>
       <Loading />
+      <Authentication />
       <Wrapper>
         <Navigation />
       </Wrapper>

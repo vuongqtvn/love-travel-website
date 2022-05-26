@@ -1,10 +1,13 @@
 import React, { useState } from "react";
-import { Button } from "antd";
+import { Button, message } from "antd";
 import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 
 import * as Styled from "../../styles";
+import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
+import { ILogin } from "../../../../types/auth.type";
+import { closeAuth, login } from "../../authSlice";
 
 const schema = yup
   .object({
@@ -24,7 +27,10 @@ interface IProps {
 }
 
 const LoginForm = ({ onClick }: IProps) => {
+  const { api } = useAppSelector((state) => state.auth);
   const [show, setShow] = useState<boolean>(false);
+
+  const dispatch = useAppDispatch();
 
   const {
     control,
@@ -38,7 +44,15 @@ const LoginForm = ({ onClick }: IProps) => {
     },
   });
 
-  const onSubmit = (data: any) => console.log(data);
+  const onSubmit = (data: ILogin) => {
+    dispatch(login(data))
+      .unwrap()
+      .then((data: any) => {
+        message.success(data.message);
+        dispatch(closeAuth());
+      })
+      .catch((error) => message.error(error.message));
+  };
 
   return (
     <Styled.LoginForm autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
@@ -100,7 +114,7 @@ const LoginForm = ({ onClick }: IProps) => {
         block
         type="primary"
         size="large"
-        // loading
+        loading={api.login.status === "pending"}
       >
         Đăng nhập
       </Button>

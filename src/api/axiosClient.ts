@@ -1,10 +1,8 @@
 import axios from "axios";
-import LocalStorage from "../constants/LocalStorage";
 import { message } from "antd";
-// https://love-travel-api.herokuapp.com/
+
 export const axiosClient = axios.create({
   // baseURL: "http://localhost:5000/api",
-  // baseURL: "https://love-travel-api.herokuapp.com/api",
   baseURL: "https://love-travel-api-production.up.railway.app/api",
   headers: {
     "Content-Type": "application/json",
@@ -14,10 +12,6 @@ export const axiosClient = axios.create({
 
 axiosClient.interceptors.request.use(
   (config: any) => {
-    const accessToken = localStorage.getItem(LocalStorage.accessToken);
-    if (accessToken) {
-      config.headers.authorization = accessToken;
-    }
     return config;
   },
   (error) => {
@@ -38,3 +32,11 @@ axiosClient.interceptors.response.use(
     return Promise.reject(result);
   }
 );
+
+export const setToken = (token: string) => {
+  if (token) {
+    axiosClient.defaults.headers.common.Authorization = token;
+  } else {
+    delete axios.defaults.headers.common.Authorization;
+  }
+};

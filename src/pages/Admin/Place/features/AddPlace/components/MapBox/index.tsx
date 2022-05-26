@@ -9,7 +9,6 @@ const MapBox = () => {
       initialViewState={{
         longitude: 108.21365565542143,
         latitude: 16.077088582845033,
-        // 16.077088582845033, 108.21365565542143
         zoom: 14,
       }}
       style={{

@@ -135,8 +135,8 @@ const MapModal = ({ data, place, title = "Tìm kiếm địa điểm" }: Props) 
             <Map
               ref={mapRef}
               initialViewState={{
-                longitude: center.longitude,
-                latitude: center.latitude,
+                longitude: center.longitude || 108.21365565542143,
+                latitude: center.latitude || 16.077088582845033,
                 zoom: 14,
               }}
               style={{

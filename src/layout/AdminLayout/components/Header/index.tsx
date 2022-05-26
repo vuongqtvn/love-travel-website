@@ -3,10 +3,12 @@ import { Dropdown, Menu, Space, Layout, Avatar } from "antd";
 import * as Icons from "@ant-design/icons";
 import * as Style from "./styles";
 import { images } from "../../../../assets";
+import { useAppSelector } from "../../../../redux/hooks";
 
 const { Header } = Layout;
 
 function HeaderAdmin() {
+  const { user } = useAppSelector((state) => state.auth);
   const menuProfile = (
     <Menu>
       <Menu.Item key="0">
@@ -40,11 +42,8 @@ function HeaderAdmin() {
           <Style.MenuRight>
             <Dropdown overlay={menuProfile} trigger={["click"]}>
               <Style.Profile>
-                <Avatar
-                  src="https://vnn-imgs-f.vgcloud.vn/2020/10/28/09/-3.jpg"
-                  size="large"
-                />
-                <span className="name">Emma Watson</span>
+                <Avatar src={user?.avatar} size="large" />
+                <span className="name">{user?.name}</span>
               </Style.Profile>
             </Dropdown>
           </Style.MenuRight>
