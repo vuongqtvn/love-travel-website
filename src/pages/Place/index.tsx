@@ -18,9 +18,9 @@ import {
   PhoneOutlined,
   TagsOutlined,
 } from "@ant-design/icons";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { Box, Place, PlaceSkeleton, Section } from "../../components";
+import { Box, MapModal, Place, PlaceSkeleton, Section } from "../../components";
 import path from "../../constants/path";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 
@@ -48,6 +48,8 @@ const PlaceDetail = (props: Props) => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
+  const [showMap, setShowMap] = useState<boolean>(false);
+
   useEffect(() => {
     if (id) {
       dispatch(getPlace(id));
@@ -71,7 +73,7 @@ const PlaceDetail = (props: Props) => {
               </div>
             </div>
           </Styled.PlaceStickyBar>
-          <PlaceTop />
+          <PlaceTop showMap={() => setShowMap(true)} />
           <Styled.PlaceDetail id="detail">
             <div className="review">
               <h2>Đánh giá</h2>
@@ -161,6 +163,7 @@ const PlaceDetail = (props: Props) => {
               <Styled.PlaceMap>
                 <div className="place-imageWrapper">
                   <img
+                    onClick={() => setShowMap(true)}
                     src={`https://api.mapbox.com/styles/v1/mapbox/outdoors-v11/static/pin-l+f74e4e(${place?.location.lng},${place?.location.lat})/${place?.location.lng},${place?.location.lat},13,0/400x210?access_token=${process.env.REACT_APP_MAPBOX_TOKEN}`}
                     alt={place?.name}
                   />
@@ -255,6 +258,14 @@ const PlaceDetail = (props: Props) => {
           </Styled.PlaceRelated>
         </Styled.PlaceContainer>
       </Styled.PlaceWrapper>
+
+      {showMap && (
+        <MapModal
+          place={place}
+          title={place?.name}
+          onClose={() => setShowMap(false)}
+        />
+      )}
     </Section>
   );
 };

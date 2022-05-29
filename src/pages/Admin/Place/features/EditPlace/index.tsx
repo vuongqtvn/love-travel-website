@@ -14,9 +14,9 @@ import { CameraOutlined, CloseOutlined } from "@ant-design/icons";
 import { imageShow, videoShow } from "../../../../../utils/mediaShow";
 import { Scrollbars } from "react-custom-scrollbars-2";
 import * as Styled from "./styles";
-import MapBox from "./components/MapBox";
+import MapBox from "../AddPlace/components/MapBox";
 import Upload from "antd/lib/upload/Upload";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../../../redux/hooks";
 import {
   getBenefits,
@@ -25,14 +25,15 @@ import {
   getRegions,
   getTags,
   getLocation,
-  addPlace,
+  getPlace,
+  editPlace,
 } from "../../adminPlaceSlice";
 import { imageUpload } from "../../../../../utils/imageUpload";
 import path from "../../../../../constants/path";
 
-const AddPlace = () => {
+const EditPlace = () => {
   const navigate = useNavigate();
-  const { loading, benefits, categories, purposes, regions, tags } =
+  const { loading, benefits, categories, purposes, regions, tags, place } =
     useAppSelector((state) => state.adminPlace);
   const dispatch = useAppDispatch();
   const fileRef = useRef<any>();
@@ -95,13 +96,24 @@ const AddPlace = () => {
     setImages(newArr);
   };
 
+  const { id } = useParams();
+
   useEffect(() => {
-    dispatch(getRegions());
-    dispatch(getCategories());
-    dispatch(getTags());
-    dispatch(getPurposes());
-    dispatch(getBenefits());
-  }, [dispatch]);
+    if (id) {
+      dispatch(getPlace(id))
+        .unwrap()
+        .then((data: any) => {
+          setImages(data.place.images);
+          setThumbnail([{ url: data.place.thumbnail }]);
+          setLocation(data.place.location);
+        });
+      dispatch(getRegions());
+      dispatch(getCategories());
+      dispatch(getTags());
+      dispatch(getPurposes());
+      dispatch(getBenefits());
+    }
+  }, [dispatch, id]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -138,18 +150,21 @@ const AddPlace = () => {
     }
 
     dispatch(
-      addPlace({
-        ...values,
-        tags: values.tags ? values.tags : [],
-        benefits: values.benefits ? values.benefits : [],
-        thumbnail: thumb[0].url,
-        images: media,
-        location,
+      editPlace({
+        id,
+        data: {
+          ...values,
+          tags: values.tags ? values.tags : [],
+          benefits: values.benefits ? values.benefits : [],
+          thumbnail: thumb[0].url,
+          images: media,
+          location,
+        },
       })
     )
       .unwrap()
       .then(() => {
-        message.success("Thêm địa điểm thành công!");
+        message.success("Cập nhật địa điểm thành công!");
         navigate(path.admin.place);
       })
       .catch((error) => {
@@ -163,7 +178,7 @@ const AddPlace = () => {
     <Styled.AddPlace>
       <Spin spinning={isAdd}>
         <Styled.CustomSpaceBox>
-          <Styled.Title>Thêm mới địa điểm</Styled.Title>
+          <Styled.Title>Cập nhật địa điểm</Styled.Title>
           <Space>
             <Button type="default" onClick={() => navigate(-1)}>
               Hủy
@@ -190,7 +205,7 @@ const AddPlace = () => {
                   name="place-add"
                   form={form}
                   onFinish={handleSubmitForm}
-                  // initialValues={id ? blogDetail.data : {}}
+                  initialValues={place ? place : {}}
                 >
                   <Scrollbars style={{ flex: 1 }}>
                     <div style={{ paddingRight: 15 }}>
@@ -437,7 +452,7 @@ const AddPlace = () => {
             </Col>
 
             <Col span={12}>
-              <MapBox location={location} />
+              {loading.get ? <Spin /> : <MapBox location={location} />}
             </Col>
           </Row>
         </div>
@@ -446,4 +461,4 @@ const AddPlace = () => {
   );
 };
 
-export default AddPlace;
+export default EditPlace;

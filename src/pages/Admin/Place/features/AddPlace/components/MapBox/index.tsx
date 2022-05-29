@@ -1,14 +1,37 @@
-import React, { useRef } from "react";
-import Map from "react-map-gl";
+import React, { useCallback, useEffect, useRef } from "react";
+import Map, { Marker } from "react-map-gl";
+import { colors } from "../../../../../../../theme/colors";
 
-const MapBox = () => {
+const MapBox = ({
+  location,
+}: {
+  location?: {
+    lng: number;
+    lat: number;
+  };
+}) => {
   const mapRef = useRef<any>();
+  const onSelectCity = useCallback(
+    ({ longitude, latitude }: { longitude: number; latitude: number }) => {
+      mapRef.current?.flyTo({ center: [longitude, latitude], duration: 500 });
+    },
+    []
+  );
+
+  useEffect(() => {
+    if (location) {
+      onSelectCity({
+        longitude: location?.lng ? location?.lng : 108.21365565542143,
+        latitude: location?.lat ? location?.lat : 16.077088582845033,
+      });
+    }
+  }, [location, onSelectCity]);
   return (
     <Map
       ref={mapRef}
       initialViewState={{
-        longitude: 108.21365565542143,
-        latitude: 16.077088582845033,
+        longitude: location?.lng ? location?.lng : 108.21365565542143,
+        latitude: location?.lat ? location?.lat : 16.077088582845033,
         zoom: 14,
       }}
       style={{
@@ -18,29 +41,13 @@ const MapBox = () => {
       mapStyle="mapbox://styles/mapbox/streets-v11"
       mapboxAccessToken={process.env.REACT_APP_MAPBOX_TOKEN}
     >
-      {/* <Marker
-        color={colors.primary}
-        key={place?._id}
-        longitude={place?.location?.lng}
-        latitude={place?.location?.lat}
-        anchor="bottom"
-      >
-        <EnvironmentFilled
-          style={{
-            fontSize: 24,
-            color: colors.primary,
-            cursor: "pointer",
-          }}
-          onClick={(e) => {
-            e.stopPropagation();
-            setPopupInfo(place);
-            onSelectCity({
-              longitude: place?.location?.lng,
-              latitude: place?.location?.lat,
-            });
-          }}
-        />
-      </Marker> */}
+      {location && (
+        <Marker
+          color={colors.primary}
+          longitude={location.lng}
+          latitude={location.lat}
+        ></Marker>
+      )}
     </Map>
   );
 };

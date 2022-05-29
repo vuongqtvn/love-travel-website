@@ -1,25 +1,22 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React from "react";
-import { Link } from "react-router-dom";
 
 import { Skeleton } from "antd";
 import { useKeenSlider } from "keen-slider/react";
-import { LightBoxImages, MapModal } from "../../../../components";
-import { showMapModal } from "../../../../components/MapModal/mapModalSlice";
-import path from "../../../../constants/path";
-import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
+import { LightBoxImages } from "../../../../components";
+import { useAppSelector } from "../../../../redux/hooks";
 import * as Styled from "./styles";
 
-type Props = {};
+type Props = {
+  showMap: any;
+};
 
 const PlaceTop = (props: Props) => {
   const { place, api } = useAppSelector((state) => state.place);
   const [loaded, setLoaded] = React.useState<boolean[]>([]);
   const [currentSlide, setCurrentSlide] = React.useState(0);
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
-
-  const dispatch = useAppDispatch();
 
   const [sliderRef] = useKeenSlider<HTMLDivElement>({
     animationEnded(s) {
@@ -62,7 +59,7 @@ const PlaceTop = (props: Props) => {
                 }}
                 className="bx bx-street-view"
               ></i>
-              <a onClick={() => dispatch(showMapModal())}>Hiển thị bản đồ</a>
+              <a onClick={props.showMap}>Hiển thị bản đồ</a>
               {" — "}
               <a
                 href={`https://www.google.com/maps/dir/?api=1&destination=${place?.location?.lat},${place?.location?.lng}`}
@@ -137,12 +134,14 @@ const PlaceTop = (props: Props) => {
             </div>
           </div>
         </div>
-        <Link to={`${path.place}/jouri-dessert-tea/photo`}>
+        {/* <Link to={`${path.place}/jouri-dessert-tea/photo`}> */}
+        <a>
           <span className="contributePhoto">
             <i className="bx bx-image"></i>
             {` Xem tất cả ảnh (${place?.images.length})`}
           </span>
-        </Link>
+        </a>
+        {/* </Link> */}
       </Styled.PlaceTopGallery>
       <Styled.PlaceTopGalleryMobile>
         <div ref={sliderRef} className="keen-slider">
@@ -154,17 +153,19 @@ const PlaceTop = (props: Props) => {
             </div>
           ))}
         </div>
-        <Link to={`${path.place}/jouri-dessert-tea/photo`}>
+        {/* <Link to={`${path.place}/jouri-dessert-tea/photo`}>
           <span className="view-all">Xem tất cả</span>
-        </Link>
-        <span className="total-photo">{`5/9`}</span>
+        </Link> */}
+        <a>
+          <span className="view-all">Xem tất cả</span>
+        </a>
+        {/* <span className="total-photo">{`${place?.images.length}`}</span> */}
       </Styled.PlaceTopGalleryMobile>
       <LightBoxImages
         isOpen={isOpen}
         onClick={() => setIsOpen(false)}
         images={place?.images}
       />
-      <MapModal place={place} title={place?.name} />
     </Styled.PlaceTop>
   );
 };

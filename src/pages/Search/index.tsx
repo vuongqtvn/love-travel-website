@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
 import { MapModal, Section } from "../../components";
-import { showMapModal } from "../../components/MapModal/mapModalSlice";
 import useQuery from "../../hooks/useQuery";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import FilterSearch from "./components/FilterSearch";
@@ -18,6 +17,7 @@ type Props = {};
 const Search = (props: Props) => {
   const { places } = useAppSelector((state) => state.search);
   const [firstLoad, setFirstLoad] = useState(true);
+  const [showMap, setShowMap] = useState(false);
   const dispatch = useAppDispatch();
 
   const [search, setSearch] = useQuery();
@@ -35,7 +35,7 @@ const Search = (props: Props) => {
   }, [dispatch, search]);
 
   const openMapModal = () => {
-    dispatch(showMapModal());
+    setShowMap(true);
   };
 
   return (
@@ -58,7 +58,13 @@ const Search = (props: Props) => {
           </Styled.SearchRight>
         </Styled.SearchContainer>
       </Styled.SearchWrapper>
-      <MapModal data={places} title="Tìm kiếm địa điểm" />
+      {showMap && (
+        <MapModal
+          data={places}
+          title="Tìm kiếm địa điểm"
+          onClose={() => setShowMap(false)}
+        />
+      )}
     </Section>
   );
 };

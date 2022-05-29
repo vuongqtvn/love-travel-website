@@ -2,13 +2,14 @@ import React, { lazy, Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
 import { FallBack } from "../components";
 import path from "../constants/path";
-import { MainLayout } from "../layout";
+import { AuthLayout, MainLayout } from "../layout";
 import AdminLayout from "../layout/AdminLayout";
 
 import AdminPlace from "../pages/Admin/Place";
 import LoginAdmin from "../pages/Admin/Login";
 import AdminHome from "../pages/Admin/Home";
 import AddPlace from "../pages/Admin/Place/features/AddPlace";
+import EditPlace from "../pages/Admin/Place/features/EditPlace";
 
 const Home = lazy(() => import("../pages/Home"));
 const Search = lazy(() => import("../pages/Search"));
@@ -33,9 +34,10 @@ const adminRoute = [
   { path: path.admin.account, component: AdminHome, layout: AdminLayout },
   { path: path.admin.place, component: AdminPlace, layout: AdminLayout },
   { path: path.admin.addPlace, component: AddPlace, layout: AdminLayout },
-  { path: path.admin.editPlace, component: AdminPlace, layout: AdminLayout },
+  { path: path.admin.editPlace, component: EditPlace, layout: AdminLayout },
   { path: path.admin.post, component: AdminHome, layout: AdminLayout },
   { path: path.admin.promo, component: AdminHome, layout: AdminLayout },
+  { path: "/login", component: LoginAdmin, layout: AuthLayout },
   { path: path.notFound, component: NotFound, layout: AdminLayout },
 ];
 
@@ -77,8 +79,6 @@ const Navigation = () => {
           />
         );
       })}
-
-      <Route path={"/login"} element={<LoginAdmin />} />
 
       {/* <Route path={path.cart} exact>
         <AuthenticatedGuard>

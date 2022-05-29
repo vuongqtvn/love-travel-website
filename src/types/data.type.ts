@@ -59,8 +59,8 @@ export type PlaceType = {
   _id: string;
   name: string;
   slug: string;
-  thumbnail: string;
-  images: [] | any[];
+  thumbnail: any;
+  images: any[];
   description?: string;
   address: string;
   location: {

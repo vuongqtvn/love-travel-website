@@ -12,6 +12,9 @@ const AdminPlace = () => {
         <Button type="primary" onClick={() => navigate(path.admin.addPlace)}>
           Thêm địa điểm
         </Button>
+        <Button type="primary" onClick={() => navigate(path.admin.editPlace)}>
+          Cập nhật địa điểm
+        </Button>
       </Space>
     </div>
   );

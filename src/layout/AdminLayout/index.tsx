@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Grid, Layout } from "antd";
 
-import { Navigate } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 
 import HeaderAdmin from "./components/Header";
 
@@ -16,6 +16,7 @@ const { useBreakpoint } = Grid;
 function AdminLayout({ children }: { children: JSX.Element }) {
   const { user, api } = useAppSelector((state) => state.auth);
   const [collapsed, setCollapsed] = useState(false);
+  const location = useLocation();
   const screens = useBreakpoint();
 
   const onCollapse = (collapsed: boolean) => {
@@ -25,8 +26,9 @@ function AdminLayout({ children }: { children: JSX.Element }) {
   if (api.refreshToken.status === "pending") {
     return <div>đang tải...</div>;
   }
+
   if (!user) {
-    return <Navigate to="/login" />;
+    return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
   if (user.role === "user") {
