@@ -186,6 +186,7 @@ const MapModal = ({
               {data &&
                 data.map((item) => (
                   <Styled.PlaceItem
+                    key={item._id}
                     onClick={(e: any) => {
                       e.stopPropagation();
                       setPopupInfo(item);

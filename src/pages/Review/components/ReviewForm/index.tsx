@@ -4,8 +4,18 @@ import * as Styled from "./styles";
 import { Button, Input, message, Rate } from "antd";
 import { colors } from "../../../../theme/colors";
 import { imageShow, videoShow } from "../../../../utils/mediaShow";
+import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
+import { reviewPlace } from "../../reviewSlice";
+import { imageUpload } from "../../../../utils/imageUpload";
+import { LoadingOverlay } from "../../../../components";
+import { useNavigate } from "react-router-dom";
+import path from "../../../../constants/path";
 
 const ReviewForm = () => {
+  const { placeSelected } = useAppSelector((state) => state.review);
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const [loading, setLoading] = useState<boolean>(false);
   const desc = ["Tệ", "Khá tệ", "Trung bình", "Tốt", "Tuyệt vời"];
 
   const [rate, setRate] = useState({
@@ -66,14 +76,41 @@ const ReviewForm = () => {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    if (images.length === 0) {
+    if (images.length === 0 && !content) {
+      message.error("Vui lòng điền đầy đủ thông tin!");
       return;
     }
-    setContent("");
-    setImages([]);
+
+    if (!placeSelected) {
+      message.error("Vui lòng chọn địa điểm để review");
+      return;
+    }
+
+    setLoading(true);
+    const media = await imageUpload(images);
+    dispatch(
+      reviewPlace({
+        ...rate,
+        place: placeSelected._id,
+        images: media,
+        content,
+      })
+    )
+      .unwrap()
+      .then((res) => {
+        message.success("review địa điểm thành công!");
+        navigate(path.home);
+        setContent("");
+        setImages([]);
+      })
+      .catch((error) => console.log(error))
+      .finally(() => {
+        setLoading(false);
+      });
   };
   return (
     <Styled.ReviewForm>
+      {loading && <LoadingOverlay />}
       <div className="review-input">
         <h3>Xếp hạng của bạn</h3>
         <div className="rate-item">

@@ -4,6 +4,7 @@ import adminPlaceSlice from "../pages/Admin/Place/adminPlaceSlice";
 import authSlice from "../pages/Auth/authSlice";
 import homeSlice from "../pages/Home/homeSlice";
 import placeSlice from "../pages/Place/placeSlice";
+import reviewSlice from "../pages/Review/reviewSlice";
 import searchSlice from "../pages/Search/searchSlice";
 
 const rootReducer = {
@@ -12,6 +13,7 @@ const rootReducer = {
   home: homeSlice,
   search: searchSlice,
   auth: authSlice,
+  review: reviewSlice,
   adminPlace: adminPlaceSlice,
   app: appSlice,
 };

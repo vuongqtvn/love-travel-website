@@ -117,7 +117,6 @@ export const ModalBody = styled.div`
         align-items: center;
         justify-content: center;
         flex-grow: 1;
-        margin-right: 10px;
         flex-direction: column;
         height: 40px;
         padding: 0 6px;
@@ -183,6 +182,55 @@ export const ModalBody = styled.div`
     }
     .search-content {
       margin: 6px 0;
+      .search-item {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        padding: 10px 24px;
+        cursor: pointer;
+        position: relative;
+        color: #000 !important;
+        &:hover {
+          color: #000;
+          background: #eee;
+        }
+        .search-image {
+          flex-shrink: 0;
+          width: 40px;
+          height: 40px;
+          margin-right: 10px;
+          border-radius: 4px;
+          overflow: hidden;
+          @media (max-width: 991px) {
+            width: 50px;
+            height: 50px;
+          }
+          img {
+            width: 100%;
+            height: 100%;
+            border-radius: 4px;
+            background-position: 50%;
+            background-size: cover;
+            -webkit-object-fit: cover;
+            object-fit: cover;
+          }
+        }
+        .search-info {
+          .info-name {
+            font-size: 18px;
+            font-weight: 500;
+            @media (max-width: 991px) {
+              font-size: 16px;
+              font-weight: 600;
+              margin-bottom: 2px;
+            }
+          }
+          .info-desc {
+            font-size: 14px;
+            color: #6b6b6b;
+          }
+        }
+      }
     }
   }
   @media (max-width: 991px) {

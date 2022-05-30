@@ -20,4 +20,5 @@ export { default as Place } from "./Place";
 export { default as PlaceSkeleton } from "./PlaceSkeleton";
 export { default as LightBoxImages } from "./LightBoxImages";
 export { default as SearchModal } from "./SearchModal";
+export { default as LoadingOverlay } from "./LoadingOverlay";
 export { default as Authentication } from "./Authentication";
