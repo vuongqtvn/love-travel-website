@@ -7,7 +7,6 @@ export const MainLayout = styled.div`
   }
   .ant-layout-sider {
     height: calc(100vh - 64px);
-
     .ant-layout-sider-children {
       flex-grow: 1;
       overflow-y: auto;
@@ -25,14 +24,22 @@ export const MainLayout = styled.div`
     }
   }
   .content-layout {
-    display: flex;
     height: calc(100vh - 64px);
+    overflow-y: auto;
+    &::-webkit-scrollbar {
+      width: 0.5em;
+    }
+    &::-webkit-scrollbar-track {
+      box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    }
+    &::-webkit-scrollbar-thumb {
+      background-color: #002878;
+    }
   }
   .ant-layout-content {
     min-height: unset;
   }
   .content {
-    flex: 1;
     margin: 0 15px 15px;
     padding: 15px;
     background-color: white;

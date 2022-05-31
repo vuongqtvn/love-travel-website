@@ -27,6 +27,7 @@ import {
   getLocation,
   getPlace,
   editPlace,
+  clearPlace,
 } from "../../adminPlaceSlice";
 import { imageUpload } from "../../../../../utils/imageUpload";
 import path from "../../../../../constants/path";
@@ -100,6 +101,11 @@ const EditPlace = () => {
 
   useEffect(() => {
     if (id) {
+      dispatch(getRegions());
+      dispatch(getCategories());
+      dispatch(getTags());
+      dispatch(getPurposes());
+      dispatch(getBenefits());
       dispatch(getPlace(id))
         .unwrap()
         .then((data: any) => {
@@ -107,13 +113,20 @@ const EditPlace = () => {
           setThumbnail([{ url: data.place.thumbnail }]);
           setLocation(data.place.location);
         });
-      dispatch(getRegions());
-      dispatch(getCategories());
-      dispatch(getTags());
-      dispatch(getPurposes());
-      dispatch(getBenefits());
     }
+    return () => {
+      setImages([]);
+      setThumbnail(null);
+      setLocation(null);
+      dispatch(clearPlace());
+    };
   }, [dispatch, id]);
+
+  useEffect(() => {
+    if (place) {
+      form.setFieldsValue(place);
+    }
+  }, [form, place]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -125,7 +138,7 @@ const EditPlace = () => {
             setLocation(location);
           });
       }
-    }, 2000);
+    }, 1500);
 
     return () => {
       clearTimeout(timer);
@@ -205,7 +218,6 @@ const EditPlace = () => {
                   name="place-add"
                   form={form}
                   onFinish={handleSubmitForm}
-                  initialValues={place ? place : {}}
                 >
                   <Scrollbars style={{ flex: 1 }}>
                     <div style={{ paddingRight: 15 }}>

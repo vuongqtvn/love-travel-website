@@ -24,10 +24,18 @@ export interface AdminPlaceState {
   purposes: PurposeType[];
   categories: CategoryType[];
   place: PlaceType | null;
+  places: PlaceType[];
+  placesOptions: {
+    total: number;
+    pageSize: number;
+    limit: number;
+    page: number;
+  };
   loading: {
     get: boolean;
     add: boolean;
     edit: boolean;
+    getPlaces: boolean;
   };
 }
 
@@ -38,10 +46,18 @@ const initialState: AdminPlaceState = {
   purposes: [],
   categories: [],
   place: null,
+  places: [],
+  placesOptions: {
+    total: 0,
+    pageSize: 1,
+    limit: 10,
+    page: 1,
+  },
   loading: {
     get: false,
     add: false,
     edit: false,
+    getPlaces: false,
   },
 };
 
@@ -163,10 +179,26 @@ export const editPlace = createAsyncThunk(
   }
 );
 
+export const getPlaces = createAsyncThunk(
+  "admin-place/getPlaces",
+  async (params: any, { rejectWithValue }) => {
+    try {
+      const res = await placeApi.getPlaces(params);
+      return res;
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
+
 const adminPlaceSlice = createSlice({
   name: "admin-place",
   initialState,
-  reducers: {},
+  reducers: {
+    clearPlace(state: any) {
+      state.place = null;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getRegions.pending, (state) => {
@@ -228,10 +260,21 @@ const adminPlaceSlice = createSlice({
       })
       .addCase(getPlace.rejected, (state, action) => {
         state.loading.get = false;
+      })
+      .addCase(getPlaces.pending, (state) => {
+        state.loading.getPlaces = true;
+      })
+      .addCase(getPlaces.fulfilled, (state, action: any) => {
+        state.loading.getPlaces = false;
+        state.places = action.payload.places;
+        state.placesOptions = action.payload.options;
+      })
+      .addCase(getPlaces.rejected, (state) => {
+        state.loading.getPlaces = false;
       });
   },
 });
 
-// export const {} = adminPlaceSlice.actions;
+export const { clearPlace } = adminPlaceSlice.actions;
 
 export default adminPlaceSlice.reducer;

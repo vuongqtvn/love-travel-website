@@ -39,6 +39,6 @@ const exploreSlice = createSlice({
   },
 });
 
-export const {} = exploreSlice.actions;
+// export const {} = exploreSlice.actions;
 
 export default exploreSlice.reducer;

@@ -102,9 +102,10 @@ const ReviewForm = () => {
         navigate(path.home);
         setContent("");
         setImages([]);
+        setLoading(false);
       })
-      .catch((error) => console.log(error))
-      .finally(() => {
+      .catch((error: any) => {
+        message.error(error.message);
         setLoading(false);
       });
   };

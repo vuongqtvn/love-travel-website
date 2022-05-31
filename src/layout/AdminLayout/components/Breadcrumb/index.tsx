@@ -1,7 +1,7 @@
 import { Breadcrumb } from "antd";
 import * as Icons from "@ant-design/icons";
 import path from "../../../../constants/path";
-import { useLocation, useNavigate } from "react-router-dom";
+import { matchRoutes, useLocation, useNavigate } from "react-router-dom";
 import React from "react";
 
 const BREADCRUMB_MENU = [
@@ -39,19 +39,19 @@ const BREADCRUMB_MENU = [
   {
     pathParent: path.admin.place,
     title: "Chỉnh sửa địa điểm",
-    path: path.admin.editPlace,
+    path: "/admin/edit-place/:id",
   },
 ];
 
 function BreadcrumbLayout() {
   const location = useLocation();
+  const [{ route }]: any = matchRoutes(BREADCRUMB_MENU, location);
   const navigate = useNavigate();
-
-  const renderBreadcrumb = (pathName: string) => {
-    return BREADCRUMB_MENU.map((menuItem, index) => {
+  function renderBreadcrumb(pathName: any): any {
+    return BREADCRUMB_MENU.map((menuItem: any, menuIndex: any) => {
       if (menuItem.path === pathName) {
         return (
-          <React.Fragment key={index}>
+          <React.Fragment key={menuIndex}>
             {menuItem.pathParent ? renderBreadcrumb(menuItem.pathParent) : null}
             <Breadcrumb.Item
               className="cursor-pointer"
@@ -61,19 +61,21 @@ function BreadcrumbLayout() {
             </Breadcrumb.Item>
           </React.Fragment>
         );
+      } else {
+        return null;
       }
     });
-  };
+  }
   return (
     <Breadcrumb style={{ margin: "16px 0" }}>
       <Breadcrumb.Item
         className="cursor-pointer"
-        onClick={() => navigate(path.admin.home)}
+        onClick={() => navigate("/admin")}
       >
         <Icons.HomeOutlined />
         Trang chủ
       </Breadcrumb.Item>
-      {renderBreadcrumb(location.pathname)}
+      {renderBreadcrumb(route.path)}
     </Breadcrumb>
   );
 }
