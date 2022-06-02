@@ -22,3 +22,4 @@ export { default as LightBoxImages } from "./LightBoxImages";
 export { default as SearchModal } from "./SearchModal";
 export { default as LoadingOverlay } from "./LoadingOverlay";
 export { default as Authentication } from "./Authentication";
+export { default as InputNumberic } from "./InputNumberic";

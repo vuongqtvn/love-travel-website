@@ -8,7 +8,7 @@ import AdminLayout from "../layout/AdminLayout";
 import AdminPlace from "../pages/Admin/Place";
 import LoginAdmin from "../pages/Admin/Login";
 import AdminHome from "../pages/Admin/Home";
-import AddPlace from "../pages/Admin/Place/features/AddPlace";
+import AddPlaceAdmin from "../pages/Admin/Place/features/AddPlace";
 import EditPlace from "../pages/Admin/Place/features/EditPlace";
 
 const Home = lazy(() => import("../pages/Home"));
@@ -16,6 +16,7 @@ const Search = lazy(() => import("../pages/Search"));
 const Explore = lazy(() => import("../pages/Explore"));
 const Map = lazy(() => import("../pages/Map"));
 const Place = lazy(() => import("../pages/Place"));
+const AddPlace = lazy(() => import("../pages/AddPlace"));
 const Review = lazy(() => import("../pages/Review"));
 const NotFound = lazy(() => import("../pages/NotFound"));
 
@@ -26,6 +27,7 @@ const publicRoute = [
   { path: path.review, component: Review, layout: MainLayout },
   { path: path.placeDetail, component: Place, layout: MainLayout },
   { path: path.map, component: Map, layout: MainLayout },
+  { path: path.addPlace, component: AddPlace, layout: MainLayout },
   { path: path.notFound, component: NotFound, layout: MainLayout },
 ];
 
@@ -33,11 +35,11 @@ const adminRoute = [
   { path: path.admin.home, component: AdminHome, layout: AdminLayout },
   { path: path.admin.account, component: AdminHome, layout: AdminLayout },
   { path: path.admin.place, component: AdminPlace, layout: AdminLayout },
-  { path: path.admin.addPlace, component: AddPlace, layout: AdminLayout },
+  { path: path.admin.addPlace, component: AddPlaceAdmin, layout: AdminLayout },
   { path: path.admin.editPlace, component: EditPlace, layout: AdminLayout },
   { path: path.admin.post, component: AdminHome, layout: AdminLayout },
   { path: path.admin.promo, component: AdminHome, layout: AdminLayout },
-  { path: "/login", component: LoginAdmin, layout: AuthLayout },
+  { path: path.login, component: LoginAdmin, layout: AuthLayout },
   { path: path.notFound, component: NotFound, layout: AdminLayout },
 ];
 
