@@ -6,6 +6,7 @@ import { AuthLayout, MainLayout } from "../layout";
 import AdminLayout from "../layout/AdminLayout";
 
 import AdminPlace from "../pages/Admin/Place";
+import AdminAccount from "../pages/Admin/Account";
 import LoginAdmin from "../pages/Admin/Login";
 import AdminHome from "../pages/Admin/Home";
 import AddPlaceAdmin from "../pages/Admin/Place/features/AddPlace";
@@ -17,6 +18,7 @@ const Explore = lazy(() => import("../pages/Explore"));
 const Map = lazy(() => import("../pages/Map"));
 const Place = lazy(() => import("../pages/Place"));
 const AddPlace = lazy(() => import("../pages/AddPlace"));
+const Promo = lazy(() => import("../pages/Promo"));
 const Review = lazy(() => import("../pages/Review"));
 const NotFound = lazy(() => import("../pages/NotFound"));
 
@@ -26,6 +28,7 @@ const publicRoute = [
   { path: path.explore, component: Explore, layout: MainLayout },
   { path: path.review, component: Review, layout: MainLayout },
   { path: path.placeDetail, component: Place, layout: MainLayout },
+  { path: path.promo, component: Promo, layout: MainLayout },
   { path: path.map, component: Map, layout: MainLayout },
   { path: path.addPlace, component: AddPlace, layout: MainLayout },
   { path: path.notFound, component: NotFound, layout: MainLayout },
@@ -33,7 +36,7 @@ const publicRoute = [
 
 const adminRoute = [
   { path: path.admin.home, component: AdminHome, layout: AdminLayout },
-  { path: path.admin.account, component: AdminHome, layout: AdminLayout },
+  { path: path.admin.account, component: AdminAccount, layout: AdminLayout },
   { path: path.admin.place, component: AdminPlace, layout: AdminLayout },
   { path: path.admin.addPlace, component: AddPlaceAdmin, layout: AdminLayout },
   { path: path.admin.editPlace, component: EditPlace, layout: AdminLayout },

@@ -236,9 +236,8 @@ const AddForm = () => {
   return (
     <React.Fragment>
       {isAdd && <LoadingOverlay />}
-      {loading ? (
-        <Spin />
-      ) : (
+
+      <Spin spinning={loading}>
         <Form
           {...layout}
           labelAlign="left"
@@ -431,7 +430,7 @@ const AddForm = () => {
             </Button>
           </Form.Item>
         </Form>
-      )}
+      </Spin>
     </React.Fragment>
   );
 };

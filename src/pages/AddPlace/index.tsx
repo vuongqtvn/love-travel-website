@@ -15,6 +15,7 @@ const AddPlace = () => {
               cộng đồng ngay!
             </span>
           </Styled.AddPlaceHeader>
+
           <AddForm />
         </Styled.AddPlaceForm>
       </Styled.AddPlaceWrapper>

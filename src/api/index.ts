@@ -5,3 +5,4 @@ export { default as placeApi } from "./placeApi";
 export { default as purposeApi } from "./purposeApi";
 export { default as regionApi } from "./regionApi";
 export { default as tagApi } from "./tagApi";
+export { default as accountApi } from "./accountApi";

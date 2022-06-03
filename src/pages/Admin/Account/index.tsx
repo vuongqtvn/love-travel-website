@@ -7,11 +7,11 @@ import * as Style from "./styles";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import { useNavigate } from "react-router-dom";
 import path from "../../../constants/path";
-import { getPlaces } from "./adminPlaceSlice";
+import { getAccounts } from "./accountAdminSlice";
 
-function AdminPlace() {
-  const { loading, places, placesOptions } = useAppSelector(
-    (state) => state.adminPlace
+function AccountManagement() {
+  const { loading, account, accountOptions } = useAppSelector(
+    (state) => state.adminAccount
   );
   const [searchKey, setSearchKey] = useState("");
 
@@ -20,45 +20,45 @@ function AdminPlace() {
 
   useEffect(() => {
     dispatch(
-      getPlaces({
+      getAccounts({
         page: 1,
-        limit: placesOptions.limit,
+        limit: accountOptions.limit,
       })
     );
-  }, [dispatch, placesOptions.limit]);
+  }, [dispatch, accountOptions.limit]);
 
   function handleSearchBlog(value: string) {
     setSearchKey(value);
     dispatch(
-      getPlaces({
+      getAccounts({
         q: value,
-        page: placesOptions.page,
-        limit: placesOptions.limit,
+        page: accountOptions.page,
+        limit: accountOptions.limit,
       })
     );
   }
 
   const onChangePage = (page: number) => {
     dispatch(
-      getPlaces({
+      getAccounts({
         q: searchKey,
         page: page,
-        limit: placesOptions.limit,
+        limit: accountOptions.limit,
       })
     );
   };
 
   const tableColumn = [
     {
-      dataIndex: "thumbnail",
-      key: "thumbnail",
+      dataIndex: "avatar",
+      key: "avatar",
       render: (value: string) => (
         <Style.ShowImage src={value}></Style.ShowImage>
       ),
       width: 120,
     },
     {
-      title: "Tên địa điểm",
+      title: "Tên tài khoản",
       dataIndex: "name",
       key: "name",
       sorter: (a: any, b: any) => a.name.length - b.name.length,
@@ -66,9 +66,16 @@ function AdminPlace() {
     },
 
     {
-      title: "Mô tả địa điểm",
-      dataIndex: "description",
-      key: "description",
+      title: "Email",
+      dataIndex: "email",
+      key: "email",
+      ellipsis: true,
+      width: 240,
+    },
+    {
+      title: "Quyền",
+      dataIndex: "role",
+      key: "role",
       ellipsis: true,
       width: 240,
     },
@@ -123,17 +130,17 @@ function AdminPlace() {
     },
   ];
 
-  const tableData = places.map((placeItem, placeIndex) => {
+  const tableData = account.map((accountItem: any, accountIndex: any) => {
     return {
-      key: placeIndex,
-      ...placeItem,
+      key: accountIndex,
+      ...accountItem,
     };
   });
 
   return (
     <Style.AdminPlaceWrap>
       <Style.CustomSpaceBox>
-        <Style.Title>Quản lý địa điểm</Style.Title>
+        <Style.Title>Quản lý tài khoản</Style.Title>
         <Style.CustomSpace>
           <Style.Search>
             <Input
@@ -159,16 +166,16 @@ function AdminPlace() {
           dataSource={tableData}
           pagination={{
             position: ["bottomCenter"],
-            current: placesOptions.page,
+            current: accountOptions.page,
             onChange: onChangePage,
-            pageSize: placesOptions.limit,
-            total: placesOptions.total,
+            pageSize: accountOptions.limit,
+            total: accountOptions.total,
           }}
-          loading={loading.getPlaces}
+          loading={loading.getAccount}
         />
       </div>
     </Style.AdminPlaceWrap>
   );
 }
 
-export default AdminPlace;
+export default AccountManagement;

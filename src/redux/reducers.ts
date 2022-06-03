@@ -8,6 +8,7 @@ import homeSlice from "../pages/Home/homeSlice";
 import placeSlice from "../pages/Place/placeSlice";
 import reviewSlice from "../pages/Review/reviewSlice";
 import searchSlice from "../pages/Search/searchSlice";
+import adminAccountSlice from "../pages/Admin/Account/accountAdminSlice";
 
 const rootReducer = {
   mapModal: mapModalSlice,
@@ -18,6 +19,7 @@ const rootReducer = {
   review: reviewSlice,
   explore: exploreSlice,
   adminPlace: adminPlaceSlice,
+  adminAccount: adminAccountSlice,
   addPlace: addPlaceSlice,
   app: appSlice,
 };
