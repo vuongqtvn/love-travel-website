@@ -18,6 +18,15 @@ const placeApi = {
   editPlace(id: string, data: any) {
     return axiosClient.put(`/places/${id}`, data);
   },
+  deletePlace(id: string) {
+    return axiosClient.delete(`/places/${id}`);
+  },
+  savePlace(id: any) {
+    return axiosClient.get(`/save-place/${id}`);
+  },
+  unSavePlace(id: any) {
+    return axiosClient.get(`/un-save-place/${id}`);
+  },
 };
 
 export default placeApi;

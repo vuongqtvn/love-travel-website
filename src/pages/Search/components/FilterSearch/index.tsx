@@ -77,9 +77,11 @@ const FilterSearch = ({ search, setSearch }: Props) => {
           setSearch({
             ...search,
             purposes,
+            page: 1,
           });
         } else {
           delete search?.purposes;
+          delete search?.page;
           setSearch({
             ...search,
           });
@@ -92,9 +94,11 @@ const FilterSearch = ({ search, setSearch }: Props) => {
           setSearch({
             ...search,
             categories,
+            page: 1,
           });
         } else {
           delete search?.categories;
+          delete search?.page;
           setSearch({
             ...search,
           });
@@ -107,9 +111,11 @@ const FilterSearch = ({ search, setSearch }: Props) => {
           setSearch({
             ...search,
             regions,
+            page: 1,
           });
         } else {
           delete search?.regions;
+          delete search?.page;
           setSearch({
             ...search,
           });
@@ -122,9 +128,11 @@ const FilterSearch = ({ search, setSearch }: Props) => {
           setSearch({
             ...search,
             benefits,
+            page: 1,
           });
         } else {
           delete search?.benefits;
+          delete search?.page;
           setSearch({
             ...search,
           });
@@ -136,10 +144,12 @@ const FilterSearch = ({ search, setSearch }: Props) => {
           const tags = value.join("-");
           setSearch({
             ...search,
+            page: 1,
             tags,
           });
         } else {
           delete search?.tags;
+          delete search?.page;
           setSearch({
             ...search,
           });

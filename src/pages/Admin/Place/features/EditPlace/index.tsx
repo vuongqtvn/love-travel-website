@@ -152,14 +152,19 @@ const EditPlace = () => {
     let thumb: any = [];
     let media: any = [];
 
+    const imgNewUrl = images?.filter((img: any) => !img.url);
+    const imgOldUrl = images?.filter((img: any) => img.url);
+
     setIsAdd(true);
 
-    if (images.length > 0) {
-      media = await imageUpload(images);
+    if (imgNewUrl.length > 0) {
+      media = await imageUpload(imgNewUrl);
     }
 
     if (thumbnail.length > 0) {
-      thumb = await imageUpload(thumbnail);
+      thumb = Boolean(thumbnail?.[0].url)
+        ? thumbnail
+        : await imageUpload(thumbnail);
     }
 
     dispatch(
@@ -169,8 +174,8 @@ const EditPlace = () => {
           ...values,
           tags: values.tags ? values.tags : [],
           benefits: values.benefits ? values.benefits : [],
-          thumbnail: thumb[0].url,
-          images: media,
+          thumbnail: thumb?.[0]?.url,
+          images: [...imgOldUrl, ...media],
           location,
         },
       })

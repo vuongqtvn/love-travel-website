@@ -1,12 +1,15 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable react-hooks/exhaustive-deps */
-import React from "react";
+import React, { useEffect, useState } from "react";
 
-import { Skeleton } from "antd";
+import { Button, Grid, message, Skeleton, Tooltip } from "antd";
 import { useKeenSlider } from "keen-slider/react";
 import { LightBoxImages } from "../../../../components";
-import { useAppSelector } from "../../../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
+import { HeartFilled, HeartOutlined, LoadingOutlined } from "@ant-design/icons";
 import * as Styled from "./styles";
+import { openAuth, setUser } from "../../../Auth/authSlice";
+import { savePlace, unSavePlace } from "../../placeSlice";
 
 type Props = {
   showMap: any;
@@ -14,9 +17,76 @@ type Props = {
 
 const PlaceTop = (props: Props) => {
   const { place, api } = useAppSelector((state) => state.place);
+  const { user, token } = useAppSelector((state) => state.auth);
   const [loaded, setLoaded] = React.useState<boolean[]>([]);
   const [currentSlide, setCurrentSlide] = React.useState(0);
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
+  const screens = Grid.useBreakpoint();
+
+  const dispatch = useAppDispatch();
+
+  const [saved, setSaved] = useState(false);
+  const [loadSaved, setLoadSaved] = useState(false);
+
+  useEffect(() => {
+    if (user?.saved.find((placeSave: any) => placeSave._id === place?._id)) {
+      setSaved(true);
+    } else {
+      setSaved(false);
+    }
+  }, [user?.saved, place?._id]);
+
+  const handleSavePlace = () => {
+    if (!token) {
+      return dispatch(openAuth());
+    }
+    if (loadSaved) return;
+
+    if (place) {
+      setLoadSaved(true);
+      dispatch(savePlace(place._id))
+        .unwrap()
+        .then(() => {
+          dispatch(
+            setUser({
+              ...user,
+              saved: [...user?.saved, place],
+            })
+          );
+          message.success(`Đã lưu địa điểm ${place.name}`);
+          setLoadSaved(false);
+        })
+        .catch((error) => {
+          message.error(error.message || "Có lỗi xãy ra");
+          setLoadSaved(false);
+        });
+    }
+  };
+  const handleUnSavePlace = () => {
+    if (!token) {
+      return dispatch(openAuth());
+    }
+    if (loadSaved) return;
+
+    if (place) {
+      setLoadSaved(true);
+      dispatch(unSavePlace(place._id))
+        .unwrap()
+        .then(() => {
+          dispatch(
+            setUser({
+              ...user,
+              saved: user?.saved.filter((item: any) => item._id !== place._id),
+            })
+          );
+          setLoadSaved(false);
+        })
+        .catch((error) => {
+          message.error(error.message || "Có lỗi xãy ra");
+          setLoadSaved(false);
+        });
+    }
+  };
 
   const [sliderRef] = useKeenSlider<HTMLDivElement>({
     animationEnded(s) {
@@ -43,7 +113,34 @@ const PlaceTop = (props: Props) => {
 
             <div className="place-action">
               <div className="place-saved">
-                <i className="bx bx-bookmark"></i>
+                <Tooltip
+                  placement="bottom"
+                  title={!saved ? "Lưu địa điểm này" : "Đã lưu địa điểm này"}
+                >
+                  {loadSaved ? (
+                    <Button
+                      size={screens.lg ? "middle" : "small"}
+                      shape="circle"
+                      icon={<LoadingOutlined />}
+                      onClick={handleSavePlace}
+                    />
+                  ) : !saved ? (
+                    <Button
+                      size={screens.lg ? "middle" : "small"}
+                      shape="circle"
+                      icon={<HeartOutlined />}
+                      onClick={handleSavePlace}
+                    />
+                  ) : (
+                    <Button
+                      size={screens.lg ? "middle" : "small"}
+                      danger
+                      shape="circle"
+                      onClick={handleUnSavePlace}
+                      icon={<HeartFilled />}
+                    />
+                  )}
+                </Tooltip>
               </div>
             </div>
           </Styled.PlaceTopInfo>
@@ -127,9 +224,11 @@ const PlaceTop = (props: Props) => {
               }}
             >
               <span>{`+${
-                Number(place?.images?.length) <= 5
-                  ? 0
-                  : Number(place?.images?.length) - 5
+                Number(place?.images?.length)
+                  ? Number(place?.images?.length) <= 5
+                    ? 0
+                    : Number(place?.images?.length) - 5
+                  : 0
               } ảnh`}</span>
             </div>
           </div>
@@ -138,7 +237,9 @@ const PlaceTop = (props: Props) => {
         <a>
           <span className="contributePhoto">
             <i className="bx bx-image"></i>
-            {` Xem tất cả ảnh (${place?.images.length})`}
+            {` Xem tất cả ảnh (${
+              place?.images.length ? place?.images.length : 0
+            })`}
           </span>
         </a>
         {/* </Link> */}

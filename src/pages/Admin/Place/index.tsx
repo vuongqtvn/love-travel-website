@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Button, Space, Popconfirm, Input, message } from "antd";
+import { Button, Space, Popconfirm, Input } from "antd";
 import * as Icon from "@ant-design/icons";
 import moment from "moment";
 
@@ -7,7 +7,7 @@ import * as Style from "./styles";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import { useNavigate } from "react-router-dom";
 import path from "../../../constants/path";
-import { getPlaces } from "./adminPlaceSlice";
+import { deletePlace, getPlaces } from "./adminPlaceSlice";
 
 function AdminPlace() {
   const { loading, places, placesOptions } = useAppSelector(
@@ -88,6 +88,7 @@ function AdminPlace() {
     },
 
     {
+      title: "Thao tác",
       dataIndex: "action",
       key: "action",
       render: (_: any, record: any) => {
@@ -106,8 +107,8 @@ function AdminPlace() {
             <Popconfirm
               title="Bạn có muốn xoá bài viết này?"
               onConfirm={() => {
-                // dispatch(deleteBlogAction({ id: record.id }));
-                message.success("id cần xoá: " + record._id);
+                dispatch(deletePlace(record._id));
+                // message.success("id cần xoá: " + record._id);
               }}
               onCancel={() => null}
               okText="Yes"

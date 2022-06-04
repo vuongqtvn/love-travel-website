@@ -150,9 +150,11 @@ const MapModal = ({
                             color: colors.primary,
                           }}
                           disabled
-                          defaultValue={2}
+                          defaultValue={place.rateAvg}
                         />
-                        chưa có đánh giá
+                        {place.posts.length > 0
+                          ? `có ${place.posts.length} đánh giá`
+                          : `chưa có đánh giá`}
                       </div>
                       <div className="place-address">{place.address}</div>
                     </div>
@@ -211,9 +213,11 @@ const MapModal = ({
                             color: colors.primary,
                           }}
                           disabled
-                          defaultValue={2}
+                          defaultValue={item.rateAvg}
                         />
-                        chưa có đánh giá
+                        {item.posts.length > 0
+                          ? `có ${item.posts.length} đánh giá`
+                          : `chưa có đánh giá`}
                       </div>
                       <div className="place-address">{item.address}</div>
                     </div>
@@ -269,16 +273,16 @@ const MapModal = ({
                           <span>{popupInfo.address}</span>
                         </div>
                         <div className="rate">
-                          <span className="avg-rate">4.6</span>
+                          <span className="avg-rate">{popupInfo.rateAvg}</span>
                           <Rate
                             style={{
                               fontSize: 12,
                               color: colors.primary,
                             }}
                             disabled
-                            defaultValue={4.6}
+                            defaultValue={(popupInfo.rateAvg * 2) / 2}
                           />
-                          <span className="rate-total">{`(4)`}</span>
+                          <span className="rate-total">{`(${popupInfo.posts.length})`}</span>
                         </div>
                       </div>
                     </Styled.MapPopup>

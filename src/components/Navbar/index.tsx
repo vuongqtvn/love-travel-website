@@ -22,8 +22,8 @@ const Navbar = (props: Props) => {
           <span>Khuyến mãi</span>
         </NavLink>
         <NavLink to={path.saved}>
-          <i className="bx bx-bookmark"></i>
-          <span>Đã lưu</span>
+          <i className="bx bx-heart"></i>
+          <span>Đã thích</span>
         </NavLink>
         <NavLink to={path.profile}>
           <i className="bx bx-user"></i>

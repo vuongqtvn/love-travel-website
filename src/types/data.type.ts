@@ -71,7 +71,7 @@ export type PlaceType = {
   benefits: [] | BenefitType[] | any[];
   tags: [] | TagType[] | any[];
   purposes: [] | PurposeType[] | any[];
-  region: string;
+  region: any;
   [x: string]: any;
 };
 

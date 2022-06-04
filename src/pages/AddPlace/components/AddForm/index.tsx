@@ -208,7 +208,7 @@ const AddForm = () => {
     )
       .unwrap()
       .then(() => {
-        message.success("Thêm địa điểm thành công!");
+        message.success("Thêm địa điểm thành công, chờ xét duyệt.");
         setIsAdd(false);
         setFileList({
           thumbnail: [],

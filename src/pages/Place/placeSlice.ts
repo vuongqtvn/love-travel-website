@@ -53,6 +53,30 @@ export const getPlaceRelated = createAsyncThunk(
   }
 );
 
+export const savePlace = createAsyncThunk(
+  "place/savePlace",
+  async (id: string, thunkApi) => {
+    try {
+      const data = await placeApi.savePlace(id);
+      return data;
+    } catch (error) {
+      return thunkApi.rejectWithValue(error);
+    }
+  }
+);
+
+export const unSavePlace = createAsyncThunk(
+  "place/unSavePlace",
+  async (id: string, thunkApi) => {
+    try {
+      const data = await placeApi.unSavePlace(id);
+      return data;
+    } catch (error) {
+      return thunkApi.rejectWithValue(error);
+    }
+  }
+);
+
 const placeSlice = createSlice({
   name: "place",
   initialState,

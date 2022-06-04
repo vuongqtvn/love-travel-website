@@ -5,15 +5,15 @@ export interface IUser {
   address: string;
   avatar: string;
   createdAt: string;
-  followers: any[];
-  following: any[];
+  followers: any;
+  following: any;
   gender: string;
   mobile: string;
   password: "";
   publicSaved: boolean;
   publicSocial: boolean;
   role: string;
-  saved: any[];
+  saved: any;
   story: string;
   updatedAt: string;
   website: string;

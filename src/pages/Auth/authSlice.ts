@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { setToken } from "../../api";
 import authApi from "../../api/authApi";
 import { RequestState } from "../../types";
 import { ILogin, IRegister, IUser } from "../../types/auth.type";
@@ -80,10 +81,14 @@ const authSlice = createSlice({
     closeAuth: (state: any) => {
       state.open = false;
     },
+    setUser: (state: any, action: any) => {
+      state.user = action.payload;
+    },
     logout: (state: any) => {
       localStorage.removeItem("token");
       state.token = null;
       state.user = null;
+      setToken("");
     },
   },
   extraReducers: (builder) => {
@@ -95,6 +100,7 @@ const authSlice = createSlice({
         state.api.login.status = "fulfilled";
         state.user = action.payload.user;
         state.token = action.payload.accessToken;
+        setToken(action.payload.accessToken);
         localStorage.setItem("token", action.payload.refreshToken);
       })
       .addCase(login.rejected, (state) => {
@@ -107,6 +113,7 @@ const authSlice = createSlice({
         state.api.register.status = "fulfilled";
         state.user = action.payload.user;
         state.token = action.payload.accessToken;
+        setToken(action.payload.accessToken);
         localStorage.setItem("token", action.payload.refreshToken);
       })
       .addCase(register.rejected, (state) => {
@@ -119,6 +126,7 @@ const authSlice = createSlice({
         state.api.refreshToken.status = "fulfilled";
         state.user = action.payload.user;
         state.token = action.payload.accessToken;
+        setToken(action.payload.accessToken);
       })
       .addCase(refreshToken.rejected, (state) => {
         state.api.refreshToken.status = "rejected";
@@ -127,6 +135,6 @@ const authSlice = createSlice({
   },
 });
 
-export const { openAuth, closeAuth, logout } = authSlice.actions;
+export const { openAuth, closeAuth, logout, setUser } = authSlice.actions;
 
 export default authSlice.reducer;

@@ -23,9 +23,11 @@ const FilterSelectedTag = ({ search, setSearch }: Props) => {
   ];
   const searchTag = useMemo(() => {
     let ids: string[] | [] = [];
-    for (const key in search) {
-      if (search[key]?.trim()) {
-        ids = [...ids, ...search[key].split("-")];
+    const obj = { ...search };
+    delete obj?.page;
+    for (const key in obj) {
+      if (obj[key]?.trim()) {
+        ids = [...ids, ...obj[key].split("-")];
       }
     }
     return ids;
@@ -50,6 +52,7 @@ const FilterSelectedTag = ({ search, setSearch }: Props) => {
         }
       }
     }
+    delete obj?.page;
     setSearch(obj);
   };
 

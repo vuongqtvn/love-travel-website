@@ -62,7 +62,7 @@ function AccountManagement() {
       dataIndex: "name",
       key: "name",
       sorter: (a: any, b: any) => a.name.length - b.name.length,
-      width: 300,
+      width: 200,
     },
 
     {
@@ -95,6 +95,7 @@ function AccountManagement() {
     },
 
     {
+      title: "Thao tác",
       dataIndex: "action",
       key: "action",
       render: (_: any, record: any) => {
@@ -161,7 +162,7 @@ function AccountManagement() {
       <div>
         <Style.CustomTable
           size="small"
-          scroll={{ x: 1000 }}
+          scroll={{ x: 1200 }}
           columns={tableColumn}
           dataSource={tableData}
           pagination={{

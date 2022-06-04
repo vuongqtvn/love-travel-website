@@ -191,6 +191,18 @@ export const getPlaces = createAsyncThunk(
   }
 );
 
+export const deletePlace = createAsyncThunk(
+  "admin-place/deletePlace",
+  async (id: any, { rejectWithValue }) => {
+    try {
+      const res = await placeApi.deletePlace(id);
+      return res;
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
+
 const adminPlaceSlice = createSlice({
   name: "admin-place",
   initialState,

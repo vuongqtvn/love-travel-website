@@ -1,24 +1,13 @@
-import {
-  Anchor,
-  Button,
-  Col,
-  Dropdown,
-  Menu,
-  Row,
-  Skeleton,
-  Space,
-  Typography,
-} from "antd";
+import { Anchor, Button, Col, Row, Skeleton, Space, Typography } from "antd";
 import {
   ClockCircleOutlined,
   DollarCircleOutlined,
-  DownOutlined,
   FacebookOutlined,
   InstagramOutlined,
   PhoneOutlined,
   TagsOutlined,
 } from "@ant-design/icons";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { Box, MapModal, Place, PlaceSkeleton, Section } from "../../components";
 import path from "../../constants/path";
@@ -31,16 +20,6 @@ import * as Styled from "./styles";
 import { images } from "../../assets";
 
 type Props = {};
-
-const menu = (
-  <Menu>
-    <Menu.Item>08:00 - 21:00</Menu.Item>
-    <Menu.Item>08:00 - 21:00</Menu.Item>
-    <Menu.Item>08:00 - 21:00</Menu.Item>
-    <Menu.Item>08:00 - 21:00</Menu.Item>
-    <Menu.Item>08:00 - 21:00</Menu.Item>
-  </Menu>
-);
 
 const PlaceDetail = (props: Props) => {
   const { id } = useParams();
@@ -77,7 +56,7 @@ const PlaceDetail = (props: Props) => {
           <Styled.PlaceDetail id="detail">
             <div className="review">
               <h2>Đánh giá</h2>
-              <PlaceReview />
+              <PlaceReview place={place} />
             </div>
             <div className="detail-info">
               <h2>Thông tin chi tiết</h2>
@@ -89,32 +68,52 @@ const PlaceDetail = (props: Props) => {
               >
                 <Space align="center">
                   <DollarCircleOutlined className="icon" />
-                  <Typography.Text>{`39.000đ - 129.000đ`}</Typography.Text>
+                  <Typography.Text>
+                    {api.getPlace.status === "pending" ? (
+                      <Skeleton.Input active size="small" block />
+                    ) : (
+                      `${place?.price.from.toLocaleString()}đ - ${place?.price.to.toLocaleString()}đ`
+                    )}
+                  </Typography.Text>
                 </Space>
                 <Space align="center">
                   <ClockCircleOutlined className="icon" />
                   <Space>
                     <Typography.Text className="status time-close">
-                      Đang đóng cửa
+                      Đang mở cửa
                     </Typography.Text>
 
-                    <Dropdown overlay={menu} trigger={["click", "hover"]}>
-                      <Typography.Text strong className="ant-dropdown-link">
-                        {" - "} 08:00 - 21:00 <DownOutlined />
-                      </Typography.Text>
-                    </Dropdown>
+                    <Typography.Text strong className="ant-dropdown-link">
+                      {api.getPlace.status === "pending" ? (
+                        <Skeleton.Input active size="small" block />
+                      ) : (
+                        ` - ${place?.time.from} - ${place?.time.to}`
+                      )}
+                    </Typography.Text>
                   </Space>
                 </Space>
                 <Space align="center">
                   <PhoneOutlined className="icon" />
-                  <a href="tel:09494432443">
-                    <Typography.Text strong>09494432443</Typography.Text>
+                  <a href={place?.phone ? `tel:${place.phone}` : "#"}>
+                    <Typography.Text strong>
+                      {api.getPlace.status === "pending" ? (
+                        <Skeleton.Input active size="small" block />
+                      ) : place?.phone ? (
+                        place.phone
+                      ) : (
+                        "Chưa cập nhật"
+                      )}
+                    </Typography.Text>
                   </a>
                 </Space>
                 <Space align="center">
                   <FacebookOutlined className="icon" />
                   <a
-                    href="https://www.facebook.com/JouriDessert"
+                    href={
+                      place?.facebook
+                        ? place.facebook
+                        : "https://www.facebook.com/"
+                    }
                     target="_blank"
                     rel="noreferrer"
                   >
@@ -128,7 +127,11 @@ const PlaceDetail = (props: Props) => {
                 <Space align="center">
                   <InstagramOutlined className="icon" />
                   <a
-                    href="https://www.facebook.com/JouriDessert"
+                    href={
+                      place?.instagram
+                        ? place.instagram
+                        : "https://www.instagram.com/"
+                    }
                     target="_blank"
                     rel="noreferrer"
                   >
@@ -139,20 +142,34 @@ const PlaceDetail = (props: Props) => {
                     )}
                   </a>
                 </Space>
-                <Space className="info-tags" wrap>
-                  <TagsOutlined className="icon" />
+                <Space className="info-tags" align="start">
+                  <TagsOutlined size={18} className="icon" />
+
                   <Space wrap>
                     {api.getPlace.status === "pending" ? (
                       <Skeleton.Input active size="small" block />
                     ) : (
-                      place?.categories.map((category) => (
-                        <Link
-                          key={category?._id}
-                          to={`/search?categories=${category?._id}`}
-                        >
-                          {category?.name}
+                      <React.Fragment>
+                        {place?.categories.map((category) => (
+                          <Link
+                            key={category?._id}
+                            to={`/search?categories=${category?._id}`}
+                          >
+                            {category?.name}
+                          </Link>
+                        ))}
+                        {place?.purposes.map((purpose) => (
+                          <Link
+                            key={purpose?._id}
+                            to={`/search?purposes=${purpose?._id}`}
+                          >
+                            {purpose?.name}
+                          </Link>
+                        ))}
+                        <Link to={`/search?regions=${place?.region?._id}`}>
+                          {place?.region?.name}
                         </Link>
-                      ))
+                      </React.Fragment>
                     )}
                   </Space>
                 </Space>
@@ -174,7 +191,11 @@ const PlaceDetail = (props: Props) => {
                     target="_blank"
                     rel="noreferrer"
                   >
-                    {place?.address}
+                    {api.getPlace.status === "pending" ? (
+                      <Skeleton.Input active size="small" block />
+                    ) : (
+                      place?.address
+                    )}
                   </a>
                 </div>
               </Styled.PlaceMap>
@@ -188,7 +209,9 @@ const PlaceDetail = (props: Props) => {
               <div className="review-container-top">
                 <h2>
                   Đánh giá từ cộng đồng
-                  <span>{` (${0})`}</span>
+                  <span>{` (${
+                    place?.posts.length > 0 ? place?.posts.length : 0
+                  })`}</span>
                 </h2>
                 <Button type="primary" shape="round">
                   Viết đánh giá
@@ -210,7 +233,7 @@ const PlaceDetail = (props: Props) => {
                 </div>
               </div>
               <div className="review-list">
-                {true ? (
+                {place?.posts.length === 0 ? (
                   <div className="review-list-empty">
                     <p>{`
                      Chưa có đánh giá nào cho ${
@@ -227,7 +250,7 @@ const PlaceDetail = (props: Props) => {
             </div>
             <div className="review-ads">
               <div className="review-ads-box">
-                <PlaceReview />
+                <PlaceReview place={place} />
               </div>
               <div className="review-ads-box">Quảng cáo</div>
             </div>
