@@ -1,22 +1,24 @@
-import { useState, useEffect } from "react";
-import { Button, Space, Popconfirm, Input, message } from "antd";
+import { useEffect, useState } from "react";
 import * as Icon from "@ant-design/icons";
+import { Button, Input, Space, Tag } from "antd";
 import moment from "moment";
 
-import * as Style from "./styles";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
-import { useNavigate } from "react-router-dom";
-import path from "../../../constants/path";
+import { colors } from "../../../theme/colors";
 import { getAccounts } from "./accountAdminSlice";
+import ModifyAccountModal from "./components/ModalAccount";
+import * as Style from "./styles";
 
 function AccountManagement() {
   const { loading, account, accountOptions } = useAppSelector(
     (state) => state.adminAccount
   );
+  const { user } = useAppSelector((state) => state.auth);
   const [searchKey, setSearchKey] = useState("");
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [data, setData] = useState(null);
 
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(
@@ -32,7 +34,7 @@ function AccountManagement() {
     dispatch(
       getAccounts({
         q: value,
-        page: accountOptions.page,
+        page: 1,
         limit: accountOptions.limit,
       })
     );
@@ -55,14 +57,12 @@ function AccountManagement() {
       render: (value: string) => (
         <Style.ShowImage src={value}></Style.ShowImage>
       ),
-      width: 120,
     },
     {
       title: "Tên tài khoản",
       dataIndex: "name",
       key: "name",
       sorter: (a: any, b: any) => a.name.length - b.name.length,
-      width: 200,
     },
 
     {
@@ -70,30 +70,43 @@ function AccountManagement() {
       dataIndex: "email",
       key: "email",
       ellipsis: true,
-      width: 240,
     },
     {
       title: "Quyền",
       dataIndex: "role",
       key: "role",
       ellipsis: true,
-      width: 240,
+      render: (value: any) =>
+        value === "admin" ? (
+          <Tag color={colors.black}>{value}</Tag>
+        ) : (
+          <Tag color={colors.primary}>{value}</Tag>
+        ),
     },
     {
       title: "Ngày tạo",
       dataIndex: "createdAt",
       key: "createdAt",
       render: (value: any) => value && moment(value).format("DD/MM/YYYY HH:mm"),
-      width: 150,
     },
     {
       title: "Ngày sửa",
       dataIndex: "updatedAt",
       key: "updatedAt",
       render: (value: any) => value && moment(value).format("DD/MM/YYYY HH:mm"),
-      width: 150,
     },
+    {
+      title: "Trạng thái",
+      dataIndex: "status",
+      key: "status",
 
+      render: (value: any) =>
+        !value ? (
+          <span style={{ color: "red" }}>Khóa</span>
+        ) : (
+          <span style={{ color: "#52c41a" }}>Kích hoạt</span>
+        ),
+    },
     {
       title: "Thao tác",
       dataIndex: "action",
@@ -102,29 +115,18 @@ function AccountManagement() {
         return (
           <Space>
             <Button
+              disabled={user?._id === record._id}
               icon={<Icon.FormOutlined />}
               type="primary"
               ghost
               onClick={() => {
-                navigate(`/admin/edit-place/${record._id}`);
+                setIsModalVisible(true);
+                setData(record);
+                console.log(record);
               }}
             >
               Sửa
             </Button>
-            <Popconfirm
-              title="Bạn có muốn xoá bài viết này?"
-              onConfirm={() => {
-                // dispatch(deleteBlogAction({ id: record.id }));
-                message.success("id cần xoá: " + record._id);
-              }}
-              onCancel={() => null}
-              okText="Yes"
-              cancelText="No"
-            >
-              <Button icon={<Icon.DeleteOutlined />} danger>
-                Xóa
-              </Button>
-            </Popconfirm>
           </Space>
         );
       },
@@ -151,12 +153,6 @@ function AccountManagement() {
               onChange={(e) => handleSearchBlog(e.target.value)}
             />
           </Style.Search>
-          <Style.CustomButton
-            type="primary"
-            onClick={() => navigate(path.admin.addPlace)}
-          >
-            Thêm mới
-          </Style.CustomButton>
         </Style.CustomSpace>
       </Style.CustomSpaceBox>
       <div>
@@ -175,6 +171,11 @@ function AccountManagement() {
           loading={loading.getAccount}
         />
       </div>
+      <ModifyAccountModal
+        data={data}
+        isShowModal={isModalVisible}
+        setIsShowModal={setIsModalVisible}
+      />
     </Style.AdminPlaceWrap>
   );
 }

@@ -9,6 +9,7 @@ import {
   Space,
   Select,
   Spin,
+  InputNumber,
 } from "antd";
 import { CameraOutlined, CloseOutlined } from "@ant-design/icons";
 import { imageShow, videoShow } from "../../../../../utils/mediaShow";
@@ -19,23 +20,48 @@ import Upload from "antd/lib/upload/Upload";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../../../redux/hooks";
 import {
-  getBenefits,
-  getCategories,
-  getPurposes,
-  getRegions,
-  getTags,
   getLocation,
   getPlace,
   editPlace,
   clearPlace,
+  getAddPlaces,
 } from "../../adminPlaceSlice";
 import { imageUpload } from "../../../../../utils/imageUpload";
 import path from "../../../../../constants/path";
+import { Box } from "../../../../../components";
+import { timeList } from "../../../../../constants/time";
+
+const Contact = [
+  {
+    name: "phone",
+    label: "Điện thoại",
+    placeholder: "Nhập số điện thoại",
+  },
+  {
+    name: "email",
+    label: "Email",
+    placeholder: "Nhập địa chỉ email",
+  },
+  {
+    name: "facebook",
+    label: "Facebook",
+    placeholder: "Nhập link Facebook",
+  },
+  {
+    name: "instagram",
+    label: "Instagram",
+    placeholder: "Nhập link Instagram",
+  },
+  {
+    name: "website",
+    label: "Website",
+    placeholder: "Nhập link Website",
+  },
+];
 
 const EditPlace = () => {
   const navigate = useNavigate();
-  const { loading, benefits, categories, purposes, regions, tags, place } =
-    useAppSelector((state) => state.adminPlace);
+  const { loading, data, place } = useAppSelector((state) => state.adminPlace);
   const dispatch = useAppDispatch();
   const fileRef = useRef<any>();
   const [thumbnail, setThumbnail] = useState<any>(null);
@@ -44,8 +70,18 @@ const EditPlace = () => {
   const [location, setLocation] = useState<any>(null);
   const [thumbnailMessage, setThumbnailMessage] = useState("");
   const [images, setImages] = useState<any>([]);
+  const menuRef = useRef<any>();
+  const [menu, setMenu] = useState<any>([]);
 
   const [form] = Form.useForm();
+
+  const renderContactField = () => {
+    return Contact.map((item, index) => (
+      <Form.Item key={index} name={item.name} label={item.label}>
+        <Input placeholder={item.placeholder} />
+      </Form.Item>
+    ));
+  };
 
   const handleUploadThumbnail = (value: any) => {
     if (!["image/png", "image/jpeg"].includes(value.file.type)) {
@@ -59,7 +95,7 @@ const EditPlace = () => {
     setThumbnail([value.file]);
   };
 
-  const handleChangeImages = (e: any) => {
+  const handleChangeImages = (e: any, type: "images" | "menu") => {
     const files = [...e.target.files];
     let error = "";
     let newImages: any[] = [];
@@ -81,7 +117,16 @@ const EditPlace = () => {
       message.error(error);
     }
 
-    setImages([...images, ...newImages]);
+    switch (type) {
+      case "images":
+        setImages([...images, ...newImages]);
+        break;
+      case "menu":
+        setMenu([...menu, ...newImages]);
+        break;
+      default:
+        break;
+    }
   };
 
   const deleteImages = (index: number) => {
@@ -96,26 +141,36 @@ const EditPlace = () => {
 
     setImages(newArr);
   };
+  const deleteMenu = (index: number) => {
+    const newArr = [...menu];
+    newArr.splice(index, 1);
+
+    if (newArr.length === 0) {
+      if (menuRef.current) {
+        menuRef.current.value = null;
+      }
+    }
+
+    setMenu(newArr);
+  };
 
   const { id } = useParams();
 
   useEffect(() => {
     if (id) {
-      dispatch(getRegions());
-      dispatch(getCategories());
-      dispatch(getTags());
-      dispatch(getPurposes());
-      dispatch(getBenefits());
+      dispatch(getAddPlaces());
       dispatch(getPlace(id))
         .unwrap()
         .then((data: any) => {
           setImages(data.place.images);
+          setMenu(data.place.menu);
           setThumbnail([{ url: data.place.thumbnail }]);
           setLocation(data.place.location);
         });
     }
     return () => {
       setImages([]);
+      setMenu([]);
       setThumbnail(null);
       setLocation(null);
       dispatch(clearPlace());
@@ -151,14 +206,22 @@ const EditPlace = () => {
     }
     let thumb: any = [];
     let media: any = [];
+    let mediaMenu: any = [];
 
     const imgNewUrl = images?.filter((img: any) => !img.url);
     const imgOldUrl = images?.filter((img: any) => img.url);
+
+    const menuNewUrl = menu?.filter((img: any) => !img.url);
+    const menuOldUrl = menu?.filter((img: any) => img.url);
 
     setIsAdd(true);
 
     if (imgNewUrl.length > 0) {
       media = await imageUpload(imgNewUrl);
+    }
+
+    if (menuNewUrl.length > 0) {
+      mediaMenu = await imageUpload(imgNewUrl);
     }
 
     if (thumbnail.length > 0) {
@@ -174,8 +237,11 @@ const EditPlace = () => {
           ...values,
           tags: values.tags ? values.tags : [],
           benefits: values.benefits ? values.benefits : [],
+          purposes: values.purposes ? values.purposes : [],
+          categories: values.categories ? values.categories : [],
           thumbnail: thumb?.[0]?.url,
           images: [...imgOldUrl, ...media],
+          menu: [...menuOldUrl, ...mediaMenu],
           location,
         },
       })
@@ -184,12 +250,13 @@ const EditPlace = () => {
       .then(() => {
         message.success("Cập nhật địa điểm thành công!");
         navigate(path.admin.place);
+        setIsAdd(false);
       })
       .catch((error) => {
         message.error(error.message);
         form.resetFields();
-      })
-      .finally(() => setIsAdd(false));
+        setIsAdd(false);
+      });
   };
 
   return (
@@ -249,7 +316,7 @@ const EditPlace = () => {
                         ]}
                       >
                         <Select placeholder="Chọn khu vực">
-                          {regions.map((region) => (
+                          {data?.regions.map((region) => (
                             <Select.Option key={region._id} value={region._id}>
                               {region.name}
                             </Select.Option>
@@ -273,7 +340,7 @@ const EditPlace = () => {
                       </Form.Item>
                       <Form.Item name="categories" label="Loại hình địa điểm">
                         <Select mode="multiple" placeholder="Chọn loại hình">
-                          {categories.map((category) => (
+                          {data?.categories.map((category) => (
                             <Select.Option
                               key={category._id}
                               value={category._id}
@@ -288,7 +355,7 @@ const EditPlace = () => {
                           mode="multiple"
                           placeholder="Chọn mục đích địa điểm"
                         >
-                          {purposes.map((purpose) => (
+                          {data?.purposes.map((purpose) => (
                             <Select.Option
                               key={purpose._id}
                               value={purpose._id}
@@ -303,7 +370,7 @@ const EditPlace = () => {
                           mode="multiple"
                           placeholder="Chọn kiểu địa điểm"
                         >
-                          {tags.map((tag) => (
+                          {data?.tags.map((tag) => (
                             <Select.Option key={tag._id} value={tag._id}>
                               {tag.name}
                             </Select.Option>
@@ -312,7 +379,7 @@ const EditPlace = () => {
                       </Form.Item>
                       <Form.Item name="benefits" label="Tiện ích địa điểm">
                         <Select mode="multiple" placeholder="Chọn tiện ích">
-                          {benefits.map((benefit) => (
+                          {data?.benefits.map((benefit) => (
                             <Select.Option
                               key={benefit._id}
                               value={benefit._id}
@@ -322,6 +389,59 @@ const EditPlace = () => {
                           ))}
                         </Select>
                       </Form.Item>
+                      <Form.Item label="Thời gian mở cửa">
+                        <Box alignItems="center" gap="10px">
+                          <Form.Item
+                            style={{ marginBottom: 0, flex: 1 }}
+                            name={["time", "from"]}
+                          >
+                            <Select placeholder="Chọn thời gian mở cửa">
+                              {timeList.map((time) => (
+                                <Select.Option key={time.key} value={time.key}>
+                                  {time.label}
+                                </Select.Option>
+                              ))}
+                            </Select>
+                          </Form.Item>
+                          <span className="center">đến</span>
+                          <Form.Item
+                            style={{ marginBottom: 0, flex: 1 }}
+                            name={["time", "to"]}
+                          >
+                            <Select placeholder="Chọn thời gian đống cửa">
+                              {timeList.map((time) => (
+                                <Select.Option key={time.key} value={time.key}>
+                                  {time.label}
+                                </Select.Option>
+                              ))}
+                            </Select>
+                          </Form.Item>
+                        </Box>
+                      </Form.Item>
+                      <Form.Item label="Khoảng giá">
+                        <Box alignItems="center" gap="10px">
+                          <Form.Item
+                            name={["price", "from"]}
+                            style={{ marginBottom: 0, flex: 1 }}
+                          >
+                            <InputNumber
+                              style={{ width: "100%" }}
+                              placeholder="Nhập giá thấp nhất"
+                            />
+                          </Form.Item>
+                          <span className="center">đến</span>
+                          <Form.Item
+                            name={["price", "to"]}
+                            style={{ marginBottom: 0, flex: 1 }}
+                          >
+                            <InputNumber
+                              style={{ width: "100%" }}
+                              placeholder="Nhập giá cao nhất"
+                            />
+                          </Form.Item>
+                        </Box>
+                      </Form.Item>
+                      {renderContactField()}
                       <div style={{ marginBottom: 16 }}>
                         <div style={{ marginBottom: 4 }}>
                           <Space size={0}>
@@ -431,7 +551,7 @@ const EditPlace = () => {
                           accept="image/*"
                           hidden
                           multiple
-                          onChange={handleChangeImages}
+                          onChange={(e) => handleChangeImages(e, "images")}
                         />
 
                         <div className="show_images">
@@ -454,6 +574,77 @@ const EditPlace = () => {
                                 <Button
                                   icon={<CloseOutlined />}
                                   onClick={() => deleteImages(index)}
+                                  type="primary"
+                                  danger
+                                />
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                      <div>
+                        <div style={{ marginBottom: 4 }}>
+                          <Space size={0}>
+                            <div
+                              style={{
+                                display: "inline-block",
+                                marginRight: "4px",
+                                color: "#ff4d4f",
+                                fontSize: "14px",
+                                fontFamily: "SimSun, sans-serif",
+                                lineHeight: 1,
+                              }}
+                            >
+                              *
+                            </div>
+                            <div
+                              style={{
+                                fontSize: "14px",
+                              }}
+                            >
+                              Ảnh menu địa điểm (nếu có):
+                            </div>
+                          </Space>
+                        </div>
+                        <Button
+                          onClick={() => {
+                            if (menuRef.current) {
+                              menuRef.current.click();
+                            }
+                          }}
+                          icon={<CameraOutlined />}
+                        >
+                          Thêm ảnh menu
+                        </Button>
+                        <input
+                          ref={menuRef}
+                          type="file"
+                          accept="image/*"
+                          hidden
+                          multiple
+                          onChange={(e) => handleChangeImages(e, "menu")}
+                        />
+
+                        <div className="show_images">
+                          {menu.map((img: any, index: number) => (
+                            <div key={index} className="media-show">
+                              {img.url ? (
+                                <>
+                                  {img.url.match(/video/i)
+                                    ? videoShow(img.url)
+                                    : imageShow(img.url)}
+                                </>
+                              ) : (
+                                <>
+                                  {img.type.match(/video/i)
+                                    ? videoShow(URL.createObjectURL(img))
+                                    : imageShow(URL.createObjectURL(img))}
+                                </>
+                              )}
+                              <div className="btn">
+                                <Button
+                                  icon={<CloseOutlined />}
+                                  onClick={() => deleteMenu(index)}
                                   type="primary"
                                   danger
                                 />

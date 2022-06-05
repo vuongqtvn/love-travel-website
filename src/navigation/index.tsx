@@ -9,8 +9,11 @@ import AdminPlace from "../pages/Admin/Place";
 import AdminAccount from "../pages/Admin/Account";
 import LoginAdmin from "../pages/Admin/Login";
 import AdminHome from "../pages/Admin/Home";
+import AdminAccept from "../pages/Admin/Accept";
 import AddPlaceAdmin from "../pages/Admin/Place/features/AddPlace";
 import EditPlace from "../pages/Admin/Place/features/EditPlace";
+import AdminReview from "../pages/Admin/Review";
+import AdminGeneral from "../pages/Admin/General";
 
 const Home = lazy(() => import("../pages/Home"));
 const Search = lazy(() => import("../pages/Search"));
@@ -40,8 +43,10 @@ const adminRoute = [
   { path: path.admin.place, component: AdminPlace, layout: AdminLayout },
   { path: path.admin.addPlace, component: AddPlaceAdmin, layout: AdminLayout },
   { path: path.admin.editPlace, component: EditPlace, layout: AdminLayout },
-  { path: path.admin.post, component: AdminHome, layout: AdminLayout },
+  { path: path.admin.post, component: AdminReview, layout: AdminLayout },
   { path: path.admin.promo, component: AdminHome, layout: AdminLayout },
+  { path: path.admin.accept, component: AdminAccept, layout: AdminLayout },
+  { path: path.admin.general, component: AdminGeneral, layout: AdminLayout },
   { path: path.login, component: LoginAdmin, layout: AuthLayout },
   { path: path.notFound, component: NotFound, layout: AdminLayout },
 ];

@@ -14,7 +14,7 @@ export const AddPlace = styled.div`
   }
   .show_images {
     margin-top: 10px;
-    max-height: 600px;
+    margin-bottom: 10px;
     width: 100%;
     overflow-y: auto;
     overflow-x: hidden;

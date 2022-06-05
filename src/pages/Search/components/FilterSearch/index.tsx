@@ -1,4 +1,4 @@
-import { Checkbox, Collapse, Radio, Skeleton, Slider } from "antd";
+import { Checkbox, Collapse, Radio, Skeleton } from "antd";
 import { CheckboxValueType } from "antd/lib/checkbox/Group";
 import { useEffect, useMemo, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
@@ -30,7 +30,6 @@ const FilterSearch = ({ search, setSearch }: Props) => {
 
   const dispatch = useAppDispatch();
   const [radio] = useState<any>(1);
-  const [price, setPrice] = useState<[number, number]>([0, 300000]);
 
   const checkboxSelect = useMemo(() => {
     const result = {
@@ -161,20 +160,13 @@ const FilterSearch = ({ search, setSearch }: Props) => {
     }
   };
 
-  const onChangePrice = (value: any) => {
-    setPrice(value);
-  };
-
-  const onAfterChange = (value: any) => {
-    console.log("onAfterChange: ", value);
-  };
   return (
     <Styled.SearchFilter>
       <div className="filter-title">
         <h2>Lọc kết quả</h2>
       </div>
       <Styled.FilterCollapse
-        defaultActiveKey={["1", "2", "3", "4", "5", "6", "7"]}
+        defaultActiveKey={["1", "2", "3", "4", "5", "6"]}
         expandIconPosition="right"
         ghost
       >
@@ -262,26 +254,7 @@ const FilterSearch = ({ search, setSearch }: Props) => {
             )}
           </div>
         </Collapse.Panel>
-        <Collapse.Panel header="Khoảng giá" key="6">
-          <div className="search__filter-item">
-            <span className="price-number">
-              {price[0].toLocaleString()}~{price[1].toLocaleString()} VNĐ
-            </span>
-
-            <Slider
-              min={0}
-              max={300000}
-              range
-              step={10000}
-              defaultValue={[0, 300000]}
-              value={price}
-              onChange={onChangePrice}
-              onAfterChange={onAfterChange}
-              tooltipVisible={false}
-            />
-          </div>
-        </Collapse.Panel>
-        <Collapse.Panel header="Tiện ích" key="7">
+        <Collapse.Panel header="Kiểu địa điểm" key="6">
           <div className="search__filter-list">
             {api.getTags.status === "pending" ? (
               <Skeleton active />

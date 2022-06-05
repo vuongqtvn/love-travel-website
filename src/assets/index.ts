@@ -10,6 +10,7 @@ import review from "./images/reivew.svg";
 import iconMarker from "./images/mapbox-marker-icon-20px-red.png";
 import login from "./images/login.svg";
 import promo from "./images/discount.svg";
+import ute from "./images/ute.png";
 
 export const images = {
   logo,
@@ -24,4 +25,5 @@ export const images = {
   review,
   login,
   promo,
+  ute,
 };

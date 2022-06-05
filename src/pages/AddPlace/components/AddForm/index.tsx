@@ -17,6 +17,7 @@ import { addPlace, getAddPlaces, getLocation } from "../../addPlaceSlice";
 import { imageUpload } from "../../../../utils/imageUpload";
 import { useNavigate } from "react-router-dom";
 import { LoadingOverlay } from "../../../../components";
+import { timeList } from "../../../../constants/time";
 
 const InfoBasic = [
   {
@@ -246,7 +247,7 @@ const AddForm = () => {
           onFinish={onFinish}
           initialValues={{
             time: {
-              from: "12:00",
+              from: "08:00",
               to: "23:00",
             },
             price: {
@@ -271,7 +272,13 @@ const AddForm = () => {
                   name={["time", "from"]}
                   style={{ display: "inline-block", width: "calc(50% - 25px)" }}
                 >
-                  <Input placeholder="Nhập thời gian mở cửa" />
+                  <Select placeholder="Chọn thời gian mở cửa">
+                    {timeList.map((time) => (
+                      <Select.Option key={time.key} value={time.key}>
+                        {time.label}
+                      </Select.Option>
+                    ))}
+                  </Select>
                 </Form.Item>
                 <span className="center">đến</span>
                 <Form.Item
@@ -281,7 +288,13 @@ const AddForm = () => {
                     width: "calc(50% - 25px)",
                   }}
                 >
-                  <Input placeholder="Nhập thời gian đống cửa" />
+                  <Select placeholder="Chọn thời gian đống cửa">
+                    {timeList.map((time) => (
+                      <Select.Option key={time.key} value={time.key}>
+                        {time.label}
+                      </Select.Option>
+                    ))}
+                  </Select>
                 </Form.Item>
               </Form.Item>
               <Form.Item label="Khoảng giá" style={{ marginBottom: 0 }}>

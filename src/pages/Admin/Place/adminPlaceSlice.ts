@@ -1,12 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import {
-  benefitApi,
-  categoryApi,
-  placeApi,
-  purposeApi,
-  regionApi,
-  tagApi,
-} from "../../../api";
+import { placeApi } from "../../../api";
+import globalApi from "../../../api/globalApi";
 import locationApi from "../../../api/locationApi";
 import {
   BenefitType,
@@ -18,11 +12,13 @@ import {
 } from "../../../types";
 
 export interface AdminPlaceState {
-  regions: RegionType[];
-  benefits: BenefitType[];
-  tags: TagType[];
-  purposes: PurposeType[];
-  categories: CategoryType[];
+  data: {
+    tags: TagType[];
+    benefits: BenefitType[];
+    regions: RegionType[];
+    purposes: PurposeType[];
+    categories: CategoryType[];
+  } | null;
   place: PlaceType | null;
   places: PlaceType[];
   placesOptions: {
@@ -40,11 +36,7 @@ export interface AdminPlaceState {
 }
 
 const initialState: AdminPlaceState = {
-  regions: [],
-  benefits: [],
-  tags: [],
-  purposes: [],
-  categories: [],
+  data: null,
   place: null,
   places: [],
   placesOptions: {
@@ -61,69 +53,11 @@ const initialState: AdminPlaceState = {
   },
 };
 
-export const getRegions = createAsyncThunk(
-  "admin-place/getRegions",
+export const getAddPlaces = createAsyncThunk(
+  "admin-place/getAddPlaces",
   async (_, thunkApi) => {
     try {
-      const data = await regionApi.getRegions({
-        limit: 50,
-      });
-      return data;
-    } catch (error) {
-      return thunkApi.rejectWithValue(error);
-    }
-  }
-);
-
-export const getPurposes = createAsyncThunk(
-  "admin-place/getPurposes",
-  async (_, thunkApi) => {
-    try {
-      const data = await purposeApi.getPurposes({
-        limit: 50,
-      });
-      return data;
-    } catch (error) {
-      return thunkApi.rejectWithValue(error);
-    }
-  }
-);
-
-export const getCategories = createAsyncThunk(
-  "admin-place/getCategories",
-  async (_, thunkApi) => {
-    try {
-      const data = await categoryApi.getCategories({
-        limit: 50,
-      });
-      return data;
-    } catch (error) {
-      return thunkApi.rejectWithValue(error);
-    }
-  }
-);
-
-export const getTags = createAsyncThunk(
-  "admin-place/getTags",
-  async (_, thunkApi) => {
-    try {
-      const data = await tagApi.getTags({
-        limit: 50,
-      });
-      return data;
-    } catch (error) {
-      return thunkApi.rejectWithValue(error);
-    }
-  }
-);
-
-export const getBenefits = createAsyncThunk(
-  "admin-place/getBenefits",
-  async (_, thunkApi) => {
-    try {
-      const data = await benefitApi.getBenefits({
-        limit: 50,
-      });
+      const data = await globalApi.getAddPlaces();
       return data;
     } catch (error) {
       return thunkApi.rejectWithValue(error);
@@ -159,7 +93,7 @@ export const addPlace = createAsyncThunk(
   "admin-place/addPlace",
   async (data: any, thunkApi) => {
     try {
-      const res = await placeApi.addPlace(data);
+      const res = await placeApi.addPlaceAdmin(data);
       return res;
     } catch (error) {
       return thunkApi.rejectWithValue(error);
@@ -213,54 +147,14 @@ const adminPlaceSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(getRegions.pending, (state) => {
+      .addCase(getAddPlaces.pending, (state) => {
         state.loading.get = true;
       })
-      .addCase(getRegions.fulfilled, (state, action: any) => {
+      .addCase(getAddPlaces.fulfilled, (state, action: any) => {
         state.loading.get = false;
-        state.regions = action.payload.regions;
+        state.data = action.payload.data;
       })
-      .addCase(getRegions.rejected, (state, action) => {
-        state.loading.get = false;
-      })
-      .addCase(getCategories.pending, (state) => {
-        state.loading.get = true;
-      })
-      .addCase(getCategories.fulfilled, (state, action: any) => {
-        state.loading.get = false;
-        state.categories = action.payload.categories;
-      })
-      .addCase(getCategories.rejected, (state, action) => {
-        state.loading.get = false;
-      })
-      .addCase(getPurposes.pending, (state) => {
-        state.loading.get = true;
-      })
-      .addCase(getPurposes.fulfilled, (state, action: any) => {
-        state.loading.get = false;
-        state.purposes = action.payload.purposes;
-      })
-      .addCase(getPurposes.rejected, (state, action) => {
-        state.loading.get = false;
-      })
-      .addCase(getBenefits.pending, (state) => {
-        state.loading.get = true;
-      })
-      .addCase(getBenefits.fulfilled, (state, action: any) => {
-        state.loading.get = false;
-        state.benefits = action.payload.benefits;
-      })
-      .addCase(getBenefits.rejected, (state, action) => {
-        state.loading.get = false;
-      })
-      .addCase(getTags.pending, (state) => {
-        state.loading.get = true;
-      })
-      .addCase(getTags.fulfilled, (state, action: any) => {
-        state.loading.get = false;
-        state.tags = action.payload.tags;
-      })
-      .addCase(getTags.rejected, (state, action) => {
+      .addCase(getAddPlaces.rejected, (state, action) => {
         state.loading.get = false;
       })
       .addCase(getPlace.pending, (state) => {

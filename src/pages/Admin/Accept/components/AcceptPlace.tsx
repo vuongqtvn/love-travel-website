@@ -1,54 +1,44 @@
-import { useState, useEffect } from "react";
-import { Button, Space, Popconfirm, Input, message } from "antd";
+import { useEffect } from "react";
+import { Button, Space, Popconfirm, message, Table } from "antd";
 import * as Icon from "@ant-design/icons";
 import moment from "moment";
 
-import * as Style from "./styles";
-import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
-import { useNavigate } from "react-router-dom";
-import path from "../../../constants/path";
-import { deletePlace, getPlaces } from "./adminPlaceSlice";
+import * as Style from "../styles";
 
-function AdminPlace() {
-  const { loading, places, placesOptions } = useAppSelector(
-    (state) => state.adminPlace
+import { useNavigate } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
+import { acceptPlace, getPlacesAccept } from "../acceptAdminSlice";
+import { deletePlace } from "../../Place/adminPlaceSlice";
+import path from "../../../../constants/path";
+
+function AcceptPlace() {
+  const { loading, places, placesTotal } = useAppSelector(
+    (state) => state.adminAccept
   );
-  const [searchKey, setSearchKey] = useState("");
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(
-      getPlaces({
+      getPlacesAccept({
         page: 1,
-        limit: placesOptions.limit,
+        limit: 10,
       })
     );
-  }, [dispatch, placesOptions.limit]);
-
-  function handleSearchBlog(value: string) {
-    setSearchKey(value);
-    dispatch(
-      getPlaces({
-        q: value,
-        page: 1,
-        limit: placesOptions.limit,
-      })
-    );
-  }
+  }, [dispatch]);
 
   const onChangePage = (page: number) => {
     dispatch(
-      getPlaces({
-        q: searchKey,
+      getPlacesAccept({
         page: page,
-        limit: placesOptions.limit,
+        limit: 10,
       })
     );
   };
 
   const tableColumn = [
+    Table.EXPAND_COLUMN,
     {
       dataIndex: "thumbnail",
       key: "thumbnail",
@@ -60,6 +50,7 @@ function AdminPlace() {
       title: "Tên địa điểm",
       dataIndex: "name",
       key: "name",
+      ellipsis: true,
       sorter: (a: any, b: any) => a.name.length - b.name.length,
     },
 
@@ -70,18 +61,18 @@ function AdminPlace() {
       ellipsis: true,
     },
     {
+      title: "Người tạo",
+      dataIndex: "user",
+      key: "user",
+      ellipsis: true,
+      render: (value: any) => value?.name && value.name,
+    },
+    {
       title: "Ngày tạo",
       dataIndex: "createdAt",
       key: "createdAt",
       render: (value: any) => value && moment(value).format("DD/MM/YYYY HH:mm"),
     },
-    {
-      title: "Ngày sửa",
-      dataIndex: "updatedAt",
-      key: "updatedAt",
-      render: (value: any) => value && moment(value).format("DD/MM/YYYY HH:mm"),
-    },
-
     {
       title: "Thao tác",
       dataIndex: "action",
@@ -89,16 +80,28 @@ function AdminPlace() {
       render: (_: any, record: any) => {
         return (
           <Space>
-            <Button
-              icon={<Icon.FormOutlined />}
-              type="primary"
-              ghost
-              onClick={() => {
-                navigate(`/admin/edit-place/${record._id}`);
+            <Popconfirm
+              title="Bạn có muốn phê duyệt địa điểm này?"
+              onConfirm={() => {
+                dispatch(acceptPlace(record._id))
+                  .unwrap()
+                  .then(() => {
+                    message.success(`đã phê duyệt địa điểm ${record.name}`);
+                    navigate(path.admin.place);
+                  })
+                  .catch(() => {
+                    message.error(`Phê duyệt địa điểm thất bại!`);
+                  });
               }}
+              onCancel={() => null}
+              okText="Có"
+              cancelText="Không"
             >
-              Sửa
-            </Button>
+              <Button icon={<Icon.FormOutlined />} type="primary" ghost>
+                Phê duyệt
+              </Button>
+            </Popconfirm>
+
             <Popconfirm
               title="Bạn có muốn xoá địa điểm này?"
               onConfirm={() => {
@@ -125,7 +128,7 @@ function AdminPlace() {
     },
   ];
 
-  const tableData = places.map((placeItem, placeIndex) => {
+  const tableData = places?.map((placeItem: any, placeIndex: any) => {
     return {
       key: placeIndex,
       ...placeItem,
@@ -134,43 +137,31 @@ function AdminPlace() {
 
   return (
     <Style.AdminPlaceWrap>
-      <Style.CustomSpaceBox>
-        <Style.Title>Quản lý địa điểm</Style.Title>
-        <Style.CustomSpace>
-          <Style.Search>
-            <Input
-              placeholder="Tìm kiếm..."
-              suffix={<Icon.SearchOutlined />}
-              value={searchKey}
-              onChange={(e) => handleSearchBlog(e.target.value)}
-            />
-          </Style.Search>
-          <Style.CustomButton
-            type="primary"
-            onClick={() => navigate(path.admin.addPlace)}
-          >
-            Thêm mới
-          </Style.CustomButton>
-        </Style.CustomSpace>
-      </Style.CustomSpaceBox>
       <div>
         <Style.CustomTable
           size="small"
-          scroll={{ x: 1000 }}
+          scroll={{ x: 1200 }}
           columns={tableColumn}
           dataSource={tableData}
           pagination={{
             position: ["bottomCenter"],
-            current: placesOptions.page,
+            // current: accountOptions.page,
             onChange: onChangePage,
-            pageSize: placesOptions.limit,
-            total: placesOptions.total,
+            pageSize: 10,
+            total: Math.ceil(placesTotal / 10) || 1,
           }}
-          loading={loading.getPlaces}
+          loading={loading.getPlacesAccept}
+          expandable={{
+            expandedRowRender: (record: any) => (
+              <div>
+                <p>Địa chỉ: {record.address}</p>
+              </div>
+            ),
+          }}
         />
       </div>
     </Style.AdminPlaceWrap>
   );
 }
 
-export default AdminPlace;
+export default AcceptPlace;

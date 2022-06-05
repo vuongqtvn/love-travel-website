@@ -1,6 +1,6 @@
 import { axiosClient } from ".";
 
-const placeApi = {
+const accountApi = {
   getAccounts(params?: any) {
     return axiosClient.get("/account", {
       params,
@@ -9,6 +9,9 @@ const placeApi = {
   getAccount(id: string) {
     return axiosClient.get(`/account/${id}`);
   },
+  updateAccount(id: string, data: any) {
+    return axiosClient.put(`/account/${id}`, data);
+  },
 };
 
-export default placeApi;
+export default accountApi;

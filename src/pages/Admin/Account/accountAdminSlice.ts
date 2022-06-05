@@ -11,6 +11,7 @@ export interface AdminPlaceState {
   };
   loading: {
     getAccount: boolean;
+    updateAccount: boolean;
   };
 }
 
@@ -24,6 +25,7 @@ const initialState: AdminPlaceState = {
   },
   loading: {
     getAccount: false,
+    updateAccount: false,
   },
 };
 
@@ -32,6 +34,18 @@ export const getAccounts = createAsyncThunk(
   async (params: any, { rejectWithValue }) => {
     try {
       const res = await accountApi.getAccounts(params);
+      return res;
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
+
+export const updateAccount = createAsyncThunk(
+  "admin-account/updateAccount",
+  async ({ id, data }: any, { rejectWithValue }) => {
+    try {
+      const res = await accountApi.updateAccount(id, data);
       return res;
     } catch (error) {
       return rejectWithValue(error);
@@ -55,6 +69,21 @@ const adminAccountSlice = createSlice({
       })
       .addCase(getAccounts.rejected, (state) => {
         state.loading.getAccount = false;
+      })
+      .addCase(updateAccount.pending, (state) => {
+        state.loading.updateAccount = true;
+      })
+      .addCase(updateAccount.fulfilled, (state, action: any) => {
+        state.loading.updateAccount = false;
+        const account = [...state.account];
+        const index = account.findIndex(
+          (item) => item._id === action.payload.user._id
+        );
+        account.splice(index, 1, action.payload.user);
+        state.account = account;
+      })
+      .addCase(updateAccount.rejected, (state) => {
+        state.loading.updateAccount = false;
       });
   },
 });

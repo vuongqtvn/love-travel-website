@@ -15,6 +15,9 @@ const placeApi = {
   addPlace(data: any) {
     return axiosClient.post(`/places`, data);
   },
+  addPlaceAdmin(data: any) {
+    return axiosClient.post("/places-create", data);
+  },
   editPlace(id: string, data: any) {
     return axiosClient.put(`/places/${id}`, data);
   },

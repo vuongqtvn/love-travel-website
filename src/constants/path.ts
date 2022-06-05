@@ -19,6 +19,8 @@ const path = {
   prefixCategory: "/search?categories",
   prefixPurpose: "/search?purposes",
   admin: {
+    general: "/admin/general",
+    accept: "/admin/accept",
     home: "/admin",
     place: "/admin/place",
     addPlace: "/admin/add-place",

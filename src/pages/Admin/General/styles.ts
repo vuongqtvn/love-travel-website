@@ -1,17 +1,7 @@
-import { Space } from "antd";
 import styled from "styled-components";
-import { colors } from "../../../../../theme/colors";
+import { colors } from "../../../theme/colors";
 
-export const AddPlace = styled.div`
-  height: 100%;
-  .ant-spin-nested-loading {
-    height: 100%;
-    .ant-spin-container {
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-    }
-  }
+export const Wrapper = styled.div`
   .show_images {
     margin-top: 10px;
     margin-bottom: 10px;
@@ -19,7 +9,7 @@ export const AddPlace = styled.div`
     overflow-y: auto;
     overflow-x: hidden;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
     place-items: center;
     padding: 0 10px 10px 0;
     grid-gap: 10px;
@@ -60,19 +50,4 @@ export const AddPlace = styled.div`
       z-index: 5;
     }
   }
-`;
-
-export const Title = styled.h3`
-  font-size: 20px;
-  text-transform: uppercase;
-  font-weight: 600;
-  color: #096dd9;
-  margin: 0;
-`;
-
-export const CustomSpaceBox = styled(Space)`
-  display: flex;
-  flex-shrink: 0;
-  justify-content: space-between;
-  margin-bottom: 15px;
 `;

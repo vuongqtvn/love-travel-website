@@ -1,8 +1,9 @@
 import { Breadcrumb } from "antd";
 import * as Icons from "@ant-design/icons";
-import path from "../../../../constants/path";
+
 import { matchRoutes, useLocation, useNavigate } from "react-router-dom";
 import React from "react";
+import path from "../../constants/path";
 
 const BREADCRUMB_MENU = [
   {
@@ -22,12 +23,22 @@ const BREADCRUMB_MENU = [
     icon: <Icons.UserOutlined />,
   },
   {
-    title: "Quản Lý bài viết",
+    title: "Quản Lý phê duyệt",
+    path: path.admin.accept,
+    icon: <Icons.CheckCircleOutlined />,
+  },
+  {
+    title: "Quản Lý bài viết review",
     path: path.admin.post,
     icon: <Icons.EditOutlined />,
   },
   {
-    title: "Quản Lý mã giảm giá",
+    title: "Quản lý chung",
+    path: path.admin.general,
+    icon: <Icons.ContainerOutlined />,
+  },
+  {
+    title: "Quản Lý bài viết khuyến mãi",
     path: path.admin.promo,
     icon: <Icons.GiftOutlined />,
   },
@@ -67,7 +78,7 @@ function BreadcrumbLayout() {
     });
   }
   return (
-    <Breadcrumb style={{ margin: "16px 0" }}>
+    <Breadcrumb>
       <Breadcrumb.Item
         className="cursor-pointer"
         onClick={() => navigate("/admin")}
