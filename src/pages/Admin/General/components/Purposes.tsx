@@ -166,7 +166,7 @@ function ModifyAccountModal({ data, isShowModal, setIsShowModal }: Props) {
         onFinish={(values) => handleSubmitForm(values)}
       >
         <Form.Item
-          label="Tên loại hình: "
+          label="Tên mục đích: "
           name="name"
           rules={[
             {
