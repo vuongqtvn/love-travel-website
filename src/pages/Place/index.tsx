@@ -1,4 +1,14 @@
-import { Anchor, Button, Col, Row, Skeleton, Space, Typography } from "antd";
+import {
+  Anchor,
+  Button,
+  Col,
+  Row,
+  Skeleton,
+  Space,
+  Spin,
+  Tag,
+  Typography,
+} from "antd";
 import {
   ClockCircleOutlined,
   DollarCircleOutlined,
@@ -6,6 +16,7 @@ import {
   InstagramOutlined,
   PhoneOutlined,
   TagsOutlined,
+  CheckCircleOutlined,
 } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
@@ -18,6 +29,8 @@ import { getPlace, getPlaceRelated } from "./placeSlice";
 import PlaceReview from "./components/PlaceReview";
 import * as Styled from "./styles";
 import { images } from "../../assets";
+import ReviewItem from "./components/ReviewItem";
+import { IReview } from "../../types";
 
 type Props = {};
 
@@ -150,7 +163,7 @@ const PlaceDetail = (props: Props) => {
                       <Skeleton.Input active size="small" block />
                     ) : (
                       <React.Fragment>
-                        {place?.categories.map((category) => (
+                        {place?.categories.map((category: any) => (
                           <Link
                             key={category?._id}
                             to={`/search?categories=${category?._id}`}
@@ -158,7 +171,7 @@ const PlaceDetail = (props: Props) => {
                             {category?.name}
                           </Link>
                         ))}
-                        {place?.purposes.map((purpose) => (
+                        {place?.purposes.map((purpose: any) => (
                           <Link
                             key={purpose?._id}
                             to={`/search?purposes=${purpose?._id}`}
@@ -202,7 +215,44 @@ const PlaceDetail = (props: Props) => {
             </Styled.PlaceDetailAddress>
           </Styled.PlaceDetail>
           <Styled.PlaceBenefit id="benefit">
-            <h2>Lợi ích</h2>
+            {api.getPlace.status === "pending" ? (
+              <Spin />
+            ) : (
+              <Box flexWrap="wrap" gap="10px" justifyContent="center">
+                {place?.tags &&
+                  place.tags.map((tag: any) => (
+                    <Tag
+                      onClick={() => {
+                        navigate(`/search?tags=${tag?._id}`);
+                      }}
+                      key={tag._id}
+                      icon={<CheckCircleOutlined />}
+                      style={{
+                        padding: "6px 12px",
+                        margin: 0,
+                        fontSize: 15,
+                      }}
+                      color="geekblue"
+                    >
+                      {tag.name}
+                    </Tag>
+                  ))}
+                {place?.benefits &&
+                  place.benefits.map((benefit: any) => (
+                    <Tag
+                      onClick={() => {
+                        navigate(`/search?benefits=${benefit?._id}`);
+                      }}
+                      key={benefit._id}
+                      icon={<CheckCircleOutlined />}
+                      style={{ padding: "6px 12px", margin: 0, fontSize: 15 }}
+                      color="geekblue"
+                    >
+                      {benefit.name}
+                    </Tag>
+                  ))}
+              </Box>
+            )}
           </Styled.PlaceBenefit>
           <Styled.PlaceReview id="review">
             <div className="review-container">
@@ -233,18 +283,22 @@ const PlaceDetail = (props: Props) => {
                 </div>
               </div>
               <div className="review-list">
-                {place?.posts.length === 0 ? (
+                {api.getPlace.status === "pending" ? (
                   <div className="review-list-empty">
-                    <p>{`
-                     Chưa có đánh giá nào cho ${
-                       api.getPlace.status === "pending"
-                         ? "đang tải..."
-                         : place?.name
-                     }. Hãy là người đầu tiên làm chuyện ấy!
-                   `}</p>
+                    <p>đang tải...</p>
                   </div>
                 ) : (
-                  <div></div>
+                  <React.Fragment>
+                    {place?.posts.length === 0 ? (
+                      <div className="review-list-empty">
+                        <p>{`Chưa có đánh giá nào cho ${place?.name}. Hãy là người đầu tiên làm chuyện ấy!`}</p>
+                      </div>
+                    ) : (
+                      place?.posts.map((review: IReview) => (
+                        <ReviewItem key={review._id} review={review} />
+                      ))
+                    )}
+                  </React.Fragment>
                 )}
               </div>
             </div>

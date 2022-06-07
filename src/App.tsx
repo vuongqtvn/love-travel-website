@@ -9,6 +9,7 @@ import "boxicons/css/boxicons.min.css";
 import "react-loading-skeleton/dist/skeleton.css";
 import "mapbox-gl/dist/mapbox-gl.css";
 import "react-image-lightbox/style.css";
+import "moment/locale/vi";
 
 const App = () => {
   return (

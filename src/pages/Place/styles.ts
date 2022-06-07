@@ -202,12 +202,11 @@ export const PlaceBenefit = styled.div`
   cursor: pointer;
   position: relative;
   display: block;
-  padding: 8px 16px;
+  padding: 16px;
   margin-bottom: 20px;
   background-color: ${colors.white};
   border-radius: 10px;
   box-shadow: 0 2px 8px rgb(0 0 0 / 15%);
-  min-height: 200px;
   @media (max-width: 991px) {
     margin-bottom: 6px;
     box-shadow: 0 1px 4px rgb(0 0 0 / 15%);
@@ -351,7 +350,7 @@ export const PlaceReview = styled.div`
     margin-left: 20px;
     margin-bottom: 20px;
     position: sticky;
-    top: 73px;
+    top: 20px;
     .review-ads-box {
       padding: 16px;
       background-color: #fff;

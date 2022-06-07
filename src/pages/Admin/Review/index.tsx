@@ -5,7 +5,6 @@ import moment from "moment";
 
 import * as Style from "./styles";
 
-import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import { getReviews, setPosts } from "./adminReviewSlice";
 import reviewApi from "../../../api/reviewApi";
@@ -16,7 +15,6 @@ function AdminReview() {
   );
 
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(
@@ -79,7 +77,7 @@ function AdminReview() {
       render: (_: any, record: any) => {
         return (
           <Space>
-            <Button
+            {/* <Button
               icon={<Icon.FormOutlined />}
               type="primary"
               ghost
@@ -88,7 +86,7 @@ function AdminReview() {
               }}
             >
               Sửa
-            </Button>
+            </Button> */}
 
             <Popconfirm
               title="Bạn có muốn xoá địa điểm này?"

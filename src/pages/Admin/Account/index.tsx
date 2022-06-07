@@ -115,7 +115,7 @@ function AccountManagement() {
         return (
           <Space>
             <Button
-              disabled={user?._id === record._id}
+              disabled={user?._id === record._id || record.role === "admin"}
               icon={<Icon.FormOutlined />}
               type="primary"
               ghost

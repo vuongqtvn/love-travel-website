@@ -2,7 +2,7 @@ export type SlideItemType = {
   image: string;
   name: string;
   slug: string;
-  places?: [] | PlaceType[] | any[] | undefined;
+  places?: PlaceType[] | any;
   [x: string]: any;
 };
 
@@ -12,7 +12,7 @@ export type RegionType = {
   slug: string;
   description: string;
   image: string;
-  places: [] | PlaceType[] | any[];
+  places: PlaceType[] | any;
   [x: string]: any;
 };
 
@@ -22,7 +22,7 @@ export type CategoryType = {
   slug: string;
   description?: string;
   image: string;
-  places: [] | PlaceType[] | any[];
+  places: PlaceType[] | any;
   [x: string]: any;
 };
 
@@ -32,7 +32,7 @@ export type PurposeType = {
   slug: string;
   description?: string;
   image: string;
-  places: [] | PlaceType[] | any[];
+  places: PlaceType[] | any;
   [x: string]: any;
 };
 
@@ -41,7 +41,7 @@ export type TagType = {
   name: string;
   slug: string;
   description?: string;
-  places: [] | PlaceType[] | any[];
+  places: PlaceType[] | any;
   [x: string]: any;
 };
 
@@ -51,7 +51,7 @@ export type BenefitType = {
   slug: string;
   icon?: string;
   description?: string;
-  places: [] | PlaceType[] | any[];
+  places: PlaceType[] | any;
   [x: string]: any;
 };
 
@@ -67,10 +67,10 @@ export type PlaceType = {
     lat: number;
     lng: number;
   };
-  categories: [] | CategoryType[] | any[];
-  benefits: [] | BenefitType[] | any[];
-  tags: [] | TagType[] | any[];
-  purposes: [] | PurposeType[] | any[];
+  categories: CategoryType[] | any;
+  benefits: BenefitType[] | any;
+  tags: TagType[] | any;
+  purposes: PurposeType[] | any;
   region: any;
   [x: string]: any;
 };
@@ -81,3 +81,23 @@ export type SearchArrayType =
   | TagType[]
   | RegionType[]
   | PurposeType[];
+
+export interface IReview {
+  comments: any;
+  content: string;
+  createdAt: string;
+  images: any;
+  likes: any;
+  place: any;
+  rateAvg: number;
+  rateDrink: number;
+  ratePosition: number;
+  ratePrice: number;
+  rateService: number;
+  rateView: number;
+  status: boolean;
+  updatedAt: string;
+  user: any;
+  _id: string;
+  [x: string]: any;
+}

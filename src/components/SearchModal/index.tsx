@@ -19,6 +19,17 @@ const SearchModal = ({
   const [data, setData] = useState<PlaceType[] | []>([]);
 
   useEffect(() => {
+    placeApi
+      .getPlaces({
+        limit: 5,
+        page: 1,
+      })
+      .then((res: any) => setData(res.places))
+      .catch((error) => console.log(error))
+      .finally(() => setLoading(false));
+  }, []);
+
+  useEffect(() => {
     const timer = setTimeout(() => {
       if (search) {
         setLoading(true);

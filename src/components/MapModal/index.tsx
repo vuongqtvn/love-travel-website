@@ -16,7 +16,7 @@ import * as Styled from "./styles";
 
 type Props = {
   data?: PlaceType[];
-  place?: PlaceType | undefined;
+  place?: PlaceType | null;
   title?: string;
   onClose: any;
 };
@@ -150,7 +150,7 @@ const MapModal = ({
                             color: colors.primary,
                           }}
                           disabled
-                          defaultValue={place.rateAvg}
+                          value={place.rateAvg}
                         />
                         {place.posts.length > 0
                           ? `có ${place.posts.length} đánh giá`
@@ -213,7 +213,7 @@ const MapModal = ({
                             color: colors.primary,
                           }}
                           disabled
-                          defaultValue={item.rateAvg}
+                          value={item.rateAvg}
                         />
                         {item.posts.length > 0
                           ? `có ${item.posts.length} đánh giá`
@@ -280,7 +280,7 @@ const MapModal = ({
                               color: colors.primary,
                             }}
                             disabled
-                            defaultValue={(popupInfo.rateAvg * 2) / 2}
+                            value={(popupInfo.rateAvg * 2) / 2}
                           />
                           <span className="rate-total">{`(${popupInfo.posts.length})`}</span>
                         </div>

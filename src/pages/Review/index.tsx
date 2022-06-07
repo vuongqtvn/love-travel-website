@@ -48,7 +48,11 @@ const Review = (props: Props) => {
                       <div className="address">{placeSelected.address}</div>
                       <div className="rate">
                         <i className="fas fa-star"></i>
-                        <span> Chưa có đánh giá</span>
+                        <span>
+                          {placeSelected.posts.length > 0
+                            ? ` có ${placeSelected.posts.length} đánh giá`
+                            : `chưa có đánh giá`}
+                        </span>
                       </div>
                       <div
                         className="close"

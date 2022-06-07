@@ -7,7 +7,7 @@ import { PlaceType } from "../../../../types";
 import { useAppSelector } from "../../../../redux/hooks";
 
 type Props = {
-  place: PlaceType | undefined;
+  place: PlaceType | null;
 };
 
 const PlaceReview = ({ place }: Props) => {
@@ -90,7 +90,6 @@ const PlaceReview = ({ place }: Props) => {
           <div className="place-item">
             <span className="place-type">Đồ uống</span>
             <div className="place_progress">
-              {" "}
               {api.getPlace.status === "pending" ? (
                 <Progress
                   strokeColor={colors.primary}
@@ -116,7 +115,6 @@ const PlaceReview = ({ place }: Props) => {
           <div className="place-item">
             <span className="place-type">Phục vụ</span>
             <div className="place_progress">
-              {" "}
               {api.getPlace.status === "pending" ? (
                 <Progress
                   strokeColor={colors.primary}
@@ -143,7 +141,6 @@ const PlaceReview = ({ place }: Props) => {
           <div className="place-item">
             <span className="place-type">Giá cả</span>
             <div className="place_progress">
-              {" "}
               {api.getPlace.status === "pending" ? (
                 <Progress
                   strokeColor={colors.primary}

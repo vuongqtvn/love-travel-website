@@ -1,21 +1,28 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { placeApi } from "../../api";
-import { PlaceType, RequestState } from "../../types";
+import { IReview, PlaceType, RequestState } from "../../types";
 
 export interface PlaceState {
-  place: PlaceType | undefined;
-  placesRelated: PlaceType[] | [];
+  reviews: IReview[];
+  place: PlaceType | null;
+  placesRelated: PlaceType[];
   api: {
     getPlace: RequestState;
+    getReviews: RequestState;
     getPlaceRelated: RequestState;
   };
 }
 
 const initialState: PlaceState = {
-  place: undefined,
+  reviews: [],
+  place: null,
   placesRelated: [],
   api: {
     getPlace: {
+      status: "not_started",
+      error: null,
+    },
+    getReviews: {
       status: "not_started",
       error: null,
     },
@@ -31,6 +38,18 @@ export const getPlace = createAsyncThunk(
   async (id: string, thunkApi) => {
     try {
       const data = await placeApi.getPlace(id);
+      return data;
+    } catch (error) {
+      return thunkApi.rejectWithValue(error);
+    }
+  }
+);
+
+export const getReviews = createAsyncThunk(
+  "place/getReviews",
+  async (id: string, thunkApi) => {
+    try {
+      const data = await placeApi.getPlaceReview(id);
       return data;
     } catch (error) {
       return thunkApi.rejectWithValue(error);
@@ -93,6 +112,17 @@ const placeSlice = createSlice({
       .addCase(getPlace.rejected, (state, action) => {
         state.api.getPlace.status = "rejected";
         state.api.getPlace.error = action.payload;
+      })
+      .addCase(getReviews.pending, (state) => {
+        state.api.getReviews.status = "pending";
+      })
+      .addCase(getReviews.fulfilled, (state, action: any) => {
+        state.api.getReviews.status = "fulfilled";
+        state.reviews = action.payload.posts;
+      })
+      .addCase(getReviews.rejected, (state, action) => {
+        state.api.getReviews.status = "rejected";
+        state.api.getReviews.error = action.payload;
       })
       .addCase(getPlaceRelated.pending, (state) => {
         state.api.getPlaceRelated.status = "pending";

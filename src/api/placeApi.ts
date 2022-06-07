@@ -6,6 +6,9 @@ const placeApi = {
       params,
     });
   },
+  getPlaceReview(id: string) {
+    return axiosClient.get(`/place_post/${id}`);
+  },
   getPlace(id: string) {
     return axiosClient.get(`/places/${id}`);
   },
