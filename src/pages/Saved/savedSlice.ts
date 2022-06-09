@@ -1,57 +1,41 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { categoryApi, placeApi, purposeApi, regionApi } from "../../api";
 import {
-  categoryApi,
-  placeApi,
-  purposeApi,
-  regionApi,
-  benefitApi,
-  tagApi,
-} from "../../api";
-
-import {
-  BenefitType,
+  CategoryType,
   PlaceType,
+  PurposeType,
   RegionType,
   RequestState,
-  TagType,
-  PurposeType,
-  CategoryType,
 } from "../../types";
 
 export interface SearchState {
   regions: RegionType[];
+  places: PlaceType[];
   purposes: PurposeType[];
   categories: CategoryType[];
-  places: PlaceType[];
   placesOptions: {
     total: number;
     pageSize: number;
     limit: number;
     page: number;
   };
-  benefits: BenefitType[];
-  tags: TagType[];
   api: {
     getRegions: RequestState;
     getPurposes: RequestState;
     getCategories: RequestState;
-    getBenefits: RequestState;
-    getTags: RequestState;
     getPlaceSearch: RequestState;
   };
 }
 
 const initialState: SearchState = {
   regions: [],
+  places: [],
   purposes: [],
   categories: [],
-  places: [],
-  tags: [],
-  benefits: [],
   placesOptions: {
     total: 0,
     pageSize: 1,
-    limit: 10,
+    limit: 5,
     page: 1,
   },
   api: {
@@ -67,11 +51,6 @@ const initialState: SearchState = {
       status: "not_started",
       error: null,
     },
-    getBenefits: {
-      status: "not_started",
-      error: null,
-    },
-    getTags: { status: "not_started", error: null },
     getPlaceSearch: {
       status: "not_started",
       error: null,
@@ -115,35 +94,11 @@ export const getCategories = createAsyncThunk(
   }
 );
 
-export const getBenefits = createAsyncThunk(
-  "search/getBenefits",
-  async (_, thunkApi) => {
-    try {
-      const data = await benefitApi.getBenefits();
-      return data;
-    } catch (error) {
-      return thunkApi.rejectWithValue(error);
-    }
-  }
-);
-
-export const getTags = createAsyncThunk(
-  "search/getTags",
-  async (_, thunkApi) => {
-    try {
-      const data = await tagApi.getTags();
-      return data;
-    } catch (error) {
-      return thunkApi.rejectWithValue(error);
-    }
-  }
-);
-
 export const getPlaceSearch = createAsyncThunk(
   "search/getPlaceSearch",
   async (params: any, thunkApi) => {
     try {
-      const data = await placeApi.getPlaces({ ...params, limit: 10 });
+      const data = await placeApi.getSavedPlaces({ ...params, limit: 5 });
       return data;
     } catch (error) {
       return thunkApi.rejectWithValue(error);
@@ -151,8 +106,8 @@ export const getPlaceSearch = createAsyncThunk(
   }
 );
 
-const searchSlice = createSlice({
-  name: "search",
+const savedSlice = createSlice({
+  name: "saved",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
@@ -190,28 +145,6 @@ const searchSlice = createSlice({
         state.api.getPurposes.status = "rejected";
         state.api.getPurposes.error = action.payload;
       })
-      .addCase(getBenefits.pending, (state) => {
-        state.api.getBenefits.status = "pending";
-      })
-      .addCase(getBenefits.fulfilled, (state, action: any) => {
-        state.api.getBenefits.status = "fulfilled";
-        state.benefits = action.payload.benefits;
-      })
-      .addCase(getBenefits.rejected, (state, action) => {
-        state.api.getBenefits.status = "rejected";
-        state.api.getBenefits.error = action.payload;
-      })
-      .addCase(getTags.pending, (state) => {
-        state.api.getTags.status = "pending";
-      })
-      .addCase(getTags.fulfilled, (state, action: any) => {
-        state.api.getTags.status = "fulfilled";
-        state.tags = action.payload.tags;
-      })
-      .addCase(getTags.rejected, (state, action) => {
-        state.api.getTags.status = "rejected";
-        state.api.getTags.error = action.payload;
-      })
       .addCase(getPlaceSearch.pending, (state) => {
         state.api.getPlaceSearch.status = "pending";
       })
@@ -229,4 +162,4 @@ const searchSlice = createSlice({
 
 // export const {} = searchSlice.actions;
 
-export default searchSlice.reducer;
+export default savedSlice.reducer;

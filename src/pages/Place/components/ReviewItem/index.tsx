@@ -18,7 +18,7 @@ const ReviewItem = ({ review }: { review: IReview }) => {
       <Space>
         <span>Vị trí</span>
         <Space size={2}>
-          <span>{review.ratePosition}</span>
+          <span>{review.ratePosition.toFixed(1)}</span>
           <StarFilled
             style={{
               color: colors.primary,
@@ -29,7 +29,7 @@ const ReviewItem = ({ review }: { review: IReview }) => {
       <Space>
         <span>Không gian</span>
         <Space size={2}>
-          <span>{review.rateView}</span>
+          <span>{review.rateView.toFixed(1)}</span>
           <StarFilled
             style={{
               color: colors.primary,
@@ -40,7 +40,7 @@ const ReviewItem = ({ review }: { review: IReview }) => {
       <Space>
         <span>Đồ uống</span>
         <Space size={2}>
-          <span>{review.rateDrink}</span>
+          <span>{review.rateDrink.toFixed(1)}</span>
           <StarFilled
             style={{
               color: colors.primary,
@@ -51,7 +51,7 @@ const ReviewItem = ({ review }: { review: IReview }) => {
       <Space>
         <span>Phục vụ</span>
         <Space size={2}>
-          <span>{review.rateService}</span>
+          <span>{review.rateService.toFixed(1)}</span>
           <StarFilled
             style={{
               color: colors.primary,
@@ -62,7 +62,7 @@ const ReviewItem = ({ review }: { review: IReview }) => {
       <Space>
         <span>Giá cả</span>
         <Space size={2}>
-          <span>{review.ratePrice}</span>
+          <span>{review.ratePrice.toFixed(1)}</span>
           <StarFilled
             style={{
               color: colors.primary,
@@ -76,7 +76,7 @@ const ReviewItem = ({ review }: { review: IReview }) => {
   return (
     <Styled.ReviewItemWrap>
       <Styled.ReviewLeft>
-        <Link to="/">
+        <Link to={`/profile/${review.user._id}`}>
           <ImageLazy
             radius="50%"
             width="64px"
@@ -96,7 +96,7 @@ const ReviewItem = ({ review }: { review: IReview }) => {
         <Styled.ReviewContent>
           <div className="header">
             <div className="info">
-              <Link to="/" className="info-avatar">
+              <Link to={`/profile/${review.user._id}`} className="info-avatar">
                 <ImageLazy
                   radius="50%"
                   width="40px"
@@ -112,7 +112,7 @@ const ReviewItem = ({ review }: { review: IReview }) => {
                     <i className="bx bxs-check-circle"></i>
                   )}
                 </Link>
-                <Link to="/">
+                <Link to={`/profile/${review.user._id}`}>
                   <span>Đã đánh giá {moment(review.createdAt).fromNow()} </span>
                 </Link>
               </div>
@@ -120,7 +120,7 @@ const ReviewItem = ({ review }: { review: IReview }) => {
             <div className="review-vote">
               <Popover content={content}>
                 <span className="star">
-                  <b>{review.rateAvg}</b>
+                  <b>{review.rateAvg.toFixed(1)}</b>
                 </span>
               </Popover>
             </div>

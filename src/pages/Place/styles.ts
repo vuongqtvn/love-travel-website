@@ -352,6 +352,7 @@ export const PlaceReview = styled.div`
     position: sticky;
     top: 20px;
     .review-ads-box {
+      height: 300px;
       padding: 16px;
       background-color: #fff;
       border-radius: 10px;

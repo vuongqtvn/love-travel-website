@@ -1,6 +1,8 @@
 import styled from "styled-components";
 
-export const PromoContainer = styled.div``;
+export const PromoContainer = styled.div`
+  overflow-x: hidden;
+`;
 export const PromoHeader = styled.div`
   height: 220px;
   margin-bottom: 24px;

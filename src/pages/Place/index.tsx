@@ -20,7 +20,14 @@ import {
 } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { Box, MapModal, Place, PlaceSkeleton, Section } from "../../components";
+import {
+  Box,
+  ImageLazy,
+  MapModal,
+  Place,
+  PlaceSkeleton,
+  Section,
+} from "../../components";
 import path from "../../constants/path";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 
@@ -216,7 +223,9 @@ const PlaceDetail = (props: Props) => {
           </Styled.PlaceDetail>
           <Styled.PlaceBenefit id="benefit">
             {api.getPlace.status === "pending" ? (
-              <Spin />
+              <Box justifyContent="center">
+                <Spin />
+              </Box>
             ) : (
               <Box flexWrap="wrap" gap="10px" justifyContent="center">
                 {place?.tags &&
@@ -306,7 +315,14 @@ const PlaceDetail = (props: Props) => {
               <div className="review-ads-box">
                 <PlaceReview place={place} />
               </div>
-              <div className="review-ads-box">Quảng cáo</div>
+              <div className="review-ads-box">
+                <ImageLazy
+                  src={images.ads}
+                  alt="ads"
+                  width="100%"
+                  height="100%"
+                />
+              </div>
             </div>
           </Styled.PlaceReview>
           <Styled.PlaceRelated id="related">

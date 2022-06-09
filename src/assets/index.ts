@@ -11,6 +11,9 @@ import iconMarker from "./images/mapbox-marker-icon-20px-red.png";
 import login from "./images/login.svg";
 import promo from "./images/discount.svg";
 import ute from "./images/ute.png";
+import bookmark from "./images/bookmarks.svg";
+import ads from "./images/ads.png";
+import empty from "./images/empty.svg";
 
 export const images = {
   logo,
@@ -26,4 +29,7 @@ export const images = {
   login,
   promo,
   ute,
+  bookmark,
+  ads,
+  empty,
 };

@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { colors } from "../../theme/colors";
 
@@ -138,6 +137,7 @@ export const NavRight = styled.div`
 `;
 
 export const Button = styled.button`
+  cursor: pointer;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -164,6 +164,24 @@ export const Button = styled.button`
   &:hover {
     color: ${colors.white};
     background-color: ${colors.hover};
+  }
+`;
+
+export const IconButton = styled.div`
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  text-align: center;
+  background: #f0f2f5;
+  border-radius: 50%;
+  transition: all 0.15s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  &:hover {
+    background: #eee;
+    transition: box-shadow 0.1s;
+    box-shadow: 0 0 2px 0 rgb(0 0 0 / 20%), 0 0 10px 0 rgb(0 0 0 / 19%);
   }
 `;
 

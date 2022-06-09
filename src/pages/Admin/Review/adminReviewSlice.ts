@@ -1,5 +1,4 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { accountApi } from "../../../api";
 import reviewApi from "../../../api/reviewApi";
 
 export interface AdminPlaceState {

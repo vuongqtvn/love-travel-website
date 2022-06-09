@@ -11,6 +11,7 @@ import {
   Dropdown,
   Menu,
   Space,
+  Tooltip,
   Typography,
 } from "antd";
 
@@ -18,6 +19,7 @@ import Box from "../Box";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { logout, openAuth } from "../../pages/Auth/authSlice";
 import path from "../../constants/path";
+import { colors } from "../../theme/colors";
 
 type Props = {};
 
@@ -113,6 +115,34 @@ const Header = (props: Props) => {
                 <i className="bx bx-pencil"></i> Viết Review
               </Styled.Button>
             </div>
+            {user && (
+              <React.Fragment>
+                <div className="nav-item">
+                  <Tooltip title="Đã lưu">
+                    <Styled.IconButton onClick={() => navigate("/saved")}>
+                      <Icons.HeartFilled
+                        style={{
+                          fontSize: 20,
+                          color: colors.primary,
+                        }}
+                      />
+                    </Styled.IconButton>
+                  </Tooltip>
+                </div>
+                <div className="nav-item">
+                  <Tooltip title="Thông báo">
+                    <Styled.IconButton>
+                      <Icons.BellFilled
+                        style={{
+                          fontSize: 20,
+                          color: colors.primary,
+                        }}
+                      />
+                    </Styled.IconButton>
+                  </Tooltip>
+                </div>
+              </React.Fragment>
+            )}
             <div className="nav-item">
               {user?.email ? (
                 <Dropdown
@@ -134,7 +164,7 @@ const Header = (props: Props) => {
                         <Space
                           size={5}
                           align="center"
-                          onClick={() => navigate(path.profile)}
+                          onClick={() => navigate(`/profile/${user?._id}`)}
                         >
                           <Icons.FireOutlined /> <span>Xem hồ sơ</span>
                         </Space>

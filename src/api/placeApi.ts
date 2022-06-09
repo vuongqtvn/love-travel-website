@@ -6,6 +6,11 @@ const placeApi = {
       params,
     });
   },
+  getSavedPlaces(params?: any) {
+    return axiosClient.get("/get-save-places", {
+      params,
+    });
+  },
   getPlaceReview(id: string) {
     return axiosClient.get(`/place_post/${id}`);
   },

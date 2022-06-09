@@ -13,7 +13,7 @@ const path = {
   message: "/message",
   messageUser: "/message/:id",
   placeDetail: "/place/:id",
-  profile: "/profile",
+  profile: "/profile/:id",
   password: "/password",
   prefixRegion: "/search?regions",
   prefixCategory: "/search?categories",
