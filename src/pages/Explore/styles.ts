@@ -1,40 +1,60 @@
 import styled from "styled-components";
 
 export const ExploreWrapper = styled.div`
-  padding: 15px 0;
-  .center {
-    text-align: center;
-    padding: 15px 0;
+  padding-top: 10px;
+
+  .box {
+    border-radius: 8px;
+    padding: 15px;
+    background: #fff;
+    min-height: 500px;
+    box-shadow: 0 2px 8px rgb(0 0 0 / 15%);
+    margin-bottom: 15px;
   }
-  .list-image {
-    padding: 20px 0;
-    max-width: 100%;
-    margin: 0 auto;
-    display: grid;
-    /* grid-template-rows: repeat(2, 200px); */
-    grid-template-columns: repeat(3, 1fr);
-    gap: 5px;
-    .list-item {
-      position: relative;
-      padding-top: 100%;
-      border-radius: 8px;
-      overflow: hidden;
-      img {
-        position: absolute;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        transform: scale(1);
-        transition: all linear 0.3s;
-      }
-      &:hover img {
-        transform: scale(1.2);
-        transition: all linear 0.3s;
-      }
-    }
+`;
+export const ExploreHeader = styled.div`
+  position: absolute;
+  top: 60px;
+  right: auto;
+  bottom: auto;
+  left: 0;
+  width: 100%;
+  height: 220px;
+  margin-bottom: 24px;
+  background: linear-gradient(180deg, #ffb8b8, #fbfbfb);
+  @media (max-width: 991px) {
+    top: 54px;
+  }
+`;
+export const ExploreContainer = styled.div`
+  display: flex;
+  width: 100%;
+  margin: auto;
+  padding: 0 16px;
+  @media (max-width: 991px) {
+    padding: 0 2px;
+  }
+
+  @media (min-width: 1280px) {
+    width: 1200px;
+  }
+`;
+
+export const ExploreFeed = styled.div`
+  width: 66.66%;
+  position: relative;
+  @media (max-width: 991px) {
+    width: 100%;
+  }
+`;
+
+export const ExploreSidebar = styled.div`
+  width: 33.33%;
+  height: 100%;
+  flex-grow: 1;
+  position: relative;
+  margin-left: 20px;
+  @media (max-width: 991px) {
+    display: none;
   }
 `;

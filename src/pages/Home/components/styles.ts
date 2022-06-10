@@ -363,7 +363,7 @@ export const HomeSuggest = styled.div`
       font-weight: 700;
       margin-bottom: 20px;
     }
-    a {
+    span {
       display: inline-flex;
       margin: 0 auto;
       cursor: pointer;
@@ -392,7 +392,7 @@ export const HomeSuggest = styled.div`
         font-size: 18px;
         margin-bottom: 10px;
       }
-      a {
+      span {
         button {
           font-size: 12px;
           height: 30px;

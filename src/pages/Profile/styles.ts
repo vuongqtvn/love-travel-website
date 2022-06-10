@@ -184,6 +184,11 @@ export const ProfileNavigation = styled.div`
     width: 100%;
     border: none;
   }
+  @media (max-width: 991px) {
+    ul:nth-child(2) {
+      display: none;
+    }
+  }
   ul {
     margin: 0;
     padding: 0;

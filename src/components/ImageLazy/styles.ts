@@ -26,7 +26,7 @@ export const ImageWrapper = styled.div<ImageProps>`
   background-size: 200px 100%;
   animation: ${Skeleton} 1.2s ease-in-out infinite;
   overflow: hidden;
-  :hover {
+  &.hover:hover {
     img {
       box-shadow: 0 4px 10px rgb(27 27 27 / 20%);
       transform: scale3d(1.1, 1.1, 1.1) translateZ(0);

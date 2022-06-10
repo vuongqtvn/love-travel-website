@@ -1,4 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+import classNames from "classnames";
 import React, { CSSProperties, useEffect, useRef } from "react";
 import * as Styled from "./styles";
 
@@ -11,9 +12,10 @@ type Props = {
   width?: string;
   className?: string;
   children?: JSX.Element;
+  hover?: boolean;
 };
 
-const ImageLazy = (props: Props) => {
+const ImageLazy: React.FC<Props> = ({ hover = true, ...props }) => {
   const imgRef = useRef<any>(null);
 
   useEffect(() => {
@@ -41,7 +43,7 @@ const ImageLazy = (props: Props) => {
       width={props.width}
       height={props.height}
       style={props.style}
-      className={props.className}
+      className={classNames(props.className, { hover: hover })}
     >
       <div className="card-image">
         <div className="card-lazy">

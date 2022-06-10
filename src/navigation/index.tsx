@@ -14,6 +14,7 @@ import AddPlaceAdmin from "../pages/Admin/Place/features/AddPlace";
 import EditPlace from "../pages/Admin/Place/features/EditPlace";
 import AdminReview from "../pages/Admin/Review";
 import AdminGeneral from "../pages/Admin/General";
+import UserLayout from "../layout/UserLayout";
 
 const Home = lazy(() => import("../pages/Home"));
 const Search = lazy(() => import("../pages/Search"));
@@ -31,13 +32,13 @@ const publicRoute = [
   { path: path.home, component: Home, layout: MainLayout },
   { path: path.search, component: Search, layout: MainLayout },
   { path: path.explore, component: Explore, layout: MainLayout },
-  { path: path.review, component: Review, layout: MainLayout },
+  { path: path.review, component: Review, layout: UserLayout },
   { path: path.placeDetail, component: Place, layout: MainLayout },
   { path: path.promo, component: Promo, layout: MainLayout },
   { path: path.map, component: Map, layout: MainLayout },
-  { path: path.profile, component: Profile, layout: MainLayout },
-  { path: path.saved, component: Saved, layout: MainLayout },
-  { path: path.addPlace, component: AddPlace, layout: MainLayout },
+  { path: path.profile, component: Profile, layout: UserLayout },
+  { path: path.saved, component: Saved, layout: UserLayout },
+  { path: path.addPlace, component: AddPlace, layout: UserLayout },
   { path: path.notFound, component: NotFound, layout: MainLayout },
 ];
 
