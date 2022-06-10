@@ -165,7 +165,7 @@ export const ProfileNavigationWrap = styled.div`
   position: -webkit-sticky;
   position: sticky;
   top: -1px;
-  z-index: 1;
+  z-index: 10;
   white-space: nowrap;
   overflow-x: auto;
   @media (max-width: 991px) {
