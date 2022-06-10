@@ -97,7 +97,6 @@ function ModifyAccountModal({ data, isShowModal, setIsShowModal }: Props) {
         })
         .catch(() => {
           setIsShowModal(null);
-          message.error("Cập nhật không thành công!");
           setLoading(false);
           modifyAccountForm.resetFields();
         });
@@ -132,7 +131,6 @@ function ModifyAccountModal({ data, isShowModal, setIsShowModal }: Props) {
         })
         .catch(() => {
           setIsShowModal(null);
-          message.error("tạo mới không thành công!");
           setLoading(false);
           modifyAccountForm.resetFields();
         });
@@ -313,21 +311,16 @@ function Regions() {
             <Popconfirm
               title="Bạn có muốn xoá khu vực này?"
               onConfirm={() => {
-                regionApi
-                  .deleteRegion(record._id)
-                  .then(() => {
-                    dispatch(
-                      setGeneral({
-                        regions: [...regions].filter(
-                          (item) => item._id !== record._id
-                        ),
-                      })
-                    );
-                    message.success(`đã xoá khu vực ${record.name}`);
-                  })
-                  .catch(() => {
-                    message.error(`Xoá khu vực thất bại!`);
-                  });
+                regionApi.deleteRegion(record._id).then(() => {
+                  dispatch(
+                    setGeneral({
+                      regions: [...regions].filter(
+                        (item) => item._id !== record._id
+                      ),
+                    })
+                  );
+                  message.success(`đã xoá khu vực ${record.name}`);
+                });
               }}
               onCancel={() => null}
               okText="Có"

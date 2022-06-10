@@ -42,7 +42,6 @@ function ModifyAccountModal({ data, isShowModal, setIsShowModal }: Props) {
       })
       .catch(() => {
         setIsShowModal(false);
-        message.error("Cập nhật không thành công!");
       });
   };
 

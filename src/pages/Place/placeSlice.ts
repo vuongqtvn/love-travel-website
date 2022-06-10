@@ -99,7 +99,27 @@ export const unSavePlace = createAsyncThunk(
 const placeSlice = createSlice({
   name: "place",
   initialState,
-  reducers: {},
+  reducers: {
+    clearPlace(state: any) {
+      state.reviews = [];
+      state.place = null;
+      state.placesRelated = [];
+      state.api = {
+        getPlace: {
+          status: "not_started",
+          error: null,
+        },
+        getReviews: {
+          status: "not_started",
+          error: null,
+        },
+        getPlaceRelated: {
+          status: "not_started",
+          error: null,
+        },
+      };
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getPlace.pending, (state) => {
@@ -137,5 +157,7 @@ const placeSlice = createSlice({
       });
   },
 });
+
+export const { clearPlace } = placeSlice.actions;
 
 export default placeSlice.reducer;

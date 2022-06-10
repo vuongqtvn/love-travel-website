@@ -50,8 +50,7 @@ const LoginForm = ({ onClick }: IProps) => {
       .then((data: any) => {
         message.success(data.message);
         dispatch(closeAuth());
-      })
-      .catch((error) => message.error(error.message));
+      });
   };
 
   return (

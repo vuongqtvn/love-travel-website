@@ -64,7 +64,6 @@ function ModifyAccountModal({ data, isShowModal, setIsShowModal }: Props) {
         })
         .catch(() => {
           setIsShowModal(null);
-          message.error("Cập nhật không thành công!");
           setLoading(false);
           modifyAccountForm.resetFields();
         });
@@ -88,7 +87,6 @@ function ModifyAccountModal({ data, isShowModal, setIsShowModal }: Props) {
         })
         .catch(() => {
           setIsShowModal(null);
-          message.error("tạo mới không thành công!");
           setLoading(false);
           modifyAccountForm.resetFields();
         });
@@ -215,21 +213,16 @@ function Benefits() {
             <Popconfirm
               title="Bạn có muốn xoá tiện ích này?"
               onConfirm={() => {
-                benefitApi
-                  .deleteBenefit(record._id)
-                  .then(() => {
-                    dispatch(
-                      setGeneral({
-                        benefits: [...benefits].filter(
-                          (item) => item._id !== record._id
-                        ),
-                      })
-                    );
-                    message.success(`đã xoá tiện ích ${record.name}`);
-                  })
-                  .catch(() => {
-                    message.error(`Xoá tiện ích thất bại!`);
-                  });
+                benefitApi.deleteBenefit(record._id).then(() => {
+                  dispatch(
+                    setGeneral({
+                      benefits: [...benefits].filter(
+                        (item) => item._id !== record._id
+                      ),
+                    })
+                  );
+                  message.success(`đã xoá tiện ích ${record.name}`);
+                });
               }}
               onCancel={() => null}
               okText="Có"

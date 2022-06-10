@@ -7,3 +7,4 @@ export { default as regionApi } from "./regionApi";
 export { default as tagApi } from "./tagApi";
 export { default as accountApi } from "./accountApi";
 export { default as acceptApi } from "./acceptApi";
+export { default as userApi } from "./userApi";

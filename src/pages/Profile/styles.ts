@@ -342,6 +342,7 @@ export const ProfileAds = styled.div`
 export const ProfileRight = styled.div`
   flex-grow: 1;
   max-width: 720px;
+  margin-bottom: 30px;
   @media (max-width: 991px) {
     max-width: 100%;
   }

@@ -105,7 +105,6 @@ const ReviewForm = () => {
         setLoading(false);
       })
       .catch((error: any) => {
-        message.error(error.message);
         setLoading(false);
       });
   };

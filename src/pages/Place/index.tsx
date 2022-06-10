@@ -32,7 +32,7 @@ import path from "../../constants/path";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 
 import PlaceTop from "./components/PlaceTop";
-import { getPlace, getPlaceRelated } from "./placeSlice";
+import { clearPlace, getPlace, getPlaceRelated } from "./placeSlice";
 import PlaceReview from "./components/PlaceReview";
 import * as Styled from "./styles";
 import { images } from "../../assets";
@@ -54,6 +54,10 @@ const PlaceDetail = (props: Props) => {
       dispatch(getPlace(id));
       dispatch(getPlaceRelated());
     }
+
+    return () => {
+      dispatch(clearPlace());
+    };
   }, [id, dispatch]);
   return (
     <Section>

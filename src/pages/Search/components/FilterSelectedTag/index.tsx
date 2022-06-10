@@ -25,6 +25,8 @@ const FilterSelectedTag = ({ search, setSearch }: Props) => {
     let ids: string[] | [] = [];
     const obj = { ...search };
     delete obj?.page;
+    delete obj?.rate;
+    delete obj?.sort;
     for (const key in obj) {
       if (obj[key]?.trim()) {
         ids = [...ids, ...obj[key].split("-")];

@@ -16,33 +16,33 @@ export default class LightboxImages extends Component {
 
     return (
       <div>
-        {this.props.isOpen && (
-          <Lightbox
-            mainSrc={this.props.images[photoIndex].url}
-            nextSrc={
-              this.props.images[(photoIndex + 1) % this.props.images.length].url
-            }
-            prevSrc={
-              this.props.images[
+        <Lightbox
+          mainSrc={this.props.images[photoIndex].url}
+          nextSrc={
+            this.props.images[(photoIndex + 1) % this.props.images.length].url
+          }
+          prevSrc={
+            this.props.images[
+              (photoIndex + this.props.images.length - 1) %
+                this.props.images.length
+            ].url
+          }
+          onCloseRequest={this.props.onClick}
+          onMovePrevRequest={() =>
+            this.setState({
+              photoIndex:
                 (photoIndex + this.props.images.length - 1) %
-                  this.props.images.length
-              ].url
-            }
-            onCloseRequest={this.props.onClick}
-            onMovePrevRequest={() =>
-              this.setState({
-                photoIndex:
-                  (photoIndex + this.props.images.length - 1) %
-                  this.props.images.length,
-              })
-            }
-            onMoveNextRequest={() =>
-              this.setState({
-                photoIndex: (photoIndex + 1) % this.props.images.length,
-              })
-            }
-          />
-        )}
+                this.props.images.length,
+            })
+          }
+          onMoveNextRequest={() =>
+            this.setState({
+              photoIndex: (photoIndex + 1) % this.props.images.length,
+            })
+          }
+          imageTitle={this.props.title || ""}
+          imageCaption={this.props.caption || ""}
+        />
       </div>
     );
   }

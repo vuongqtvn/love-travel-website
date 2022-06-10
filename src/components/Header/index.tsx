@@ -99,6 +99,10 @@ const Header = (props: Props) => {
         <Styled.Nav>
           <Styled.NavLeft>
             <div className="list">
+              <NavLink to="/search">
+                <i className="bx bx-map"></i>
+                Địa điểm
+              </NavLink>
               <NavLink to="/explore">
                 <i className="bx bx-planet"></i>
                 Khám phá

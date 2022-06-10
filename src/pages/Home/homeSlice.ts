@@ -87,7 +87,11 @@ export const getPlaceHot = createAsyncThunk(
   "home/getPlaceHot",
   async (_, thunkApi) => {
     try {
-      const data = await placeApi.getPlaces({ limit: 8, page: 1 });
+      const data = await placeApi.getPlaces({
+        limit: 8,
+        page: 1,
+        sort: "-posts",
+      });
       return data;
     } catch (error) {
       return thunkApi.rejectWithValue(error);

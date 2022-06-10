@@ -14,7 +14,9 @@ const SortSearch = ({ search, setSearch }: Props) => {
     placesOptions: { total },
   } = useAppSelector((state) => state.search);
   const handleChange = (value: any) => {
-    console.log(`selected ${value}`);
+    const newSearch = { ...search, sort: value };
+    delete newSearch?.page;
+    setSearch(newSearch);
   };
   return (
     <Styled.SortSearchWrapper>
@@ -26,14 +28,19 @@ const SortSearch = ({ search, setSearch }: Props) => {
         )}
       </span>
       <div className="search-sort">
-        <span>Sắp xếp theo</span>
+        <span>Sắp xếp: </span>
         <Select
-          defaultValue="Đánh giá cao"
           style={{ width: 150 }}
+          value={["-price.to", "price.to", "-createdAt", "createdAt"].find(
+            (item) => item === search?.sort
+          )}
           onChange={handleChange}
+          placeholder="Chọn sắp xếp"
         >
-          <Select.Option value="rate[gte]">Đánh giá cao</Select.Option>
-          <Select.Option value="rate[lte]">Đánh giá thấp</Select.Option>
+          <Select.Option value="-price.to">Giá cao đến thấp</Select.Option>
+          <Select.Option value="price.to">Giá thấp đến cao</Select.Option>
+          <Select.Option value="-createdAt">Mới nhất</Select.Option>
+          <Select.Option value="createdAt">Cũ nhất</Select.Option>
         </Select>
       </div>
     </Styled.SortSearchWrapper>

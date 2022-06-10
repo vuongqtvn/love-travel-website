@@ -58,3 +58,30 @@ export const ExploreSidebar = styled.div`
     display: none;
   }
 `;
+
+export const ExploreSidebarBox = styled.div`
+  padding: 12px 16px;
+  margin-bottom: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 15%);
+  h3 {
+    padding: 0;
+    margin: 0;
+    font-size: 20px;
+    text-align: center;
+    padding-bottom: 14px;
+    border-bottom: 1px solid #eee;
+  }
+  .ads-image {
+    position: relative;
+    padding-top: 80%;
+    .ads {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+    }
+  }
+`;

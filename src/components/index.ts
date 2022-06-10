@@ -25,3 +25,8 @@ export { default as Authentication } from "./Authentication";
 export { default as InputNumberic } from "./InputNumberic";
 export { default as NotAuth } from "./NotAuth";
 export { default as FeedCard } from "./FeedCard";
+export { default as FeedCardLoading } from "./FeedCardLoading";
+export { default as PlaceItemLoading } from "./PlaceItemLoading";
+export { default as PlaceItem } from "./PlaceItem";
+export { default as UserItem } from "./UserItem";
+export { default as UserItemLoading } from "./UserItemLoading";

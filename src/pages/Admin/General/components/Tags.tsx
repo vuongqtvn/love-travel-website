@@ -64,7 +64,6 @@ function ModifyAccountModal({ data, isShowModal, setIsShowModal }: Props) {
         })
         .catch(() => {
           setIsShowModal(null);
-          message.error("Cập nhật không thành công!");
           setLoading(false);
           modifyAccountForm.resetFields();
         });
@@ -88,7 +87,6 @@ function ModifyAccountModal({ data, isShowModal, setIsShowModal }: Props) {
         })
         .catch(() => {
           setIsShowModal(null);
-          message.error("tạo mới không thành công!");
           setLoading(false);
           modifyAccountForm.resetFields();
         });
@@ -215,21 +213,14 @@ function Tags() {
             <Popconfirm
               title="Bạn có muốn xoá kiểu địa điểm này?"
               onConfirm={() => {
-                tagApi
-                  .deleteTag(record._id)
-                  .then(() => {
-                    dispatch(
-                      setGeneral({
-                        tags: [...tags].filter(
-                          (item) => item._id !== record._id
-                        ),
-                      })
-                    );
-                    message.success(`đã xoá kiểu địa điểm ${record.name}`);
-                  })
-                  .catch(() => {
-                    message.error(`Xoá kiểu địa điểm thất bại!`);
-                  });
+                tagApi.deleteTag(record._id).then(() => {
+                  dispatch(
+                    setGeneral({
+                      tags: [...tags].filter((item) => item._id !== record._id),
+                    })
+                  );
+                  message.success(`đã xoá kiểu địa điểm ${record.name}`);
+                });
               }}
               onCancel={() => null}
               okText="Có"

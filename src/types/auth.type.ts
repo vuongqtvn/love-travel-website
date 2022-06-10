@@ -7,6 +7,7 @@ export interface IUser {
   createdAt: string;
   followers: any;
   following: any;
+  places: any;
   gender: string;
   mobile: string;
   password: "";
@@ -17,6 +18,7 @@ export interface IUser {
   story: string;
   updatedAt: string;
   website: string;
+  posts: any;
 }
 
 export interface ILogin {

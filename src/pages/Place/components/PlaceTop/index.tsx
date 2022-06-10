@@ -57,7 +57,6 @@ const PlaceTop = (props: Props) => {
           setLoadSaved(false);
         })
         .catch((error) => {
-          message.error(error.message || "Có lỗi xãy ra");
           setLoadSaved(false);
         });
     }
@@ -82,7 +81,6 @@ const PlaceTop = (props: Props) => {
           setLoadSaved(false);
         })
         .catch((error) => {
-          message.error(error.message || "Có lỗi xãy ra");
           setLoadSaved(false);
         });
     }
@@ -235,7 +233,7 @@ const PlaceTop = (props: Props) => {
         </div>
         {/* <Link to={`${path.place}/jouri-dessert-tea/photo`}> */}
         <a>
-          <span className="contributePhoto">
+          <span className="contributePhoto" onClick={() => setIsOpen(true)}>
             <i className="bx bx-image"></i>
             {` Xem tất cả ảnh (${
               place?.images.length ? place?.images.length : 0
@@ -258,15 +256,19 @@ const PlaceTop = (props: Props) => {
           <span className="view-all">Xem tất cả</span>
         </Link> */}
         <a>
-          <span className="view-all">Xem tất cả</span>
+          <span className="view-all" onClick={() => setIsOpen(true)}>
+            Xem tất cả
+          </span>
         </a>
         {/* <span className="total-photo">{`${place?.images.length}`}</span> */}
       </Styled.PlaceTopGalleryMobile>
-      <LightBoxImages
-        isOpen={isOpen}
-        onClick={() => setIsOpen(false)}
-        images={place?.images}
-      />
+      {isOpen && (
+        <LightBoxImages
+          onClick={() => setIsOpen(false)}
+          images={place?.images}
+          caption={place?.name}
+        />
+      )}
     </Styled.PlaceTop>
   );
 };

@@ -106,9 +106,6 @@ function AdminPlace() {
                   .unwrap()
                   .then(() => {
                     message.success(`đã xoá địa điểm ${record.name}`);
-                  })
-                  .catch(() => {
-                    message.error(`Xoá địa điểm thất bại!`);
                   });
               }}
               onCancel={() => null}

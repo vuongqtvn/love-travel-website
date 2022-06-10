@@ -2,8 +2,8 @@ import axios from "axios";
 import { message } from "antd";
 
 export const axiosClient = axios.create({
-  // baseURL: "http://localhost:5000/api",
-  baseURL: "https://love-travel-api-production.up.railway.app/api",
+  baseURL: "http://localhost:5000/api",
+  // baseURL: "https://love-travel-api-production.up.railway.app/api",
   headers: {
     "Content-Type": "application/json",
   },
@@ -28,6 +28,11 @@ axiosClient.interceptors.response.use(
     if (error.response.status === 401) {
       message.error(error.response.data.message);
     }
+
+    if (error.response.status === 400) {
+      message.error(error.response.data.message);
+    }
+
     const result = { ...error.response.data, status: error.response.status };
     return Promise.reject(result);
   }

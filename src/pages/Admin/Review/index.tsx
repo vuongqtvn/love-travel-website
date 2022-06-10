@@ -91,19 +91,14 @@ function AdminReview() {
             <Popconfirm
               title="Bạn có muốn xoá địa điểm này?"
               onConfirm={() => {
-                reviewApi
-                  .deleteReview(record._id)
-                  .then(() => {
-                    message.success(`đã xoá bài review thành công!`);
-                    dispatch(
-                      setPosts(
-                        posts.filter((item: any) => item._id !== record._id)
-                      )
-                    );
-                  })
-                  .catch(() => {
-                    message.error(`Xoá bài review thất bại!`);
-                  });
+                reviewApi.deleteReview(record._id).then(() => {
+                  message.success(`đã xoá bài review thành công!`);
+                  dispatch(
+                    setPosts(
+                      posts.filter((item: any) => item._id !== record._id)
+                    )
+                  );
+                });
               }}
               onCancel={() => null}
               okText="Có"

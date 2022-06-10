@@ -5,19 +5,22 @@ import { colors } from "../../theme/colors";
 import ImageLazy from "../ImageLazy";
 import * as Styled from "./styles";
 import moment from "moment";
+import LightboxImages from "../LightBoxImages";
 
 type Props = {
   feed: any;
 };
 
 const FeedCard = ({ feed }: Props) => {
+  const [isOpen, setIsOpen] = React.useState<boolean>(false);
+
   const renderImages = (images: any) => {
     if (images.length === 1) {
       return (
         <div className="images-1">
           {images.map((image: any, index: number) => (
-            <div className="image" key={index}>
-              <ImageLazy hover={false} alt="image" src={image.url} />
+            <div className="image" key={index} onClick={() => setIsOpen(true)}>
+              <ImageLazy hover={false} alt={feed?.name} src={image.url} />
             </div>
           ))}
         </div>
@@ -27,8 +30,8 @@ const FeedCard = ({ feed }: Props) => {
       return (
         <div className="images-2">
           {images.map((image: any, index: number) => (
-            <div className="image" key={index}>
-              <ImageLazy hover={false} alt="image" src={image.url} />
+            <div className="image" key={index} onClick={() => setIsOpen(true)}>
+              <ImageLazy hover={false} alt={feed?.name} src={image.url} />
             </div>
           ))}
         </div>
@@ -38,8 +41,8 @@ const FeedCard = ({ feed }: Props) => {
       return (
         <div className="images-3">
           {images.map((image: any, index: number) => (
-            <div className="image" key={index}>
-              <ImageLazy hover={false} alt="image" src={image.url} />
+            <div className="image" key={index} onClick={() => setIsOpen(true)}>
+              <ImageLazy hover={false} alt={feed?.name} src={image.url} />
             </div>
           ))}
         </div>
@@ -49,8 +52,8 @@ const FeedCard = ({ feed }: Props) => {
       return (
         <div className="images-4">
           {images.map((image: any, index: number) => (
-            <div className="image" key={index}>
-              <ImageLazy hover={false} alt="image" src={image.url} />
+            <div className="image" key={index} onClick={() => setIsOpen(true)}>
+              <ImageLazy hover={false} alt={feed?.name} src={image.url} />
             </div>
           ))}
         </div>
@@ -60,8 +63,8 @@ const FeedCard = ({ feed }: Props) => {
       return (
         <div className="images-5">
           {images.map((image: any, index: number) => (
-            <div className="image" key={index}>
-              <ImageLazy hover={false} alt="image" src={image.url} />
+            <div className="image" key={index} onClick={() => setIsOpen(true)}>
+              <ImageLazy hover={false} alt={feed?.name} src={image.url} />
             </div>
           ))}
         </div>
@@ -70,11 +73,35 @@ const FeedCard = ({ feed }: Props) => {
     if (images.length > 5) {
       return (
         <div className="images-more">
-          {images.map((image: any, index: number) => (
-            <div className="image" key={index}>
-              <ImageLazy hover={false} alt="image" src={image.url} />
-            </div>
-          ))}
+          {images?.map((image: any, index: number) => {
+            if (index <= 3) {
+              return (
+                <div
+                  className="image"
+                  key={index}
+                  onClick={() => setIsOpen(true)}
+                >
+                  <ImageLazy hover={false} alt={feed?.name} src={image.url} />
+                </div>
+              );
+            }
+            if (index === 4) {
+              return (
+                <div
+                  key={index}
+                  className="image more"
+                  onClick={() => setIsOpen(true)}
+                >
+                  <ImageLazy hover={false} alt={feed?.name} src={image.url}>
+                    <div className="overlay">
+                      <span>+{images?.length - 5 || 0}</span>
+                    </div>
+                  </ImageLazy>
+                </div>
+              );
+            }
+            return null;
+          })}
         </div>
       );
     }
@@ -87,6 +114,7 @@ const FeedCard = ({ feed }: Props) => {
       <Styled.FeedCardHeader>
         <Styled.FeedHeaderInfo>
           <ImageLazy
+            hover={false}
             className="avatar"
             alt={feed.user.name}
             src={feed.user.avatar}
@@ -127,7 +155,7 @@ const FeedCard = ({ feed }: Props) => {
         <div className="text">
           <Typography.Paragraph
             ellipsis={
-              true ? { rows: 4, expandable: true, symbol: "more" } : false
+              true ? { rows: 4, expandable: true, symbol: "Xem thêm" } : false
             }
           >
             {feed.content}
@@ -144,6 +172,14 @@ const FeedCard = ({ feed }: Props) => {
       <Styled.FeedCardListReply>
         <span>đang tiến hành...</span>
       </Styled.FeedCardListReply>
+      {isOpen && (
+        <LightboxImages
+          title={`Đánh giá của ${feed?.user?.name} về ${feed?.place?.name}`}
+          caption={feed?.content}
+          onClick={() => setIsOpen(false)}
+          images={feed.images}
+        />
+      )}
     </Styled.FeedCardWrap>
   );
 };

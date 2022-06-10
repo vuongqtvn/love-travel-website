@@ -208,9 +208,6 @@ export const FeedCardBody = styled.div`
       .image {
         width: 50%;
         height: 50%;
-        &:nth-child(odd) {
-          border-bottom: none;
-        }
       }
     }
     .images-5 {
@@ -227,7 +224,6 @@ export const FeedCardBody = styled.div`
           width: 50%;
           height: 60%;
         }
-        &:nth-child(2),
         &:last-child {
           border: none;
         }
@@ -237,33 +233,29 @@ export const FeedCardBody = styled.div`
           border-bottom: none;
         }
         &.more {
-          position: relative;
-          span {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 3;
-            font-size: 36px;
-            font-weight: 500;
-            color: #fff;
-            @media (max-width: 991px) {
-              font-size: 24px;
-            }
-          }
-          &::after {
+          .overlay {
+            content: "";
             position: absolute;
             top: 0;
             right: 0;
             bottom: 0;
             left: 0;
-            content: "";
             width: 100%;
             height: 100%;
-            opacity: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             background: rgba(0, 0, 0, 0.4);
             transition: all, 0.25s ease-in-out;
-            z-index: 2;
+            z-index: 3;
+            span {
+              font-size: 36px;
+              font-weight: 500;
+              color: #fff;
+              @media (max-width: 991px) {
+                font-size: 24px;
+              }
+            }
           }
         }
       }

@@ -97,7 +97,6 @@ function ModifyAccountModal({ data, isShowModal, setIsShowModal }: Props) {
         })
         .catch(() => {
           setIsShowModal(null);
-          message.error("Cập nhật không thành công!");
           setLoading(false);
           modifyAccountForm.resetFields();
         });
@@ -132,7 +131,6 @@ function ModifyAccountModal({ data, isShowModal, setIsShowModal }: Props) {
         })
         .catch(() => {
           setIsShowModal(null);
-          message.error("tạo mới không thành công!");
           setLoading(false);
           modifyAccountForm.resetFields();
         });
@@ -313,21 +311,16 @@ function Purposes() {
             <Popconfirm
               title="Bạn có muốn xoá mục dích này?"
               onConfirm={() => {
-                purposeApi
-                  .deletePurpose(record._id)
-                  .then(() => {
-                    dispatch(
-                      setGeneral({
-                        purposes: [...purposes].filter(
-                          (item) => item._id !== record._id
-                        ),
-                      })
-                    );
-                    message.success(`đã xoá mục dích ${record.name}`);
-                  })
-                  .catch(() => {
-                    message.error(`Xoá mục dích thất bại!`);
-                  });
+                purposeApi.deletePurpose(record._id).then(() => {
+                  dispatch(
+                    setGeneral({
+                      purposes: [...purposes].filter(
+                        (item) => item._id !== record._id
+                      ),
+                    })
+                  );
+                  message.success(`đã xoá mục dích ${record.name}`);
+                });
               }}
               onCancel={() => null}
               okText="Có"

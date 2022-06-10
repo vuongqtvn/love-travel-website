@@ -88,9 +88,6 @@ function AcceptPost() {
                   .then(() => {
                     message.success(`đã phê duyệt bài review`);
                     navigate(path.admin.post);
-                  })
-                  .catch(() => {
-                    message.error(`Phê duyệt bài review thất bại!`);
                   });
               }}
               onCancel={() => null}
@@ -105,14 +102,9 @@ function AcceptPost() {
             <Popconfirm
               title="Bạn có muốn xoá địa điểm này?"
               onConfirm={() => {
-                reviewApi
-                  .deleteReview(record._id)
-                  .then(() => {
-                    message.success(`đã xoá bài review thành công!`);
-                  })
-                  .catch(() => {
-                    message.error(`Xoá bài review thất bại!`);
-                  });
+                reviewApi.deleteReview(record._id).then(() => {
+                  message.success(`đã xoá bài review thành công!`);
+                });
               }}
               onCancel={() => null}
               okText="Có"

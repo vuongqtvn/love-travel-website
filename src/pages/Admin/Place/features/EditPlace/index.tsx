@@ -253,7 +253,6 @@ const EditPlace = () => {
         setIsAdd(false);
       })
       .catch((error) => {
-        message.error(error.message);
         form.resetFields();
         setIsAdd(false);
       });

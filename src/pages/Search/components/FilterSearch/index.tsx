@@ -1,6 +1,6 @@
-import { Checkbox, Collapse, Radio, Skeleton } from "antd";
+import { useEffect, useMemo } from "react";
+import { Checkbox, Collapse, Radio, RadioChangeEvent, Skeleton } from "antd";
 import { CheckboxValueType } from "antd/lib/checkbox/Group";
-import { useEffect, useMemo, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
 import {
   getBenefits,
@@ -29,7 +29,6 @@ const FilterSearch = ({ search, setSearch }: Props) => {
   );
 
   const dispatch = useAppDispatch();
-  const [radio] = useState<any>(1);
 
   const checkboxSelect = useMemo(() => {
     const result = {
@@ -64,6 +63,18 @@ const FilterSearch = ({ search, setSearch }: Props) => {
     dispatch(getBenefits());
     dispatch(getTags());
   }, [dispatch]);
+
+  const onChangeRate = (e: RadioChangeEvent) => {
+    if (e.target.value === undefined) {
+      const newSearch = { ...search };
+      delete newSearch?.sort;
+      return setSearch(newSearch);
+    } else {
+      const newSearch = { ...search, sort: e.target.value };
+      delete newSearch?.page;
+      setSearch(newSearch);
+    }
+  };
 
   const onchangeCheckbox = (
     value: CheckboxValueType[],
@@ -170,14 +181,21 @@ const FilterSearch = ({ search, setSearch }: Props) => {
         expandIconPosition="right"
         ghost
       >
-        <Collapse.Panel header="Giờ mở cửa" key="1">
+        <Collapse.Panel header="Đánh giá" key="1">
           <div className="search__filter-list">
-            <Radio.Group size="large" value={radio}>
+            <Radio.Group
+              onChange={onChangeRate}
+              size="large"
+              value={["-posts", "posts"].find((item) => item === search?.sort)}
+            >
               <div className="search__filter-item">
-                <Radio value={1}>Tất cả</Radio>
+                <Radio value={undefined}>Tất cả</Radio>
               </div>
               <div className="search__filter-item">
-                <Radio value={2}>Đang mở cửa</Radio>
+                <Radio value="-posts">Đánh giá cao đến thấp</Radio>
+              </div>
+              <div className="search__filter-item">
+                <Radio value="posts">Đánh giá thấp đến cao</Radio>
               </div>
             </Radio.Group>
           </div>

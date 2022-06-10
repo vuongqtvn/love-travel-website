@@ -1,16 +1,20 @@
 import { Button, Input, Popover, Space, Typography } from "antd";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { Box, ImageLazy } from "../../../../components";
+import { Box, ImageLazy, LightBoxImages } from "../../../../components";
 import { colors } from "../../../../theme/colors";
 import { StarFilled } from "@ant-design/icons";
 // import ReplyItem from "../ReplyItem";
 import moment from "moment";
 import * as Styled from "./styles";
 import { IReview } from "../../../../types";
+import { useAppSelector } from "../../../../redux/hooks";
 
 const ReviewItem = ({ review }: { review: IReview }) => {
+  const { user } = useAppSelector((state) => state.auth);
+  const { place } = useAppSelector((state) => state.place);
   const [reply, setReply] = useState(false);
+  const [isOpen, setIsOpen] = React.useState<boolean>(false);
   // const [showMore, setShowMore] = useState(false);
 
   const content = (
@@ -78,6 +82,7 @@ const ReviewItem = ({ review }: { review: IReview }) => {
       <Styled.ReviewLeft>
         <Link to={`/profile/${review.user._id}`}>
           <ImageLazy
+            hover={false}
             radius="50%"
             width="64px"
             height="64px"
@@ -89,7 +94,7 @@ const ReviewItem = ({ review }: { review: IReview }) => {
           <span>
             <i className="bx bx-edit"></i>
           </span>
-          {/* <span>1</span> */}
+          <span>{review?.user?.posts?.length || 0}</span>
         </div>
       </Styled.ReviewLeft>
       <Styled.ReviewRight>
@@ -140,38 +145,46 @@ const ReviewItem = ({ review }: { review: IReview }) => {
             <div className="images">
               {review.images.length <= 3
                 ? review.images.map((image: any) => (
-                    <ImageLazy
-                      key={image.public_id}
-                      className="image"
-                      radius="6px"
-                      alt="avatar"
-                      src={image.url}
-                    />
+                    <div onClick={() => setIsOpen(true)}>
+                      <ImageLazy
+                        key={image.public_id}
+                        className="image"
+                        radius="6px"
+                        alt="avatar"
+                        src={image.url}
+                      />
+                    </div>
                   ))
                 : review.images.map((image: any, index: number) => {
                     if (index === 2) {
                       return (
-                        <ImageLazy
-                          key={image.public_id}
-                          className="image"
-                          radius="6px"
-                          alt={review.content}
-                          src={image.url}
-                        >
-                          <div className="overlay">
-                            <span className="tag">+2 ảnh</span>
-                          </div>
-                        </ImageLazy>
+                        <div onClick={() => setIsOpen(true)}>
+                          <ImageLazy
+                            key={image.public_id}
+                            className="image"
+                            radius="6px"
+                            alt={review.content}
+                            src={image.url}
+                          >
+                            <div className="overlay">
+                              <span className="tag">
+                                +{review.images.length - 3 || 0} ảnh
+                              </span>
+                            </div>
+                          </ImageLazy>
+                        </div>
                       );
                     } else if (index <= 1) {
                       return (
-                        <ImageLazy
-                          key={image.public_id}
-                          className="image"
-                          radius="6px"
-                          alt={review.content}
-                          src={image.url}
-                        />
+                        <div onClick={() => setIsOpen(true)}>
+                          <ImageLazy
+                            key={image.public_id}
+                            className="image"
+                            radius="6px"
+                            alt={review.content}
+                            src={image.url}
+                          />
+                        </div>
                       );
                     }
                     return null;
@@ -201,14 +214,15 @@ const ReviewItem = ({ review }: { review: IReview }) => {
           <Styled.ReviewNewReply>
             <div className="left">
               <ImageLazy
+                hover={false}
                 className="avatar"
                 alt="avatar"
-                src="https://nguoinoitieng.tv/images/nnt/97/0/bb65.jpg"
+                src={user?.avatar ? user?.avatar : ""}
               />
             </div>
             <div className="right">
               <div className="reply-user">
-                <span>Đang trả lời Dương Vương</span>
+                <span>Đang trả lời {review?.user?.name || ""}</span>
               </div>
               <div className="content">
                 <div className="input">
@@ -238,6 +252,14 @@ const ReviewItem = ({ review }: { review: IReview }) => {
           )}
         </div> */}
       </Styled.ReviewRight>
+      {isOpen && (
+        <LightBoxImages
+          title={`Đánh giá của ${review?.user?.name} về ${place?.name}`}
+          caption={review?.content}
+          onClick={() => setIsOpen(false)}
+          images={review?.images}
+        />
+      )}
     </Styled.ReviewItemWrap>
   );
 };

@@ -88,9 +88,6 @@ function AcceptPlace() {
                   .then(() => {
                     message.success(`đã phê duyệt địa điểm ${record.name}`);
                     navigate(path.admin.place);
-                  })
-                  .catch(() => {
-                    message.error(`Phê duyệt địa điểm thất bại!`);
                   });
               }}
               onCancel={() => null}
@@ -109,9 +106,6 @@ function AcceptPlace() {
                   .unwrap()
                   .then(() => {
                     message.success(`đã xoá địa điểm ${record.name}`);
-                  })
-                  .catch(() => {
-                    message.error(`Xoá địa điểm thất bại!`);
                   });
               }}
               onCancel={() => null}

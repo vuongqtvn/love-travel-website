@@ -119,6 +119,13 @@ export const NavLeft = styled.div`
       margin-right: 12px;
       transition: color 0.3s ease-in-out, border 0.1s ease-in-out;
       position: relative;
+      &.active {
+        color: #e03;
+        border-bottom: 4px solid #e03;
+      }
+      &:hover {
+        color: #e03;
+      }
       i {
         font-size: 20px;
         margin-right: 4px;

@@ -97,7 +97,7 @@ function ModifyAccountModal({ data, isShowModal, setIsShowModal }: Props) {
         })
         .catch(() => {
           setIsShowModal(null);
-          message.error("Cập nhật không thành công!");
+
           setLoading(false);
           modifyAccountForm.resetFields();
         });
@@ -132,7 +132,6 @@ function ModifyAccountModal({ data, isShowModal, setIsShowModal }: Props) {
         })
         .catch(() => {
           setIsShowModal(null);
-          message.error("tạo mới không thành công!");
           setLoading(false);
           modifyAccountForm.resetFields();
         });
@@ -313,21 +312,16 @@ function Categories() {
             <Popconfirm
               title="Bạn có muốn xoá loại hình này?"
               onConfirm={() => {
-                categoryApi
-                  .deleteCategory(record._id)
-                  .then(() => {
-                    dispatch(
-                      setGeneral({
-                        categories: [...categories].filter(
-                          (item) => item._id !== record._id
-                        ),
-                      })
-                    );
-                    message.success(`đã xoá loại hình ${record.name}`);
-                  })
-                  .catch(() => {
-                    message.error(`Xoá loại hình thất bại!`);
-                  });
+                categoryApi.deleteCategory(record._id).then(() => {
+                  dispatch(
+                    setGeneral({
+                      categories: [...categories].filter(
+                        (item) => item._id !== record._id
+                      ),
+                    })
+                  );
+                  message.success(`đã xoá loại hình ${record.name}`);
+                });
               }}
               onCancel={() => null}
               okText="Có"

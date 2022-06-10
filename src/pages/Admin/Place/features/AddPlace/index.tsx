@@ -210,7 +210,6 @@ const AddPlace = () => {
         navigate(path.admin.place);
       })
       .catch((error) => {
-        message.error(error.message);
         form.resetFields();
       })
       .finally(() => setIsAdd(false));

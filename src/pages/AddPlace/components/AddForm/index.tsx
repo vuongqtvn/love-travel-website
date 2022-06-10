@@ -219,7 +219,6 @@ const AddForm = () => {
         navigate("/");
       })
       .catch((error) => {
-        message.error(error.message);
         form.resetFields();
         setFileList({
           thumbnail: [],

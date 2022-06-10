@@ -51,7 +51,6 @@ const CardPlace = ({ place }: Props) => {
         message.success(`Đã lưu địa điểm ${place.name}`);
       })
       .catch((error) => {
-        message.error(error.message || "Có lỗi xãy ra");
         setLoadSaved(false);
       });
   };
@@ -74,7 +73,6 @@ const CardPlace = ({ place }: Props) => {
         setLoadSaved(false);
       })
       .catch((error) => {
-        message.error(error.message || "Có lỗi xãy ra");
         setLoadSaved(false);
       });
   };

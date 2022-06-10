@@ -1,9 +1,12 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Spin } from "antd";
 import React, { useEffect, useState } from "react";
 import { placeApi } from "../../api";
 import { setPlaceReview } from "../../pages/Review/reviewSlice";
 import { useAppDispatch } from "../../redux/hooks";
 import { PlaceType } from "../../types";
+import PlaceItem from "../PlaceItem";
+import PlaceItemLoading from "../PlaceItemLoading";
 import * as Styled from "./styles";
 
 const SearchModal = ({
@@ -16,7 +19,7 @@ const SearchModal = ({
   const dispatch = useAppDispatch();
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState<boolean>(false);
-  const [data, setData] = useState<PlaceType[] | []>([]);
+  const [searchData, setSearchData] = useState<PlaceType[] | []>([]);
 
   useEffect(() => {
     placeApi
@@ -24,7 +27,7 @@ const SearchModal = ({
         limit: 5,
         page: 1,
       })
-      .then((res: any) => setData(res.places))
+      .then((res: any) => setSearchData(res.places))
       .catch((error) => console.log(error))
       .finally(() => setLoading(false));
   }, []);
@@ -39,20 +42,19 @@ const SearchModal = ({
             limit: 5,
             page: 1,
           })
-          .then((res: any) => setData(res.places))
-          .catch((error) => console.log(error))
+          .then((res: any) => setSearchData(res.places))
           .finally(() => setLoading(false));
       }
     }, 1000);
 
     if (!search) {
-      setData([]);
+      setSearchData([]);
       setLoading(false);
     }
 
     return () => {
       clearTimeout(timer);
-      setData([]);
+      setSearchData([]);
       setLoading(false);
     };
   }, [search]);
@@ -96,29 +98,24 @@ const SearchModal = ({
               </div>
               <div className="search-content">
                 <div>
-                  {data.length > 0 &&
-                    data.map((item) => (
-                      <div
-                        className="search-item"
-                        onClick={() => {
-                          dispatch(setPlaceReview(item));
+                  {loading ? (
+                    [1, 2, 3, 4, 5].map((key) => <PlaceItemLoading key={key} />)
+                  ) : searchData.length === 0 ? (
+                    <div style={{ padding: 15, textAlign: "center" }}>
+                      <p>Không tìm thấy địa điểm nào!</p>
+                    </div>
+                  ) : (
+                    searchData.map((item) => (
+                      <PlaceItem
+                        place={item}
+                        key={item._id}
+                        onClick={(place) => {
+                          dispatch(setPlaceReview(place));
                           onClose();
                         }}
-                        key={item._id}
-                      >
-                        <div className="search-image">
-                          <img
-                            src={item.thumbnail}
-                            loading="lazy"
-                            alt={item.name}
-                          />
-                        </div>
-                        <div className="search-info">
-                          <div className="info-name">{item.name}</div>
-                          <div className="info-desc">{item.address}</div>
-                        </div>
-                      </div>
-                    ))}
+                      />
+                    ))
+                  )}
                 </div>
               </div>
             </div>
