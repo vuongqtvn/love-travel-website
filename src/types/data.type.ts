@@ -72,6 +72,7 @@ export type PlaceType = {
   tags: TagType[] | any;
   purposes: PurposeType[] | any;
   region: any;
+  posts: any;
   [x: string]: any;
 };
 

@@ -2,6 +2,14 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { userApi } from "../../api";
 import { PlaceType } from "../../types";
 import { IUser } from "../../types/auth.type";
+import { DeleteData, EditData } from "../../utils/helper";
+import {
+  createReviewComment,
+  deleteReview,
+  likeReview,
+  unlikeReview,
+  updateReview,
+} from "../Explore/exploreSlice";
 
 export interface ProfileState {
   posts: {
@@ -119,6 +127,45 @@ const profileSlice = createSlice({
       })
       .addCase(getProfile.rejected, (state, action) => {
         state.loading = false;
+      })
+      .addCase(likeReview.fulfilled, (state, action: any) => {
+        const posts = EditData(
+          [...state.posts.data],
+          action.payload.post._id,
+          action.payload.post
+        );
+        state.posts.data = posts;
+      })
+      .addCase(unlikeReview.fulfilled, (state, action: any) => {
+        const posts = EditData(
+          [...state.posts.data],
+          action.payload.post._id,
+          action.payload.post
+        );
+        state.posts.data = posts;
+      })
+      .addCase(updateReview.fulfilled, (state, action: any) => {
+        const posts = EditData(
+          [...state.posts.data],
+          action.payload.post._id,
+          action.payload.post
+        );
+        state.posts.data = posts;
+      })
+      .addCase(deleteReview.fulfilled, (state, action: any) => {
+        const posts = DeleteData(
+          [...state.posts.data],
+          action.payload.post._id
+        );
+        state.posts.data = posts;
+      })
+      .addCase(createReviewComment.fulfilled, (state, action: any) => {
+        const posts = EditData(
+          [...state.posts.data],
+          action.payload.post._id,
+          action.payload.post
+        );
+        state.posts.data = posts;
       })
       .addCase(updateUser.pending, (state) => {
         state.loading = true;

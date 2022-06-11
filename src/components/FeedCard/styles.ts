@@ -355,7 +355,7 @@ export const FeedCardNewReply = styled.div`
       cursor: default;
       font-size: 18px;
       color: rgba(238, 0, 51, 0.4);
-      .active {
+      &.active {
         color: #e03;
         cursor: pointer;
       }
@@ -373,19 +373,20 @@ export const FeedCardReplies = styled.div`
 export const FeedCardListReply = styled.div`
   text-align: center;
   margin-top: 8px;
+  cursor: pointer;
+
   span {
     font-weight: 500;
     color: #000;
+    &:hover {
+      text-decoration: underline;
+    }
   }
 `;
 
 export const ReplyItemWrap = styled.div`
   display: flex;
   padding-bottom: 10px;
-  span {
-    font-weight: 500;
-    color: #000;
-  }
 
   .left {
     text-align: center;
@@ -429,6 +430,7 @@ export const ReplyItemWrap = styled.div`
       div {
         p {
           margin-bottom: 0;
+          font-weight: 400;
         }
       }
     }

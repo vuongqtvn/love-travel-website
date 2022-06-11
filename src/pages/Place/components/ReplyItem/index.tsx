@@ -1,19 +1,20 @@
-import { Button, Typography, Input } from "antd";
-import React, { useState } from "react";
+import { Typography } from "antd";
+import moment from "moment";
+// import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { ImageLazy } from "../../../../components";
 import * as Styled from "./styles";
 
-const ReplyItem = () => {
-  const [reply, setReply] = useState(false);
+const ReplyItem = ({ comment }: { comment: any }) => {
+  // const [reply, setReply] = useState(false);
   return (
     <Styled.ReviewReplyItem>
       <div className="left-reply">
-        <Link to="/">
+        <Link to={comment?.user?._id ? `/profile/${comment?.user?._id}` : "/"}>
           <ImageLazy
             className="avatar"
-            alt="avatar"
-            src="https://nguoinoitieng.tv/images/nnt/97/0/bb65.jpg"
+            alt={comment?.user?.name || ""}
+            src={comment?.user?.avatar || ""}
           />
         </Link>
       </div>
@@ -21,17 +22,23 @@ const ReplyItem = () => {
         <div className="content">
           <div className="header">
             <div className="info">
-              <Link to="/">
+              <Link
+                to={comment?.user?._id ? `/profile/${comment?.user?._id}` : "/"}
+              >
                 <ImageLazy
                   className="avatar"
-                  alt="avatar"
-                  src="https://nguoinoitieng.tv/images/nnt/97/0/bb65.jpg"
+                  alt={comment?.user?.name || ""}
+                  src={comment?.user?.avatar || ""}
                 />
               </Link>
             </div>
             <div className="text">
-              <Link to="/">Hoàng Cao</Link>
-              <span>một tháng trước</span>
+              <Link
+                to={comment?.user?._id ? `/profile/${comment?.user?._id}` : "/"}
+              >
+                {comment?.user?.name || ""}
+              </Link>
+              <span>{moment(comment?.createdAt || new Date()).fromNow()}</span>
             </div>
           </div>
           <div className="body">
@@ -43,25 +50,16 @@ const ReplyItem = () => {
                     : false
                 }
               >
-                MOA là một tổ hợp mới mở với diện tích không gian lên đến 1500
-                mét vuông. Nếu các bạn còn nhớ thì trước đây, vị trí này từng là
-                quán Trill Bistro Không gian rất rộng, rất nhiều chỗ ngồi, khu
-                vực chính giữa còn có mái kính đón ánh sáng để các bạn tha hồ
-                chụp ảnh sống ảo. Mình chụp ảnh để review mà chỉnh mãi không hết
-                vì góc nào cũng đẹp quá, ngay cả khi mình lên bài cũng không thể
-                up hết được cho mọi người coi. Ban ngày quán bán cafe, đến tối
-                thì chuyển qua cocktail. Các bạn muốn negồi buổi tối nhớ book
-                lịch trước khi qua nhé. Còn đợi chờ gì nữa nhanh chân lên M.O.A
-                98 Hàng Buồm ngay thôi nào!!
+                {comment?.content || ""}
               </Typography.Paragraph>
             </div>
           </div>
         </div>
-        <Styled.ReviewAction>
+        {/* <Styled.ReviewAction>
           <div className="left">
             <button>
               <i className="bx bx-heart"></i>
-              {/* <i className="bx bxs-heart"></i> */}
+              <i className="bx bxs-heart"></i>
               <span>6 thích</span>
             </button>
             {!reply ? (
@@ -74,8 +72,8 @@ const ReplyItem = () => {
               </button>
             )}
           </div>
-        </Styled.ReviewAction>
-        {reply && (
+        </Styled.ReviewAction> */}
+        {/* {reply && (
           <Styled.ReviewNewReply>
             <div className="left">
               <ImageLazy
@@ -100,7 +98,7 @@ const ReplyItem = () => {
               </div>
             </div>
           </Styled.ReviewNewReply>
-        )}
+        )} */}
       </div>
     </Styled.ReviewReplyItem>
   );

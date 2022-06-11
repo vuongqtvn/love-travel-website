@@ -8,6 +8,7 @@ import * as Styled from "../../styles";
 import { IRegister } from "../../../../types/auth.type";
 import { closeAuth, register } from "../../authSlice";
 import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
+// import { useNavigate } from "react-router-dom";
 
 interface IProps {
   onClick: React.Dispatch<React.SetStateAction<boolean>>;
@@ -32,6 +33,7 @@ const RegisterForm = ({ onClick }: IProps) => {
   const [show, setShow] = useState<boolean>(false);
 
   const dispatch = useAppDispatch();
+  // const navigate = useNavigate();
 
   const {
     control,
@@ -51,6 +53,7 @@ const RegisterForm = ({ onClick }: IProps) => {
       .unwrap()
       .then((data: any) => {
         message.success(data.message);
+        // navigate(`/profile/${data.user._id}`);
         dispatch(closeAuth());
       });
   };

@@ -1,6 +1,8 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { placeApi } from "../../api";
+import { commentApi, placeApi } from "../../api";
+import reviewApi from "../../api/reviewApi";
 import { IReview, PlaceType, RequestState } from "../../types";
+import { EditData } from "../../utils/helper";
 
 export interface PlaceState {
   reviews: IReview[];
@@ -73,6 +75,25 @@ export const getPlaceRelated = createAsyncThunk(
   }
 );
 
+export const createPlaceReviewComment = createAsyncThunk(
+  "place/createPlaceReviewComment",
+  async (
+    { review, comment, socket }: { comment: any; review: any; socket: any },
+    { rejectWithValue }
+  ) => {
+    try {
+      const res = await commentApi.createComment({
+        ...comment,
+        postId: review._id,
+        postUserId: review.user._id,
+      });
+      return res;
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
+
 export const savePlace = createAsyncThunk(
   "place/savePlace",
   async (id: string, thunkApi) => {
@@ -93,6 +114,30 @@ export const unSavePlace = createAsyncThunk(
       return data;
     } catch (error) {
       return thunkApi.rejectWithValue(error);
+    }
+  }
+);
+
+export const likePlaceReview = createAsyncThunk(
+  "place/likePlaceReview",
+  async ({ id, socket }: { id: any; socket: any }, { rejectWithValue }) => {
+    try {
+      const res = await reviewApi.likeReview(id);
+      return res;
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
+
+export const unlikePlaceReview = createAsyncThunk(
+  "place/unlikePlaceReview",
+  async ({ id, socket }: { id: any; socket: any }, { rejectWithValue }) => {
+    try {
+      const res = await reviewApi.unlikeReview(id);
+      return res;
+    } catch (error) {
+      return rejectWithValue(error);
     }
   }
 );
@@ -133,6 +178,36 @@ const placeSlice = createSlice({
       .addCase(getPlace.rejected, (state, action) => {
         state.api.getPlace.status = "rejected";
         state.api.getPlace.error = action.payload;
+      })
+      .addCase(likePlaceReview.fulfilled, (state, action: any) => {
+        if (state.place) {
+          const posts = EditData(
+            [...state.place?.posts],
+            action.payload.post._id,
+            action.payload.post
+          );
+          state.place = { ...state.place, posts: posts };
+        }
+      })
+      .addCase(unlikePlaceReview.fulfilled, (state, action: any) => {
+        if (state.place) {
+          const posts = EditData(
+            [...state.place?.posts],
+            action.payload.post._id,
+            action.payload.post
+          );
+          state.place = { ...state.place, posts: posts };
+        }
+      })
+      .addCase(createPlaceReviewComment.fulfilled, (state, action: any) => {
+        if (state.place) {
+          const posts = EditData(
+            [...state.place?.posts],
+            action.payload.post._id,
+            action.payload.post
+          );
+          state.place = { ...state.place, posts: posts };
+        }
       })
       .addCase(getReviews.pending, (state) => {
         state.api.getReviews.status = "pending";

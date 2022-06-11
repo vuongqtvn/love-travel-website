@@ -37,6 +37,7 @@ export const UserItemWrap = styled.div`
       font-size: 14px;
       color: #7a7a7a;
       button {
+        cursor: pointer;
         display: inline-flex;
         justify-content: center;
         align-items: center;

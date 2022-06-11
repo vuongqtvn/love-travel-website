@@ -1,23 +1,33 @@
 import { Button, Input, Popover, Space, Tooltip, Typography } from "antd";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Box, ImageLazy, LightBoxImages } from "../../../../components";
 import { colors } from "../../../../theme/colors";
 import { StarFilled } from "@ant-design/icons";
-// import ReplyItem from "../ReplyItem";
 import moment from "moment";
 import * as Styled from "./styles";
 import { IReview } from "../../../../types";
-import { useAppSelector } from "../../../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
+
+import ReplyItem from "../ReplyItem";
+import {
+  createPlaceReviewComment,
+  likePlaceReview,
+  unlikePlaceReview,
+} from "../../placeSlice";
+import { openAuth } from "../../../Auth/authSlice";
 
 const ReviewItem = ({ review }: { review: IReview }) => {
   const { user } = useAppSelector((state) => state.auth);
   const { place } = useAppSelector((state) => state.place);
   const [reply, setReply] = useState(false);
+  const [content, setContent] = useState<string>("");
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
-  // const [showMore, setShowMore] = useState(false);
 
-  const content = (
+  const dispatch = useAppDispatch();
+  const [showMore, setShowMore] = useState(false);
+
+  const contentPopover = (
     <Box flexDirection="column">
       <Space>
         <span>Vị trí</span>
@@ -77,6 +87,65 @@ const ReviewItem = ({ review }: { review: IReview }) => {
     </Box>
   );
 
+  const [isLike, setIsLike] = useState(false);
+  const [loadLike, setLoadLike] = useState(false);
+
+  useEffect(() => {
+    if (review?.likes && user?._id) {
+      if (review.likes.find((like: any) => like._id === user._id)) {
+        setIsLike(true);
+      } else {
+        setIsLike(false);
+      }
+    }
+  }, [review?.likes, user?._id]);
+
+  const handleLikeReview = async () => {
+    if (!user) {
+      return dispatch(openAuth());
+    }
+    if (loadLike) return;
+    setLoadLike(true);
+    await dispatch(likePlaceReview({ id: review._id, socket: null }));
+    setLoadLike(false);
+  };
+
+  const handleUnlikeReview = async () => {
+    if (!user) {
+      return dispatch(openAuth());
+    }
+    if (loadLike) return;
+    setLoadLike(true);
+    await dispatch(unlikePlaceReview({ id: review._id, socket: null }));
+    setLoadLike(false);
+  };
+
+  const handleAddComment = async () => {
+    if (!content.trim()) {
+      return setReply(false);
+    }
+
+    const newComment = {
+      content,
+      likes: [],
+      user: user,
+      createdAt: new Date().toISOString(),
+      reply: null,
+      tag: null,
+    };
+
+    await dispatch(
+      createPlaceReviewComment({
+        review: review,
+        comment: newComment,
+        socket: null,
+      })
+    );
+
+    setContent("");
+    setReply(false);
+  };
+
   return (
     <Styled.ReviewItemWrap>
       <Styled.ReviewLeft>
@@ -128,7 +197,7 @@ const ReviewItem = ({ review }: { review: IReview }) => {
               </div>
             </div>
             <div className="review-vote">
-              <Popover content={content}>
+              <Popover content={contentPopover}>
                 <span className="star">
                   <b>{review.rateAvg.toFixed(1)}</b>
                 </span>
@@ -199,17 +268,35 @@ const ReviewItem = ({ review }: { review: IReview }) => {
         </Styled.ReviewContent>
         <Styled.ReviewAction>
           <div className="left">
-            <button>
-              <i className="bx bx-heart"></i>
-              {/* <i className="bx bxs-heart"></i> */}
-              <span>
-                {review.comments.length
-                  ? `${review.comments.length} Thích`
-                  : "Thích"}
-              </span>
-            </button>
+            {!isLike ? (
+              <button onClick={handleLikeReview}>
+                <i className="bx bx-heart"></i>
+                <span>
+                  {review.likes.length
+                    ? `${review.likes.length} Thích`
+                    : "Thích"}
+                </span>
+              </button>
+            ) : (
+              <button onClick={handleUnlikeReview} className="active">
+                <i className="bx bxs-heart"></i>
+                <span>
+                  {review.likes.length
+                    ? `${review.likes.length} Thích`
+                    : "Thích"}
+                </span>
+              </button>
+            )}
+
             {!reply ? (
-              <button onClick={() => setReply(true)}>
+              <button
+                onClick={() => {
+                  if (!user) {
+                    return dispatch(openAuth());
+                  }
+                  setReply(true);
+                }}
+              >
                 <span>Trả lời</span>
               </button>
             ) : (
@@ -235,10 +322,24 @@ const ReviewItem = ({ review }: { review: IReview }) => {
               </div>
               <div className="content">
                 <div className="input">
-                  <Input.TextArea autoSize />
+                  <Input.TextArea
+                    autoSize
+                    value={content}
+                    onChange={(e) => setContent(e.target.value)}
+                    onPressEnter={(e) => {
+                      e.preventDefault();
+                      handleAddComment();
+                    }}
+                  />
                 </div>
                 <div className="submit">
-                  <Button type="primary" shape="round">
+                  <Button
+                    type="primary"
+                    shape="round"
+                    onClick={() => {
+                      handleAddComment();
+                    }}
+                  >
                     Đăng
                   </Button>
                 </div>
@@ -246,20 +347,24 @@ const ReviewItem = ({ review }: { review: IReview }) => {
             </div>
           </Styled.ReviewNewReply>
         )}
-        {/* <div>
-          {!showMore ? (
+        <div>
+          {review?.comments?.length > 0 && !showMore && (
             <Styled.ReviewReply onClick={() => setShowMore(true)}>
               <span>
                 <i className="bx bx-comment-dots"></i>
-                Xem 1 trả lời cho Dương Vương
+                Xem {review.comments.length} trả lời cho Dương Vương
               </span>
             </Styled.ReviewReply>
-          ) : (
+          )}
+
+          {showMore && (
             <Styled.ReviewReplyContainer>
-              <ReplyItem />
+              {review.comments.map((comment: any, key: any) => (
+                <ReplyItem comment={comment} />
+              ))}
             </Styled.ReviewReplyContainer>
           )}
-        </div> */}
+        </div>
       </Styled.ReviewRight>
       {isOpen && (
         <LightBoxImages

@@ -1,16 +1,23 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Dropdown, Input, message, Modal, Rate, Typography } from "antd";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { colors } from "../../theme/colors";
 import ImageLazy from "../ImageLazy";
 import * as Styled from "./styles";
 import moment from "moment";
 import LightboxImages from "../LightBoxImages";
-import { useAppSelector } from "../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import ReplyItem from "./ReplyItem";
 import ReviewModal from "../ReviewModal";
-import reviewApi from "../../api/reviewApi";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
+import {
+  createReviewComment,
+  deleteReview,
+  likeReview,
+  unlikeReview,
+} from "../../pages/Explore/exploreSlice";
+import classNames from "classnames";
+import { openAuth } from "../../pages/Auth/authSlice";
 
 type Props = {
   feed: any;
@@ -18,7 +25,7 @@ type Props = {
 
 const Setting = ({ user, review }: { user: any; review: any }) => {
   const auth = useAppSelector((state) => state.auth);
-  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   const [isOpenReview, setIsOpenReview] = React.useState<boolean>(false);
 
   const showPromiseConfirm = () => {
@@ -26,11 +33,12 @@ const Setting = ({ user, review }: { user: any; review: any }) => {
       zIndex: 10000,
       title: "Bạn có chắc chắn muốn xoá bài viết này?",
       icon: <ExclamationCircleOutlined />,
+      cancelText: "Không",
+      okText: "Có",
       onOk() {
-        return reviewApi.deleteReviewUser(review._id).then(() => {
-          navigate(0);
-          message.success("Xoá bài viết thành công!");
-        });
+        return dispatch(deleteReview({ id: review._id, socket: null }))
+          .unwrap()
+          .then(() => message.success("Xoá bài đánh giá thành công!"));
       },
       onCancel() {},
     });
@@ -69,7 +77,9 @@ const Setting = ({ user, review }: { user: any; review: any }) => {
 
 const FeedCard = ({ feed }: Props) => {
   const { user } = useAppSelector((state) => state.auth);
+  const dispatch = useAppDispatch();
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
+  const [content, setContent] = useState<string>("");
   const [showComment, setShowComment] = React.useState<boolean>(false);
 
   const renderImages = (images: any) => {
@@ -167,6 +177,65 @@ const FeedCard = ({ feed }: Props) => {
     return null;
   };
 
+  const [isLike, setIsLike] = useState(false);
+  const [loadLike, setLoadLike] = useState(false);
+  // const [isShare, setIsShare] = useState(false);
+
+  useEffect(() => {
+    if (feed?.likes && user?._id) {
+      if (feed.likes.find((like: any) => like._id === user._id)) {
+        setIsLike(true);
+      } else {
+        setIsLike(false);
+      }
+    }
+  }, [feed?.likes, user?._id]);
+
+  const handleLikeReview = async () => {
+    if (!user) {
+      return dispatch(openAuth());
+    }
+    if (loadLike) return;
+    setLoadLike(true);
+    await dispatch(likeReview({ id: feed._id, socket: null }));
+    setLoadLike(false);
+  };
+
+  const handleUnlikeReview = async () => {
+    if (!user) {
+      return dispatch(openAuth());
+    }
+    if (loadLike) return;
+    setLoadLike(true);
+    await dispatch(unlikeReview({ id: feed._id, socket: null }));
+    setLoadLike(false);
+  };
+
+  const handleAddComment = async () => {
+    if (!content.trim()) {
+      return;
+    }
+
+    const newComment = {
+      content,
+      likes: [],
+      user: user,
+      createdAt: new Date().toISOString(),
+      reply: null,
+      tag: null,
+    };
+
+    await dispatch(
+      createReviewComment({
+        review: feed,
+        comment: newComment,
+        socket: null,
+      })
+    );
+
+    setContent("");
+  };
+
   return (
     <Styled.FeedCardWrap>
       <Styled.FeedCardHeader>
@@ -228,12 +297,21 @@ const FeedCard = ({ feed }: Props) => {
         <div className="images-wrap">{renderImages(feed.images)}</div>
       </Styled.FeedCardBody>
       <Styled.FeedCardAction>
-        <button>
-          <i className="bx bx-heart"></i>
-          <span>
-            {feed?.likes?.length ? `${feed?.likes?.length} Thích` : "Thích"}
-          </span>
-        </button>
+        {isLike ? (
+          <button onClick={handleUnlikeReview} className="active">
+            <i className="bx bxs-heart"></i>
+            <span>
+              {feed?.likes?.length ? `${feed?.likes?.length} Thích` : "Thích"}
+            </span>
+          </button>
+        ) : (
+          <button onClick={handleLikeReview}>
+            <i className="bx bx-heart"></i>
+            <span>
+              {feed?.likes?.length ? `${feed?.likes?.length} Thích` : "Thích"}
+            </span>
+          </button>
+        )}
         <button>
           <i className="bx bx-comment"></i>
           <span>Bình luận</span>
@@ -250,11 +328,20 @@ const FeedCard = ({ feed }: Props) => {
             <Input.TextArea
               onPressEnter={(e) => {
                 e.preventDefault();
+                handleAddComment();
               }}
               autoSize
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
               placeholder="Viết bình luận..."
             />
-            <i className="bx bxs-paper-plane"></i>
+            <i
+              className={classNames("bx bxs-paper-plane", { active: content })}
+              onClick={() => {
+                if (!content) return;
+                handleAddComment();
+              }}
+            />
           </div>
         </Styled.FeedCardNewReply>
       )}

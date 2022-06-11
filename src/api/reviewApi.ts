@@ -21,6 +21,12 @@ const reviewApi = {
   deleteReviewUser: (id: any) => {
     return axiosClient.delete(`/user_post/${id}`);
   },
+  likeReview: (id: any) => {
+    return axiosClient.get(`/post/like/${id}`);
+  },
+  unlikeReview: (id: any) => {
+    return axiosClient.get(`/post/unlike/${id}`);
+  },
 };
 
 export default reviewApi;

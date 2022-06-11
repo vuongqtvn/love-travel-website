@@ -8,6 +8,7 @@ import * as Styled from "../../styles";
 import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
 import { ILogin } from "../../../../types/auth.type";
 import { closeAuth, login } from "../../authSlice";
+// import { useNavigate } from "react-router-dom";
 
 const schema = yup
   .object({
@@ -31,6 +32,7 @@ const LoginForm = ({ onClick }: IProps) => {
   const [show, setShow] = useState<boolean>(false);
 
   const dispatch = useAppDispatch();
+  // const navigate = useNavigate();
 
   const {
     control,
@@ -49,6 +51,7 @@ const LoginForm = ({ onClick }: IProps) => {
       .unwrap()
       .then((data: any) => {
         message.success(data.message);
+        // navigate(`/profile/${data.user._id}`);
         dispatch(closeAuth());
       });
   };

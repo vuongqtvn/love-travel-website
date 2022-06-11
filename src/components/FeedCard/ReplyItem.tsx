@@ -9,6 +9,7 @@ const ReplyItem = ({ comment }: { comment: any }) => {
     <Styled.ReplyItemWrap>
       <div className="left">
         <ImageLazy
+          className="avatar"
           alt={comment?.user?.name || "avatar"}
           src={comment?.user?.avatar || ""}
         />
@@ -25,19 +26,19 @@ const ReplyItem = ({ comment }: { comment: any }) => {
             <p>{comment?.content}</p>
           </div>
         </div>
-        <div className="action">
+        {/* <div className="action">
           <div className="action-left">
             <button>
               <i className="bx bx-heart"></i>
               <span>
                 {comment.likes.length
-                  ? `${comment.likes.length} Thích`
-                  : "Thích"}
+                  ? ` ${comment.likes.length} Thích`
+                  : " Thích"}
               </span>
             </button>
             <button>Trả lời</button>
           </div>
-        </div>
+        </div> */}
       </div>
     </Styled.ReplyItemWrap>
   );

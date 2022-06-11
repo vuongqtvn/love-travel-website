@@ -1,15 +1,16 @@
 import React, { useEffect, useRef, useState } from "react";
 import { CloseOutlined, CameraOutlined } from "@ant-design/icons";
 import { Button, Input, message, Rate } from "antd";
-import { useNavigate } from "react-router-dom";
 import { imageUpload } from "../../utils/imageUpload";
 import * as Styled from "./styles";
 import { colors } from "../../theme/colors";
 import { imageShow, videoShow } from "../../utils/mediaShow";
-import reviewApi from "../../api/reviewApi";
+import { useAppDispatch } from "../../redux/hooks";
+import { updateReview } from "../../pages/Explore/exploreSlice";
 
 const UpdateForm = ({ review, onClose }: { review: any; onClose: any }) => {
-  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+
   const desc = ["Tệ", "Khá tệ", "Trung bình", "Tốt", "Tuyệt vời"];
   const fileRef = useRef<any>();
   const [content, setContent] = useState<any>("");
@@ -110,19 +111,23 @@ const UpdateForm = ({ review, onClose }: { review: any; onClose: any }) => {
       media = await imageUpload(imgNewUrl);
     }
 
-    reviewApi
-      .updateReview(review._id, {
-        ...rate,
-        images: [...imgOldUrl, ...media],
-        content,
+    dispatch(
+      updateReview({
+        id: review._id,
+        data: {
+          ...rate,
+          images: [...imgOldUrl, ...media],
+          content,
+        },
       })
+    )
+      .unwrap()
       .then(() => {
         message.success("Cập nhật bài viết thành công!");
         setContent("");
         setImages([]);
         setLoading(false);
         onClose();
-        navigate(0);
       })
       .catch((error: any) => {
         setLoading(false);
