@@ -22,6 +22,7 @@ const Explore = lazy(() => import("../pages/Explore"));
 const Map = lazy(() => import("../pages/Map"));
 const Place = lazy(() => import("../pages/Place"));
 const AddPlace = lazy(() => import("../pages/AddPlace"));
+const UpdatePlace = lazy(() => import("../pages/UpdatePlace"));
 const Promo = lazy(() => import("../pages/Promo"));
 const Review = lazy(() => import("../pages/Review"));
 const Saved = lazy(() => import("../pages/Saved"));
@@ -37,6 +38,7 @@ const publicRoute = [
   { path: path.promo, component: Promo, layout: MainLayout },
   { path: path.map, component: Map, layout: MainLayout },
   { path: path.profile, component: Profile, layout: UserLayout },
+  { path: "/edit-place/:id", component: UpdatePlace, layout: UserLayout },
   { path: path.saved, component: Saved, layout: UserLayout },
   { path: path.addPlace, component: AddPlace, layout: UserLayout },
   { path: path.notFound, component: NotFound, layout: MainLayout },

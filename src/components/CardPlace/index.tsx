@@ -1,9 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Rate, Tooltip, Button, Grid, message } from "antd";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import path from "../../constants/path";
 import ImageLazy from "../ImageLazy";
-import { HeartOutlined, HeartFilled, LoadingOutlined } from "@ant-design/icons";
+import {
+  HeartOutlined,
+  HeartFilled,
+  LoadingOutlined,
+  EditOutlined,
+} from "@ant-design/icons";
 
 import * as Styled from "./styles";
 import { PlaceType } from "../../types";
@@ -13,12 +18,14 @@ import { openAuth, setUser } from "../../pages/Auth/authSlice";
 
 type Props = {
   place: PlaceType;
+  edit?: boolean;
 };
 
-const CardPlace = ({ place }: Props) => {
+const CardPlace = ({ place, edit = false }: Props) => {
   const { user, token } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
   const screens = Grid.useBreakpoint();
+  const navigate = useNavigate();
 
   const [saved, setSaved] = useState(false);
   const [loadSaved, setLoadSaved] = useState(false);
@@ -131,36 +138,50 @@ const CardPlace = ({ place }: Props) => {
           </div>
         </div>
       </Styled.PlaceCard>
-      <Tooltip
-        placement="bottom"
-        title={!saved ? "Lưu địa điểm này" : "Đã lưu địa điểm này"}
-      >
-        <Styled.PlaceSaveButton>
-          {loadSaved ? (
+      {edit ? (
+        <Tooltip placement="bottom" title={`Chỉnh sửa địa điểm`}>
+          <Styled.PlaceSaveButton>
             <Button
+              disabled={user?._id !== place.user._id}
               size={screens.lg ? "middle" : "small"}
               shape="circle"
-              icon={<LoadingOutlined />}
-              onClick={handleSavePlace}
+              icon={<EditOutlined />}
+              onClick={() => navigate(`/edit-place/${place._id}`)}
             />
-          ) : !saved ? (
-            <Button
-              size={screens.lg ? "middle" : "small"}
-              shape="circle"
-              icon={<HeartOutlined />}
-              onClick={handleSavePlace}
-            />
-          ) : (
-            <Button
-              size={screens.lg ? "middle" : "small"}
-              danger
-              shape="circle"
-              onClick={handleUnSavePlace}
-              icon={<HeartFilled />}
-            />
-          )}
-        </Styled.PlaceSaveButton>
-      </Tooltip>
+          </Styled.PlaceSaveButton>
+        </Tooltip>
+      ) : (
+        <Tooltip
+          placement="bottom"
+          title={!saved ? "Lưu địa điểm này" : "Đã lưu địa điểm này"}
+        >
+          <Styled.PlaceSaveButton>
+            {loadSaved ? (
+              <Button
+                size={screens.lg ? "middle" : "small"}
+                shape="circle"
+                icon={<LoadingOutlined />}
+                onClick={handleSavePlace}
+              />
+            ) : !saved ? (
+              <Button
+                size={screens.lg ? "middle" : "small"}
+                shape="circle"
+                icon={<HeartOutlined />}
+                onClick={handleSavePlace}
+              />
+            ) : (
+              <Button
+                size={screens.lg ? "middle" : "small"}
+                danger
+                shape="circle"
+                onClick={handleUnSavePlace}
+                icon={<HeartFilled />}
+              />
+            )}
+          </Styled.PlaceSaveButton>
+        </Tooltip>
+      )}
     </Styled.PlaceItem>
   );
 };

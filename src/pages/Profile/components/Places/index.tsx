@@ -42,7 +42,7 @@ const Places = ({ id }: { id: any }) => {
             {places.loading
               ? [1, 2, 3, 4, 5].map((item) => <CardPlaceSkeleton key={item} />)
               : places.data.map((place: any, key: any) => (
-                  <CardPlace place={place} key={key} />
+                  <CardPlace edit place={place} key={key} />
                 ))}
             <div
               style={{

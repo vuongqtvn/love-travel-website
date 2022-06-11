@@ -14,6 +14,7 @@ import adminReviewSlice from "../pages/Admin/Review/adminReviewSlice";
 import AdminGeneralSlice from "../pages/Admin/General/generalAdminSlice";
 import savedSlice from "../pages/Saved/savedSlice";
 import profileSlice from "../pages/Profile/profileSlice";
+import updatePlaceSlice from "../pages/UpdatePlace/updatePlaceSlice";
 
 const rootReducer = {
   mapModal: mapModalSlice,
@@ -29,6 +30,7 @@ const rootReducer = {
   adminReview: adminReviewSlice,
   adminGeneral: AdminGeneralSlice,
   addPlace: addPlaceSlice,
+  updatePlace: updatePlaceSlice,
   saved: savedSlice,
   profile: profileSlice,
   app: appSlice,

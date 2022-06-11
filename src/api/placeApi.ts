@@ -20,6 +20,9 @@ const placeApi = {
   getPlaceAdmin(id: string) {
     return axiosClient.get(`/places-admin/${id}`);
   },
+  getPlaceUser(id: string) {
+    return axiosClient.get(`/places-user/${id}`);
+  },
   addPlace(data: any) {
     return axiosClient.post(`/places`, data);
   },
@@ -28,6 +31,9 @@ const placeApi = {
   },
   editPlace(id: string, data: any) {
     return axiosClient.put(`/places/${id}`, data);
+  },
+  updatePlaceUser(id: string, data: any) {
+    return axiosClient.put(`/places-user/${id}`, data);
   },
   deletePlace(id: string) {
     return axiosClient.delete(`/places/${id}`);
