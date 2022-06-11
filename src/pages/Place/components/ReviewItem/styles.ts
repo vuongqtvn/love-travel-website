@@ -231,6 +231,10 @@ export const ReviewAction = styled.div`
           margin: 0 6px;
         }
       }
+      &.active {
+        font-weight: 500;
+        color: #e03;
+      }
       &.cancel {
         padding: 3px 10px;
         border-radius: 4px;

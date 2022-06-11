@@ -9,7 +9,6 @@ import { reviewPlace } from "../../reviewSlice";
 import { imageUpload } from "../../../../utils/imageUpload";
 import { LoadingOverlay } from "../../../../components";
 import { useNavigate } from "react-router-dom";
-import path from "../../../../constants/path";
 
 const ReviewForm = () => {
   const { placeSelected } = useAppSelector((state) => state.review);
@@ -97,9 +96,9 @@ const ReviewForm = () => {
       })
     )
       .unwrap()
-      .then((res) => {
+      .then(() => {
         message.success("review địa điểm thành công!");
-        navigate(path.home);
+        navigate(`/place/${placeSelected._id}`, { replace: true });
         setContent("");
         setImages([]);
         setLoading(false);
@@ -237,13 +236,13 @@ const ReviewForm = () => {
           }}
           icon={<CameraOutlined />}
         >
-          Thêm ảnh hoặc video
+          Thêm ảnh
         </Button>
         <input
           ref={fileRef}
           type="file"
           multiple
-          accept="video/*,image/*"
+          accept="image/*"
           hidden
           onChange={handleChangeImages}
         />

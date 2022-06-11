@@ -15,6 +15,12 @@ const reviewApi = {
       params,
     });
   },
+  updateReview: (id: any, data: any) => {
+    return axiosClient.patch(`/post/${id}`, data);
+  },
+  deleteReviewUser: (id: any) => {
+    return axiosClient.delete(`/user_post/${id}`);
+  },
 };
 
 export default reviewApi;

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useLayoutEffect } from "react";
 import { images } from "../../../../assets";
 import { useAppSelector } from "../../../../redux/hooks";
 
@@ -7,7 +7,7 @@ import * as Styled from "./styles";
 const Following = ({ id }: { id?: any }) => {
   const { profile } = useAppSelector((state) => state.profile);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 

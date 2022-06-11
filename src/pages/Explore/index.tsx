@@ -1,5 +1,5 @@
 import { Pagination, PaginationProps } from "antd";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { images } from "../../assets";
 import {
@@ -45,7 +45,7 @@ const Explore = (props: Props) => {
     };
   }, [dispatch]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     window.scrollTo(0, 0);
   }, [page]);
 

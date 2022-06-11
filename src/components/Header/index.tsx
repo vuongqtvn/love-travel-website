@@ -18,8 +18,8 @@ import {
 import Box from "../Box";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { logout, openAuth } from "../../pages/Auth/authSlice";
-import path from "../../constants/path";
 import { colors } from "../../theme/colors";
+import moment from "moment";
 
 type Props = {};
 
@@ -55,6 +55,43 @@ const menuList = [
     icon: Icons.BellOutlined,
   },
 ];
+
+const UserSetting = ({ user }: any) => {
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+  return (
+    <Styled.SettingDropdown>
+      <div className="header">
+        <img src={user.avatar} alt={user.name} />
+        <div className="info">
+          <span className="name">{user.name}</span>
+          <span className="role">
+            {user.role === "admin"
+              ? "Quản trị viên"
+              : moment(user.createdAt).format("L")}
+          </span>
+        </div>
+      </div>
+      <div className="list-item">
+        <div className="item" onClick={() => navigate(`/profile/${user._id}`)}>
+          <i className="bx bx-user-pin"></i>
+          <span>Xem hồ sơ</span>
+        </div>
+        {user.role === "admin" && (
+          <div className="item" onClick={() => navigate(`/admin`)}>
+            <i className="bx bx-check-shield"></i>
+            <span>Trang quản lý</span>
+          </div>
+        )}
+        <div className="item" onClick={() => dispatch(logout())}>
+          <i className="bx bx-power-off"></i>
+          <span>Đăng xuất</span>
+        </div>
+      </div>
+    </Styled.SettingDropdown>
+  );
+};
 
 const Header = (props: Props) => {
   const navigate = useNavigate();
@@ -150,41 +187,7 @@ const Header = (props: Props) => {
             <div className="nav-item">
               {user?.email ? (
                 <Dropdown
-                  overlay={
-                    <Menu>
-                      {user.role === "admin" && (
-                        <Menu.Item>
-                          <Space
-                            size={5}
-                            align="center"
-                            onClick={() => navigate(path.admin.home)}
-                          >
-                            <Icons.SafetyCertificateOutlined />
-                            <span>Trang Admin</span>
-                          </Space>
-                        </Menu.Item>
-                      )}
-                      <Menu.Item>
-                        <Space
-                          size={5}
-                          align="center"
-                          onClick={() => navigate(`/profile/${user?._id}`)}
-                        >
-                          <Icons.FireOutlined /> <span>Xem hồ sơ</span>
-                        </Space>
-                      </Menu.Item>
-
-                      <Menu.Item>
-                        <Space
-                          size={5}
-                          align="center"
-                          onClick={() => dispatch(logout())}
-                        >
-                          <Icons.LogoutOutlined /> <span>Đăng xuất</span>
-                        </Space>
-                      </Menu.Item>
-                    </Menu>
-                  }
+                  overlay={<UserSetting user={user} />}
                   placement="bottomRight"
                   arrow
                   trigger={["click"]}

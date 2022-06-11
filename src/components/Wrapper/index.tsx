@@ -7,6 +7,7 @@ type Props = {
 
 const Wrapper = ({ children }: Props) => {
   const location = useLocation();
+
   useLayoutEffect(() => {
     document.documentElement.scrollTo(0, 0);
   }, [location]);

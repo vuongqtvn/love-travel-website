@@ -43,6 +43,7 @@ const Info = () => {
               <ImgCrop shape="round" modalTitle="Chỉnh sửa ảnh đại diện" rotate>
                 <Upload
                   accept="image/*"
+                  itemRender={() => null}
                   beforeUpload={() => false}
                   onChange={(value) => handleUploadAvatar(value)}
                   onPreview={() => false}

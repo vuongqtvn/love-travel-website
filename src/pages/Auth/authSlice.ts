@@ -3,6 +3,7 @@ import { setToken } from "../../api";
 import authApi from "../../api/authApi";
 import { RequestState } from "../../types";
 import { ILogin, IRegister, IUser } from "../../types/auth.type";
+import { updateUser } from "../Profile/profileSlice";
 
 interface AuthState {
   open: boolean;
@@ -131,6 +132,9 @@ const authSlice = createSlice({
       .addCase(refreshToken.rejected, (state) => {
         state.api.refreshToken.status = "rejected";
         localStorage.removeItem("token");
+      })
+      .addCase(updateUser.fulfilled, (state, action: any) => {
+        state.user = action.payload.user;
       });
   },
 });

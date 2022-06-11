@@ -18,7 +18,7 @@ import {
   TagsOutlined,
   CheckCircleOutlined,
 } from "@ant-design/icons";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import {
   Box,
@@ -26,6 +26,7 @@ import {
   MapModal,
   Place,
   PlaceSkeleton,
+  ReviewModal,
   Section,
 } from "../../components";
 import path from "../../constants/path";
@@ -38,16 +39,23 @@ import * as Styled from "./styles";
 import { images } from "../../assets";
 import ReviewItem from "./components/ReviewItem";
 import { IReview } from "../../types";
+import { openAuth } from "../Auth/authSlice";
 
 type Props = {};
 
 const PlaceDetail = (props: Props) => {
   const { id } = useParams();
   const { place, placesRelated, api } = useAppSelector((state) => state.place);
+  const { user } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   const [showMap, setShowMap] = useState<boolean>(false);
+  const [addReview, setAddReview] = useState<boolean>(false);
+
+  useLayoutEffect(() => {
+    document.documentElement.scrollTo(0, 0);
+  }, []);
 
   useEffect(() => {
     if (id) {
@@ -276,7 +284,17 @@ const PlaceDetail = (props: Props) => {
                     place?.posts.length > 0 ? place?.posts.length : 0
                   })`}</span>
                 </h2>
-                <Button type="primary" shape="round">
+                <Button
+                  type="primary"
+                  shape="round"
+                  onClick={() => {
+                    if (!user) {
+                      dispatch(openAuth());
+                    } else {
+                      setAddReview(true);
+                    }
+                  }}
+                >
                   Viết đánh giá
                 </Button>
               </div>
@@ -361,6 +379,14 @@ const PlaceDetail = (props: Props) => {
           place={place}
           title={place?.name}
           onClose={() => setShowMap(false)}
+        />
+      )}
+
+      {addReview && place && (
+        <ReviewModal
+          mode="add"
+          place={place}
+          onClose={() => setAddReview(false)}
         />
       )}
     </Section>

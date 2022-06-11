@@ -200,3 +200,80 @@ export const MenuDrawerTitle = styled.div`
   color: rgba(0, 0, 0, 0.85);
   font-weight: 500;
 `;
+
+export const SettingDropdown = styled.div`
+  position: absolute;
+  top: calc(100%);
+  right: 0;
+  bottom: auto;
+  left: auto;
+  z-index: 100;
+  width: 200px;
+  background: #fff;
+  border: none;
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 15%);
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    cursor: pointer;
+    padding: 8px 14px;
+    color: #000;
+    border-bottom: 1px solid #eee;
+    img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    .info {
+      padding-left: 8px;
+      overflow: hidden;
+      .name {
+        display: block;
+        color: #000;
+        font-size: 16px;
+        font-weight: 600;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+      .role {
+        display: block;
+        color: #000;
+        font-size: 12px;
+        font-weight: 600;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+    }
+  }
+  .list-item {
+    .item {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      cursor: pointer;
+      font-size: 16px;
+      padding: 8px 16px;
+      color: #000;
+      font-weight: 600;
+      transition: all 0.15s ease;
+      &:hover {
+        color: #e03;
+        background: #f6f6f6;
+      }
+      i {
+        position: relative;
+        top: 1px;
+        width: 28px;
+        font-size: 20px;
+        padding-right: 6px;
+        margin-right: 0;
+      }
+    }
+  }
+`;

@@ -1,4 +1,4 @@
-import { Button, Input, Popover, Space, Typography } from "antd";
+import { Button, Input, Popover, Space, Tooltip, Typography } from "antd";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Box, ImageLazy, LightBoxImages } from "../../../../components";
@@ -90,12 +90,17 @@ const ReviewItem = ({ review }: { review: IReview }) => {
             src={review.user.avatar}
           />
         </Link>
-        <div className="review-count">
-          <span>
-            <i className="bx bx-edit"></i>
-          </span>
-          <span>{review?.user?.posts?.length || 0}</span>
-        </div>
+        <Tooltip
+          placement="right"
+          title={`${review?.user?.posts?.length || 0} lần đánh giá`}
+        >
+          <div className="review-count">
+            <span>
+              <i className="bx bx-edit"></i>
+            </span>
+            <span>{review?.user?.posts?.length || 0}</span>
+          </div>
+        </Tooltip>
       </Styled.ReviewLeft>
       <Styled.ReviewRight>
         <Styled.ReviewContent>
@@ -197,7 +202,11 @@ const ReviewItem = ({ review }: { review: IReview }) => {
             <button>
               <i className="bx bx-heart"></i>
               {/* <i className="bx bxs-heart"></i> */}
-              <span>{review.comments.length} thích</span>
+              <span>
+                {review.comments.length
+                  ? `${review.comments.length} Thích`
+                  : "Thích"}
+              </span>
             </button>
             {!reply ? (
               <button onClick={() => setReply(true)}>

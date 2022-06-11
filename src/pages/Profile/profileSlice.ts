@@ -2,7 +2,6 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { userApi } from "../../api";
 import { PlaceType } from "../../types";
 import { IUser } from "../../types/auth.type";
-import { setUser } from "../Auth/authSlice";
 
 export interface ProfileState {
   posts: {
@@ -97,7 +96,6 @@ export const updateUser = createAsyncThunk(
   async (data: any, { rejectWithValue, dispatch }) => {
     try {
       const res = await userApi.updateUser(data);
-      dispatch(setUser(res.data.user));
       return res;
     } catch (error) {
       return rejectWithValue(error);

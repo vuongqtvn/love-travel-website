@@ -1,18 +1,76 @@
 import React from "react";
-import { Rate, Typography } from "antd";
-import { Link } from "react-router-dom";
+import { Dropdown, Input, message, Modal, Rate, Typography } from "antd";
+import { Link, useNavigate } from "react-router-dom";
 import { colors } from "../../theme/colors";
 import ImageLazy from "../ImageLazy";
 import * as Styled from "./styles";
 import moment from "moment";
 import LightboxImages from "../LightBoxImages";
+import { useAppSelector } from "../../redux/hooks";
+import ReplyItem from "./ReplyItem";
+import ReviewModal from "../ReviewModal";
+import reviewApi from "../../api/reviewApi";
+import { ExclamationCircleOutlined } from "@ant-design/icons";
 
 type Props = {
   feed: any;
 };
 
+const Setting = ({ user, review }: { user: any; review: any }) => {
+  const auth = useAppSelector((state) => state.auth);
+  const navigate = useNavigate();
+  const [isOpenReview, setIsOpenReview] = React.useState<boolean>(false);
+
+  const showPromiseConfirm = () => {
+    Modal.confirm({
+      zIndex: 10000,
+      title: "Bạn có chắc chắn muốn xoá bài viết này?",
+      icon: <ExclamationCircleOutlined />,
+      onOk() {
+        return reviewApi.deleteReviewUser(review._id).then(() => {
+          navigate(0);
+          message.success("Xoá bài viết thành công!");
+        });
+      },
+      onCancel() {},
+    });
+  };
+
+  return (
+    <Styled.SettingDropdown>
+      {user._id === auth.user?._id && (
+        <span className="item" onClick={() => setIsOpenReview(true)}>
+          <i className="bx bx-message-alt-edit"></i>
+          Cập nhật bài viết
+        </span>
+      )}
+      {user._id === auth.user?._id && (
+        <span className="item" onClick={showPromiseConfirm}>
+          <i className="bx bx-message-x"></i>
+          Xoá bài viết
+        </span>
+      )}
+
+      <span className="item">
+        <i className="bx bx-link"></i>
+        Sao chép liên kết
+      </span>
+
+      {isOpenReview && (
+        <ReviewModal
+          mode="update"
+          review={review}
+          onClose={() => setIsOpenReview(false)}
+        />
+      )}
+    </Styled.SettingDropdown>
+  );
+};
+
 const FeedCard = ({ feed }: Props) => {
+  const { user } = useAppSelector((state) => state.auth);
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
+  const [showComment, setShowComment] = React.useState<boolean>(false);
 
   const renderImages = (images: any) => {
     if (images.length === 1) {
@@ -148,7 +206,13 @@ const FeedCard = ({ feed }: Props) => {
               </span>
             </div>
           </div>
-          <i className="bx bx-dots-horizontal-rounded option"></i>
+          <Dropdown
+            trigger={["click"]}
+            overlay={<Setting review={feed} user={feed.user} />}
+            placement="bottomRight"
+          >
+            <i className="bx bx-dots-horizontal-rounded option"></i>
+          </Dropdown>
         </Styled.FeedHeaderInfo>
       </Styled.FeedCardHeader>
       <Styled.FeedCardBody>
@@ -164,14 +228,54 @@ const FeedCard = ({ feed }: Props) => {
         <div className="images-wrap">{renderImages(feed.images)}</div>
       </Styled.FeedCardBody>
       <Styled.FeedCardAction>
-        <span>đang tiến hành...</span>
+        <button>
+          <i className="bx bx-heart"></i>
+          <span>
+            {feed?.likes?.length ? `${feed?.likes?.length} Thích` : "Thích"}
+          </span>
+        </button>
+        <button>
+          <i className="bx bx-comment"></i>
+          <span>Bình luận</span>
+        </button>
+        <button>
+          <i className="bx bx-share"></i>
+          <span>Chia sẽ</span>
+        </button>
       </Styled.FeedCardAction>
-      <Styled.FeedCardNewReply>
-        <span>đang tiến hành...</span>
-      </Styled.FeedCardNewReply>
-      <Styled.FeedCardListReply>
-        <span>đang tiến hành...</span>
-      </Styled.FeedCardListReply>
+      {user && (
+        <Styled.FeedCardNewReply>
+          <ImageLazy className="avatar" src={user.avatar} alt={user.name} />
+          <div className="reply-input">
+            <Input.TextArea
+              onPressEnter={(e) => {
+                e.preventDefault();
+              }}
+              autoSize
+              placeholder="Viết bình luận..."
+            />
+            <i className="bx bxs-paper-plane"></i>
+          </div>
+        </Styled.FeedCardNewReply>
+      )}
+      {showComment && (
+        <Styled.FeedCardReplies>
+          {feed?.comments?.map((comment: any, key: any) => (
+            <ReplyItem comment={comment} key={key} />
+          ))}
+        </Styled.FeedCardReplies>
+      )}
+      {feed?.comments?.length > 0 && (
+        <Styled.FeedCardListReply
+          onClick={() => setShowComment((isShow) => !isShow)}
+        >
+          <span>
+            {showComment
+              ? "Ẩn tất cả bình luận"
+              : `Xem tất cả ${feed.comments.length || 0} bình luận...`}
+          </span>
+        </Styled.FeedCardListReply>
+      )}
       {isOpen && (
         <LightboxImages
           title={`Đánh giá của ${feed?.user?.name} về ${feed?.place?.name}`}

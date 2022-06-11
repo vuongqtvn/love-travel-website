@@ -64,6 +64,7 @@ export const getPlaceRelated = createAsyncThunk(
       const data = await placeApi.getPlaces({
         limit: 4,
         page: 1,
+        sort: "-posts",
       });
       return data;
     } catch (error) {

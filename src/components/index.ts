@@ -1,3 +1,4 @@
+export { default as Wrapper } from "./Wrapper";
 export { default as Header } from "./Header";
 export { default as Section } from "./Section";
 export { default as Container } from "./Container";
@@ -13,7 +14,6 @@ export { default as Navbar } from "./Navbar";
 export { default as Empty } from "./Empty";
 export { default as CardPlace } from "./CardPlace";
 export { default as CardPlaceSkeleton } from "./CardPlaceSkeleton";
-export { default as Wrapper } from "./Wrapper";
 export { default as MapModal } from "./MapModal";
 export { default as ImageSkeleton } from "./ImageSkeleton";
 export { default as Place } from "./Place";
@@ -30,3 +30,5 @@ export { default as PlaceItemLoading } from "./PlaceItemLoading";
 export { default as PlaceItem } from "./PlaceItem";
 export { default as UserItem } from "./UserItem";
 export { default as UserItemLoading } from "./UserItemLoading";
+export { default as ReviewModal } from "./ReviewModal";
+export { default as ProfileModal } from "./ProfileModal";

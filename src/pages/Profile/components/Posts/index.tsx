@@ -1,5 +1,5 @@
 import { Pagination, PaginationProps } from "antd";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import { images } from "../../../../assets";
 import { FeedCard, FeedCardLoading } from "../../../../components";
 import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
@@ -24,7 +24,7 @@ const Posts = ({ id }: { id: any }) => {
       .then(() => setPage(page));
   };
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     window.scrollTo(0, 0);
   }, [page]);
 

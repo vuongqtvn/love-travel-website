@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Section } from "../../components";
+import { ProfileModal, Section } from "../../components";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import Info from "./components/Info";
 import LeftPane from "./components/LeftPane";
@@ -21,6 +21,8 @@ const Profile = () => {
   const [tab, setTab] = useState<
     "review" | "place" | "saved" | "followers" | "following"
   >("review");
+
+  const [isModal, setIsModal] = useState<boolean>(false);
 
   const dispatch = useAppDispatch();
 
@@ -99,7 +101,7 @@ const Profile = () => {
               )}
               {user?._id === profile?._id && (
                 <li>
-                  <button>
+                  <button onClick={() => setIsModal(true)}>
                     <i className="bx bx-pencil"></i> Chỉnh sửa
                   </button>
                 </li>
@@ -113,6 +115,13 @@ const Profile = () => {
           <Styled.ProfileRight>{renderPanel(tab)}</Styled.ProfileRight>
         </Styled.ProfileContainer>
       </Styled.ProfileWrapper>
+      {isModal && user && (
+        <ProfileModal
+          profile={user}
+          onClose={() => setIsModal(false)}
+          mode="update"
+        />
+      )}
     </Section>
   );
 };
