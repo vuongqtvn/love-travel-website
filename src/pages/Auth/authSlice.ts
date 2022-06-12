@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { setToken } from "../../api";
+import { setToken, userApi } from "../../api";
 import authApi from "../../api/authApi";
+import { RootState } from "../../redux/store";
 import { RequestState } from "../../types";
 import { ILogin, IRegister, IUser } from "../../types/auth.type";
 import { updateUser } from "../Profile/profileSlice";
@@ -72,6 +73,33 @@ export const refreshToken = createAsyncThunk(
   }
 );
 
+export const followUser = createAsyncThunk(
+  "auth/followUser",
+  async (user: any, { rejectWithValue, getState }) => {
+    const state = getState() as RootState;
+    try {
+      const res = await userApi.follow(user._id);
+      return { ...res, user, auth: state.auth.user };
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
+
+export const unFollowUser = createAsyncThunk(
+  "auth/unFollowUser",
+  async (user: any, { rejectWithValue, getState }) => {
+    const state = getState() as RootState;
+    try {
+      const res = await userApi.unFollow(user._id);
+
+      return { ...res, user, auth: state.auth.user };
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
+
 const authSlice = createSlice({
   name: "auth",
   initialState,
@@ -135,6 +163,26 @@ const authSlice = createSlice({
       })
       .addCase(updateUser.fulfilled, (state, action: any) => {
         state.user = action.payload.user;
+      })
+      .addCase(followUser.fulfilled, (state, action) => {
+        const { user, auth } = action.payload;
+        if (auth && user) {
+          state.user = {
+            ...auth,
+            following: [...auth.following, user],
+          };
+        }
+      })
+      .addCase(unFollowUser.fulfilled, (state, action) => {
+        const { user, auth } = action.payload;
+        if (auth && user) {
+          state.user = {
+            ...auth,
+            following: [...auth.following].filter(
+              (item) => item._id !== user._id
+            ),
+          };
+        }
       });
   },
 });

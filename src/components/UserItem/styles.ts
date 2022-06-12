@@ -49,7 +49,7 @@ export const UserItemWrap = styled.div`
           color: #fff;
           background: #e03;
         }
-        .active {
+        &.active {
           color: #fff;
           background: #e03;
         }

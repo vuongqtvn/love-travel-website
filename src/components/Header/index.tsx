@@ -93,6 +93,28 @@ const UserSetting = ({ user }: any) => {
   );
 };
 
+const NotifyUser = ({ user }: any) => {
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+  return (
+    <Styled.NotifyDropdown>
+      <div className="header">
+        <span className="title">Thông báo</span>
+        <span className="check">
+          <i className="bx bx-check-double"></i>
+          {` Đánh dấu đã đọc`}
+        </span>
+      </div>
+      <div className="list">
+        <div className="content">
+          <span className="empty">Không có thông báo nào</span>
+        </div>
+      </div>
+    </Styled.NotifyDropdown>
+  );
+};
+
 const Header = (props: Props) => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -170,8 +192,12 @@ const Header = (props: Props) => {
                     </Styled.IconButton>
                   </Tooltip>
                 </div>
-                <div className="nav-item">
-                  <Tooltip title="Thông báo">
+                <Dropdown
+                  overlay={<NotifyUser user={user} />}
+                  placement="bottomRight"
+                  trigger={["click"]}
+                >
+                  <div className="nav-item">
                     <Styled.IconButton>
                       <Icons.BellFilled
                         style={{
@@ -180,31 +206,31 @@ const Header = (props: Props) => {
                         }}
                       />
                     </Styled.IconButton>
-                  </Tooltip>
-                </div>
+                  </div>
+                </Dropdown>
               </React.Fragment>
             )}
-            <div className="nav-item">
-              {user?.email ? (
-                <Dropdown
-                  overlay={<UserSetting user={user} />}
-                  placement="bottomRight"
-                  arrow
-                  trigger={["click"]}
-                >
-                  <Space align="center" style={{ cursor: "pointer" }}>
-                    <Avatar size="large" shape="circle" src={user.avatar} />
-                  </Space>
-                </Dropdown>
-              ) : (
+
+            {user?.email ? (
+              <Dropdown
+                overlay={<UserSetting user={user} />}
+                placement="bottomRight"
+                trigger={["click"]}
+              >
+                <div className="nav-item" style={{ cursor: "pointer" }}>
+                  <Avatar size="large" shape="circle" src={user.avatar} />
+                </div>
+              </Dropdown>
+            ) : (
+              <div className="nav-item">
                 <Styled.Button
                   className="custom"
                   onClick={() => dispatch(openAuth())}
                 >
                   Đăng nhập
                 </Styled.Button>
-              )}
-            </div>
+              </div>
+            )}
           </Styled.NavRight>
         </Styled.Nav>
       </Styled.HeaderContainer>

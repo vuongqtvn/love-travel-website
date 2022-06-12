@@ -18,46 +18,51 @@ const SearchModal = ({
 }) => {
   const dispatch = useAppDispatch();
   const [search, setSearch] = useState("");
+  const [firstLoading, setFirstLoading] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [searchData, setSearchData] = useState<PlaceType[] | []>([]);
+  const [data, setData] = useState<PlaceType[] | []>([]);
 
   useEffect(() => {
+    setFirstLoading(true);
     placeApi
       .getPlaces({
         limit: 5,
         page: 1,
       })
-      .then((res: any) => setSearchData(res.places))
+      .then((res: any) => {
+        setSearchData(res.places);
+        setData(res.places);
+      })
       .catch((error) => console.log(error))
-      .finally(() => setLoading(false));
+      .finally(() => setFirstLoading(false));
   }, []);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
+    if (!firstLoading) {
+      let timer: any;
       if (search) {
         setLoading(true);
-        placeApi
-          .getPlaces({
-            q: search,
-            limit: 5,
-            page: 1,
-          })
-          .then((res: any) => setSearchData(res.places))
-          .finally(() => setLoading(false));
+        timer = setTimeout(() => {
+          placeApi
+            .getPlaces({
+              q: search,
+              limit: 5,
+              page: 1,
+            })
+            .then((res: any) => setSearchData(res.places))
+            .finally(() => setLoading(false));
+        }, 1000);
+      } else {
+        setSearchData(data);
       }
-    }, 1000);
-
-    if (!search) {
-      setSearchData([]);
-      setLoading(false);
+      return () => {
+        clearTimeout(timer);
+        setSearchData([]);
+        setLoading(false);
+      };
     }
-
-    return () => {
-      clearTimeout(timer);
-      setSearchData([]);
-      setLoading(false);
-    };
-  }, [search]);
+  }, [search, setFirstLoading]);
   return (
     <Styled.SearchModalOverlay>
       <Styled.SearchModalWrapper>
@@ -98,7 +103,7 @@ const SearchModal = ({
               </div>
               <div className="search-content">
                 <div>
-                  {loading ? (
+                  {firstLoading || loading ? (
                     [1, 2, 3, 4, 5].map((key) => <PlaceItemLoading key={key} />)
                   ) : searchData.length === 0 ? (
                     <div style={{ padding: 15, textAlign: "center" }}>

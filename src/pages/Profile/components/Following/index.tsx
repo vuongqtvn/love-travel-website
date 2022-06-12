@@ -1,5 +1,6 @@
 import React, { useLayoutEffect } from "react";
 import { images } from "../../../../assets";
+import { UserItem } from "../../../../components";
 import { useAppSelector } from "../../../../redux/hooks";
 
 import * as Styled from "./styles";
@@ -13,7 +14,7 @@ const Following = ({ id }: { id?: any }) => {
 
   return (
     <Styled.ProfileUserReview>
-      <React.Fragment>
+      <div className="box">
         {profile?.following?.length === 0 ? (
           <Styled.ProfileEmpty>
             <img src={images.empty} alt="empty" />
@@ -21,12 +22,12 @@ const Following = ({ id }: { id?: any }) => {
           </Styled.ProfileEmpty>
         ) : (
           <React.Fragment>
-            {profile?.following?.data.map((user: any, key: any) => (
-              <div key={key}>{user}</div>
+            {profile?.following?.map((user: any, key: any) => (
+              <UserItem key={key} user={user} />
             ))}
           </React.Fragment>
         )}
-      </React.Fragment>
+      </div>
     </Styled.ProfileUserReview>
   );
 };

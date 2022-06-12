@@ -138,7 +138,7 @@ const CardPlace = ({ place, edit = false }: Props) => {
           </div>
         </div>
       </Styled.PlaceCard>
-      {edit ? (
+      {edit && user?._id === place.user._id ? (
         <Tooltip placement="bottom" title={`Chỉnh sửa địa điểm`}>
           <Styled.PlaceSaveButton>
             <Button

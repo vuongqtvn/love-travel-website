@@ -50,7 +50,7 @@ const appSlice = createSlice({
           action.type.endsWith("/fulfilled") ||
           action.type.endsWith("/rejected"),
         (state, action) => {
-          state.status = action.payload.status;
+          state.status = action.payload?.status;
           state.loading = false;
         }
       );

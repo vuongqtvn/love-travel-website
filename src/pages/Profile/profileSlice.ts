@@ -114,15 +114,38 @@ export const updateUser = createAsyncThunk(
 const profileSlice = createSlice({
   name: "profile",
   initialState,
-  reducers: {},
+  reducers: {
+    setProfile: (state: any, action: any) => {
+      state.profile = action.payload;
+    },
+    clearProfile(state: any) {
+      state.loading = false;
+      state.saved = {
+        data: [],
+        total: 0,
+        loading: false,
+      };
+      state.profile = null;
+      state.places = {
+        data: [],
+        total: 0,
+        loading: false,
+      };
+      state.posts = {
+        data: [],
+        total: 0,
+        loading: false,
+      };
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getProfile.pending, (state) => {
         state.loading = true;
       })
       .addCase(getProfile.fulfilled, (state, action: any) => {
-        state.loading = false;
         const { user } = action.payload;
+        state.loading = false;
         state.profile = user;
       })
       .addCase(getProfile.rejected, (state, action) => {
@@ -221,6 +244,6 @@ const profileSlice = createSlice({
   },
 });
 
-// export const {} = profileSlice.actions;
+export const { clearProfile, setProfile } = profileSlice.actions;
 
 export default profileSlice.reducer;

@@ -21,6 +21,12 @@ const userApi = {
       params,
     });
   },
+  follow(id: any) {
+    return axiosClient.get(`/user/${id}/follow`);
+  },
+  unFollow(id: any) {
+    return axiosClient.get(`/user/${id}/unfollow`);
+  },
 };
 
 export default userApi;

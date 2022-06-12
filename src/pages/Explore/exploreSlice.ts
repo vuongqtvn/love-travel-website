@@ -130,7 +130,11 @@ export const createReviewComment = createAsyncThunk(
 const exploreSlice = createSlice({
   name: "explore",
   initialState,
-  reducers: {},
+  reducers: {
+    setUsersExplore(state: any, action: any) {
+      state.users = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getDiscover.pending, (state) => {
@@ -203,6 +207,6 @@ const exploreSlice = createSlice({
   },
 });
 
-// export const {} = exploreSlice.actions;
+export const { setUsersExplore } = exploreSlice.actions;
 
 export default exploreSlice.reducer;

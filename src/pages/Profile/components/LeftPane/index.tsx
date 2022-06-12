@@ -13,6 +13,12 @@ const LeftPane = () => {
         <h3>Bảng thông tin</h3>
         <div>
           <span>
+            <i className="bx bx-male-female"></i> Giới tính
+          </span>
+          <span>{profile?.gender === "male" ? "Nam" : "Nữ"}</span>
+        </div>
+        <div>
+          <span>
             <i className="bx bx-edit"></i> Đánh giá
           </span>
           <span>{profile?.posts?.length || 0}</span>
@@ -28,6 +34,13 @@ const LeftPane = () => {
             <i className="bx bxs-heart"></i> Đã lưu
           </span>
           <span>{profile?.saved?.length}</span>
+        </div>
+
+        <div>
+          <span>
+            <i className="bx bxs-user-check"></i> Đang theo dõi
+          </span>
+          <span>{profile?.following?.length}</span>
         </div>
         <div>
           <span>

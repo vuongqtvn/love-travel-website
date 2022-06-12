@@ -2,7 +2,6 @@ import styled from "styled-components";
 
 export const PlaceItemWrap = styled.div`
   display: flex;
-  margin: 12px 0;
   cursor: pointer;
   .avatar {
     cursor: pointer;

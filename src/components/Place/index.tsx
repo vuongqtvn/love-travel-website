@@ -15,6 +15,7 @@ const Place = ({ onClick, place }: Props) => {
       onClick={() => onClick(place)}
       size="small"
       style={{
+        cursor: "pointer",
         display: "flex",
         flexDirection: "column",
         height: "100%",

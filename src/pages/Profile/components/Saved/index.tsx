@@ -31,34 +31,34 @@ const Saved = ({ id }: { id: any }) => {
   return (
     <Styled.ProfileUserReview>
       <React.Fragment>
-        {saved.data.length === 0 ? (
-          <Styled.ProfileEmpty>
-            <img src={images.empty} alt="empty" />
-            <span>Opps, chưa có lưu địa điểm nào!</span>
-          </Styled.ProfileEmpty>
-        ) : (
-          <React.Fragment>
-            {saved.loading
-              ? [1, 2, 3, 4, 5].map((item) => <CardPlaceSkeleton key={item} />)
-              : saved.data.map((place: any, key: any) => (
-                  <CardPlace place={place} key={key} />
-                ))}
-            <div
-              style={{
-                textAlign: "center",
-              }}
-            >
-              <Pagination
-                current={page}
-                pageSize={5}
-                disabled={saved.loading}
-                onChange={onChange}
-                total={saved.total}
-              />
-              ;
-            </div>
-          </React.Fragment>
-        )}
+        <React.Fragment>
+          {saved.loading ? (
+            [1, 2, 3, 4, 5].map((item) => <CardPlaceSkeleton key={item} />)
+          ) : saved.data.length === 0 ? (
+            <Styled.ProfileEmpty>
+              <img src={images.empty} alt="empty" />
+              <span>Opps, chưa có lưu địa điểm nào!</span>
+            </Styled.ProfileEmpty>
+          ) : (
+            saved.data.map((place: any, key: any) => (
+              <CardPlace place={place} key={key} />
+            ))
+          )}
+          <div
+            style={{
+              textAlign: "center",
+            }}
+          >
+            <Pagination
+              current={page}
+              pageSize={5}
+              disabled={saved.loading}
+              onChange={onChange}
+              total={saved.total}
+            />
+            ;
+          </div>
+        </React.Fragment>
       </React.Fragment>
     </Styled.ProfileUserReview>
   );

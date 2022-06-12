@@ -277,3 +277,59 @@ export const SettingDropdown = styled.div`
     }
   }
 `;
+
+export const NotifyDropdown = styled.div`
+  width: 400px;
+  position: absolute;
+  top: calc(100%);
+  right: 0;
+  bottom: auto;
+  left: auto;
+  z-index: 100;
+  background: #fff;
+  border: none;
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 15%);
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px 12px 20px;
+    border-bottom: 1px solid #f0f2f5;
+    .title {
+      font-size: 18px;
+      font-weight: 500;
+      color: #000;
+    }
+    .check {
+      display: inline-flex;
+      align-items: center;
+      font-weight: 500;
+      color: #000;
+      font-size: 14px;
+      cursor: pointer;
+
+      i {
+        font-size: 18px;
+        margin-right: 2px;
+      }
+    }
+  }
+  .list {
+    overflow: hidden;
+    padding-bottom: 10px;
+    .content {
+      max-height: 400px;
+      overflow-y: auto;
+      .empty {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        min-height: 100px;
+        color: #a5a5a5;
+      }
+    }
+  }
+`;

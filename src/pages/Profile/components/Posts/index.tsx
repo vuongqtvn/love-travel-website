@@ -31,33 +31,33 @@ const Posts = ({ id }: { id: any }) => {
   return (
     <Styled.ProfileUserReview>
       <React.Fragment>
-        {posts.data.length === 0 ? (
-          <Styled.ProfileEmpty>
-            <img src={images.empty} alt="empty" />
-            <span>Opps, chưa có bài đánh giá nào!</span>
-          </Styled.ProfileEmpty>
-        ) : (
-          <React.Fragment>
-            {posts.loading
-              ? [1, 2, 3, 4, 5].map((key) => <FeedCardLoading key={key} />)
-              : posts.data.map((feed: any, key: any) => (
-                  <FeedCard feed={feed} key={key} />
-                ))}
-            <div
-              style={{
-                textAlign: "center",
-              }}
-            >
-              <Pagination
-                current={page}
-                pageSize={5}
-                disabled={posts.loading}
-                onChange={onChange}
-                total={posts.total}
-              />
-            </div>
-          </React.Fragment>
-        )}
+        <React.Fragment>
+          {posts.loading ? (
+            [1, 2, 3, 4, 5].map((key) => <FeedCardLoading key={key} />)
+          ) : posts.data.length === 0 ? (
+            <Styled.ProfileEmpty>
+              <img src={images.empty} alt="empty" />
+              <span>Opps, chưa có bài đánh giá nào!</span>
+            </Styled.ProfileEmpty>
+          ) : (
+            posts.data.map((feed: any, key: any) => (
+              <FeedCard feed={feed} key={key} />
+            ))
+          )}
+          <div
+            style={{
+              textAlign: "center",
+            }}
+          >
+            <Pagination
+              current={page}
+              pageSize={5}
+              disabled={posts.loading}
+              onChange={onChange}
+              total={posts.total}
+            />
+          </div>
+        </React.Fragment>
       </React.Fragment>
     </Styled.ProfileUserReview>
   );

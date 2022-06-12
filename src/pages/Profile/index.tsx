@@ -4,7 +4,7 @@ import { ProfileModal, Section } from "../../components";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import Info from "./components/Info";
 import LeftPane from "./components/LeftPane";
-import { getProfile } from "./profileSlice";
+import { clearProfile, getProfile } from "./profileSlice";
 import * as Styled from "./styles";
 import classNames from "classnames";
 import Posts from "./components/Posts";
@@ -30,6 +30,9 @@ const Profile = () => {
     if (id) {
       dispatch(getProfile(id));
     }
+    return () => {
+      dispatch(clearProfile());
+    };
   }, [id, dispatch]);
 
   const renderPanel = (
@@ -81,13 +84,13 @@ const Profile = () => {
                 onClick={() => setTab("following")}
                 className={classNames({ active: tab === "following" })}
               >
-                <span>Người theo dõi</span>
+                <span>Đang theo dõi</span>
               </li>
               <li
                 onClick={() => setTab("followers")}
                 className={classNames({ active: tab === "followers" })}
               >
-                <span>Đang theo dõi</span>
+                <span>Người theo dõi</span>
               </li>
             </ul>
             <ul>

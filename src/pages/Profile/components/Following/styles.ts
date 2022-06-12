@@ -5,6 +5,12 @@ export const ProfileUserReview = styled.div`
   @media (max-width: 991px) {
     padding: 0;
   }
+  .box {
+    padding: 16px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgb(0 0 0 / 15%);
+    background-color: #fff;
+  }
 `;
 
 export const ProfileEmpty = styled.div`
