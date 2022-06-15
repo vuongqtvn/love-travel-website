@@ -94,8 +94,8 @@ const UserSetting = ({ user }: any) => {
 };
 
 const NotifyUser = ({ user }: any) => {
-  const dispatch = useAppDispatch();
-  const navigate = useNavigate();
+  // const dispatch = useAppDispatch();
+  // const navigate = useNavigate();
 
   return (
     <Styled.NotifyDropdown>

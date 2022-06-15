@@ -11,6 +11,7 @@ import {
   UserItemLoading,
   UserItem,
   ImageLazy,
+  ReviewModal,
 } from "../../components";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { getDiscover, getPlaceHot, getUserPositive } from "./exploreSlice";
@@ -29,6 +30,7 @@ const Explore = (props: Props) => {
 
   const [page, setPage] = useState<number>(1);
   const [firstLoading, setFirstLoading] = useState<boolean>(false);
+  const [updateReview, setUpdateReview] = React.useState<any>(null);
 
   useEffect(() => {
     setFirstLoading(true);
@@ -55,10 +57,23 @@ const Explore = (props: Props) => {
       .then(() => setPage(page));
   };
 
+  const openUpdate = (review: any) => {
+    setUpdateReview(review);
+  };
+
   return (
     <Section>
       <Styled.ExploreWrapper>
         <Styled.ExploreHeader></Styled.ExploreHeader>
+        {Boolean(updateReview) && (
+          <ReviewModal
+            mode="update"
+            review={updateReview}
+            onClose={() => {
+              setUpdateReview(null);
+            }}
+          />
+        )}
         <Styled.ExploreContainer>
           {firstLoading ? (
             <Styled.ExploreFeed>
@@ -80,7 +95,7 @@ const Explore = (props: Props) => {
                 </React.Fragment>
               ) : (
                 posts.map((feed: any, key: any) => (
-                  <FeedCard key={key} feed={feed} />
+                  <FeedCard openUpdate={openUpdate} key={key} feed={feed} />
                 ))
               )}
               {total >= 5 && (

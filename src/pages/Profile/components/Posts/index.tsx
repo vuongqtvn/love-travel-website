@@ -1,7 +1,7 @@
 import { Pagination, PaginationProps } from "antd";
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import { images } from "../../../../assets";
-import { FeedCard, FeedCardLoading } from "../../../../components";
+import { FeedCard, FeedCardLoading, ReviewModal } from "../../../../components";
 import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
 import { getPostUser } from "../../profileSlice";
 import * as Styled from "./styles";
@@ -9,6 +9,7 @@ import * as Styled from "./styles";
 const Posts = ({ id }: { id: any }) => {
   const { posts } = useAppSelector((state) => state.profile);
   const [page, setPage] = useState(1);
+  const [updateReview, setUpdateReview] = React.useState<any>(null);
 
   const dispatch = useAppDispatch();
 
@@ -28,8 +29,21 @@ const Posts = ({ id }: { id: any }) => {
     window.scrollTo(0, 0);
   }, [page]);
 
+  const openUpdate = (review: any) => {
+    setUpdateReview(review);
+  };
+
   return (
     <Styled.ProfileUserReview>
+      {Boolean(updateReview) && (
+        <ReviewModal
+          mode="update"
+          review={updateReview}
+          onClose={() => {
+            setUpdateReview(null);
+          }}
+        />
+      )}
       <React.Fragment>
         <React.Fragment>
           {posts.loading ? (
@@ -41,7 +55,7 @@ const Posts = ({ id }: { id: any }) => {
             </Styled.ProfileEmpty>
           ) : (
             posts.data.map((feed: any, key: any) => (
-              <FeedCard feed={feed} key={key} />
+              <FeedCard openUpdate={openUpdate} feed={feed} key={key} />
             ))
           )}
           <div

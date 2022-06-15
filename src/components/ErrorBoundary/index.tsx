@@ -1,5 +1,6 @@
 import React, { Component, ErrorInfo } from "react";
-
+import { images } from "../../assets";
+import * as Styled from "./styles";
 interface Props {
   children: JSX.Element | JSX.Element[];
 }
@@ -24,7 +25,12 @@ class ErrorBoundary extends Component<Props, State> {
 
   public render() {
     if (this.state.hasError) {
-      return <h1>Sorry.. there was an error</h1>;
+      return (
+        <Styled.NotAuthWrap>
+          <img src={images.empty} alt="empty" />
+          <p>Opps, đã có lỗi xảy ra, vui lòng thử lại sau!</p>
+        </Styled.NotAuthWrap>
+      );
     }
 
     return this.props.children;

@@ -8,7 +8,6 @@ import moment from "moment";
 import LightboxImages from "../LightBoxImages";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import ReplyItem from "./ReplyItem";
-import ReviewModal from "../ReviewModal";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
 import {
   createReviewComment,
@@ -21,12 +20,20 @@ import { openAuth } from "../../pages/Auth/authSlice";
 
 type Props = {
   feed: any;
+  openUpdate: any;
 };
 
-const Setting = ({ user, review }: { user: any; review: any }) => {
+const Setting = ({
+  user,
+  review,
+  openUpdate,
+}: {
+  user: any;
+  review: any;
+  openUpdate: any;
+}) => {
   const auth = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
-  const [isOpenReview, setIsOpenReview] = React.useState<boolean>(false);
 
   const showPromiseConfirm = () => {
     Modal.confirm({
@@ -47,7 +54,7 @@ const Setting = ({ user, review }: { user: any; review: any }) => {
   return (
     <Styled.SettingDropdown>
       {user._id === auth.user?._id && (
-        <span className="item" onClick={() => setIsOpenReview(true)}>
+        <span className="item" onClick={() => openUpdate(review)}>
           <i className="bx bx-message-alt-edit"></i>
           Cập nhật bài viết
         </span>
@@ -63,19 +70,11 @@ const Setting = ({ user, review }: { user: any; review: any }) => {
         <i className="bx bx-link"></i>
         Sao chép liên kết
       </span>
-
-      {isOpenReview && (
-        <ReviewModal
-          mode="update"
-          review={review}
-          onClose={() => setIsOpenReview(false)}
-        />
-      )}
     </Styled.SettingDropdown>
   );
 };
 
-const FeedCard = ({ feed }: Props) => {
+const FeedCard = ({ feed, openUpdate }: Props) => {
   const { user } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
@@ -277,7 +276,9 @@ const FeedCard = ({ feed }: Props) => {
           </div>
           <Dropdown
             trigger={["click"]}
-            overlay={<Setting review={feed} user={feed.user} />}
+            overlay={
+              <Setting review={feed} user={feed.user} openUpdate={openUpdate} />
+            }
             placement="bottomRight"
           >
             <i className="bx bx-dots-horizontal-rounded option"></i>
