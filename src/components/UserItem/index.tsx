@@ -68,6 +68,7 @@ const UserItem = ({ user }: { user: any }) => {
   return (
     <Styled.UserItemWrap>
       <ImageLazy
+        onClick={() => navigate(`/profile/${user._id}`)}
         hover={false}
         src={user.avatar}
         alt={user.name}

@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 
 import { Button, Grid, message, Skeleton, Tooltip } from "antd";
 import { useKeenSlider } from "keen-slider/react";
-import { LightBoxImages } from "../../../../components";
+import { LightBoxImages, MenuModal } from "../../../../components";
 import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
 import { HeartFilled, HeartOutlined, LoadingOutlined } from "@ant-design/icons";
 import * as Styled from "./styles";
@@ -21,6 +21,7 @@ const PlaceTop = (props: Props) => {
   const [loaded, setLoaded] = React.useState<boolean[]>([]);
   const [currentSlide, setCurrentSlide] = React.useState(0);
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
+  const [isOpenMenu, setIsOpenMenu] = React.useState<boolean>(false);
   const screens = Grid.useBreakpoint();
 
   const dispatch = useAppDispatch();
@@ -164,7 +165,7 @@ const PlaceTop = (props: Props) => {
                 Xem đường đi
               </a>
               {" — "}
-              <a>Xem menu</a>
+              <a onClick={() => setIsOpenMenu(true)}>Xem menu</a>
             </p>
           </Styled.PlaceTopAddress>
         </>
@@ -268,6 +269,9 @@ const PlaceTop = (props: Props) => {
           images={place?.images}
           caption={place?.name}
         />
+      )}
+      {isOpenMenu && (
+        <MenuModal place={place} onClose={() => setIsOpenMenu(false)} />
       )}
     </Styled.PlaceTop>
   );

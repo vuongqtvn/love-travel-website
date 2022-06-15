@@ -32,3 +32,4 @@ export { default as UserItem } from "./UserItem";
 export { default as UserItemLoading } from "./UserItemLoading";
 export { default as ReviewModal } from "./ReviewModal";
 export { default as ProfileModal } from "./ProfileModal";
+export { default as MenuModal } from "./MenuModal";

@@ -40,20 +40,26 @@ const Info = () => {
                   backgroundImage: `url(${profile?.avatar})`,
                 }}
               ></div>
-              <ImgCrop shape="round" modalTitle="Chỉnh sửa ảnh đại diện" rotate>
-                <Upload
-                  accept="image/*"
-                  itemRender={() => null}
-                  beforeUpload={() => false}
-                  onChange={(value) => handleUploadAvatar(value)}
-                  onPreview={() => false}
-                  maxCount={1}
+              {profile?._id === user?._id && (
+                <ImgCrop
+                  shape="round"
+                  modalTitle="Chỉnh sửa ảnh đại diện"
+                  rotate
                 >
-                  <div className="upload">
-                    <i className="bx bxs-camera"></i>
-                  </div>
-                </Upload>
-              </ImgCrop>
+                  <Upload
+                    accept="image/*"
+                    itemRender={() => null}
+                    beforeUpload={() => false}
+                    onChange={(value) => handleUploadAvatar(value)}
+                    onPreview={() => false}
+                    maxCount={1}
+                  >
+                    <div className="upload">
+                      <i className="bx bxs-camera"></i>
+                    </div>
+                  </Upload>
+                </ImgCrop>
+              )}
             </div>
             <h1 className="username">
               {profile?.name || <Skeleton.Input />}

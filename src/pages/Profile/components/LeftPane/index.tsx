@@ -33,20 +33,20 @@ const LeftPane = () => {
           <span>
             <i className="bx bxs-heart"></i> Đã lưu
           </span>
-          <span>{profile?.saved?.length}</span>
+          <span>{profile?.saved?.length || 0}</span>
         </div>
 
         <div>
           <span>
             <i className="bx bxs-user-check"></i> Đang theo dõi
           </span>
-          <span>{profile?.following?.length}</span>
+          <span>{profile?.following?.length || 0}</span>
         </div>
         <div>
           <span>
             <i className="bx bx-rss"></i> Người theo dõi
           </span>
-          <span>{profile?.followers?.length}</span>
+          <span>{profile?.followers?.length || 0}</span>
         </div>
         <div>
           <span>

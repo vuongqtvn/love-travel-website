@@ -22,8 +22,8 @@ import { timeList } from "../../../../constants/time";
 const InfoBasic = [
   {
     name: "name",
-    label: "Tên quán",
-    placeholder: "Nhập tên quán",
+    label: "Tên địa điểm",
+    placeholder: "Nhập tên địa điểm",
     option: false,
     require: true,
   },

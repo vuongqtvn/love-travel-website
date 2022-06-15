@@ -13,6 +13,7 @@ type Props = {
   className?: string;
   children?: JSX.Element;
   hover?: boolean;
+  onClick?: React.MouseEventHandler<HTMLDivElement>;
 };
 
 const ImageLazy: React.FC<Props> = ({ hover = true, ...props }) => {
@@ -44,6 +45,7 @@ const ImageLazy: React.FC<Props> = ({ hover = true, ...props }) => {
       height={props.height}
       style={props.style}
       className={classNames(props.className, { hover: hover })}
+      onClick={props.onClick}
     >
       <div className="card-image">
         <div className="card-lazy">

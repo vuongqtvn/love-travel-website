@@ -650,7 +650,7 @@ const EditPlace = () => {
           </Col>
 
           <Col span={12}>
-            <div style={{ height: 700 }}>
+            <div style={{ height: 700, position: "sticky", top: 0 }}>
               {loading ? <Spin /> : <MapBox location={location} />}
             </div>
           </Col>
