@@ -94,7 +94,7 @@ const AdminLayout = ({ children }: { children: JSX.Element }) => {
   }
 
   if (!user) {
-    return <Navigate to="/" state={{ from: location }} replace />;
+    return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
   if (user.role === "user") {
