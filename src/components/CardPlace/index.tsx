@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Rate, Tooltip, Button, Grid, message } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import path from "../../constants/path";
@@ -28,7 +28,27 @@ const CardPlace = ({ place, edit = false }: Props) => {
   const navigate = useNavigate();
 
   const [saved, setSaved] = useState(false);
+  const [close, setClose] = useState(true);
   const [loadSaved, setLoadSaved] = useState(false);
+
+  const openPlace = useCallback(() => {
+    var d = new Date();
+    var currentTime = d.getHours() * 60 * 60 + d.getMinutes() * 60;
+    const [hoursFrom, minutesFrom] = place.time.from.split(":");
+    const [hoursTo, minutesTo] = place.time.to.split(":");
+    const totalSecondsFrom = Number(hoursFrom * 60 * 60 + minutesFrom * 60);
+    const totalSecondsTo = Number(hoursTo * 60 * 60 + minutesTo * 60);
+
+    if (totalSecondsFrom < currentTime && totalSecondsTo > currentTime) {
+      setClose(true);
+    } else {
+      setClose(false);
+    }
+  }, [place.time.from, place.time.to]);
+
+  useEffect(() => {
+    openPlace();
+  }, [openPlace]);
 
   useEffect(() => {
     if (user?.saved.find((placeSave: any) => placeSave._id === place._id)) {
@@ -61,6 +81,7 @@ const CardPlace = ({ place, edit = false }: Props) => {
         setLoadSaved(false);
       });
   };
+
   const handleUnSavePlace = () => {
     if (!token) {
       return dispatch(openAuth());
@@ -125,7 +146,13 @@ const CardPlace = ({ place, edit = false }: Props) => {
           <div className="place__body-text">
             <i className="bx bx-time-five"></i>
             <span>
-              {<span className="time-open">Đang mở cửa </span>}
+              {close ? (
+                <span className="time-open">Đang mở cửa </span>
+              ) : (
+                <span className="time-close">Đang đóng cửa</span>
+              )}
+              {/* <span className="time-close">Đang đóng cửa</span> */}
+
               {/* {id % 3 === 0 && (
                 <span className="time-close">Đang đóng cửa</span>
               )}
