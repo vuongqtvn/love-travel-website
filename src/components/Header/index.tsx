@@ -11,6 +11,7 @@ import {
   Drawer,
   Dropdown,
   Menu,
+  Modal,
   Space,
   Tooltip,
   Typography,
@@ -21,8 +22,14 @@ import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { logout, openAuth } from "../../pages/Auth/authSlice";
 import { colors } from "../../theme/colors";
 import moment from "moment";
-import { getNotifies } from "../../redux/notifySlice";
+import {
+  deleteAllNotifies,
+  getNotifies,
+  isReadNotify,
+  setSound,
+} from "../../redux/notifySlice";
 import ImageLazy from "../ImageLazy";
+import classNames from "classnames";
 
 type Props = {};
 
@@ -97,18 +104,62 @@ const UserSetting = ({ user }: any) => {
 };
 
 const NotifyUser = ({ user }: any) => {
-  // const dispatch = useAppDispatch();
-  const { data } = useAppSelector((state) => state.notify);
+  const dispatch = useAppDispatch();
+  const { data, sound } = useAppSelector((state) => state.notify);
   const navigate = useNavigate();
 
+  const handleIsRead = (message: any) => {
+    dispatch(isReadNotify({ message }));
+  };
+
+  const handleDeleteAll = () => {
+    const newArr = data.filter((item: any) => item.isRead === false);
+    if (newArr.length === 0) return;
+
+    showPromiseConfirm();
+  };
+
+  const showPromiseConfirm = () => {
+    Modal.confirm({
+      zIndex: 10000,
+      title: "Bạn có chắc chắn muốn xoá tất cả thông báo?",
+      icon: <Icons.ExclamationCircleOutlined />,
+      cancelText: "Không",
+      okText: "Có",
+      onOk() {
+        return dispatch(deleteAllNotifies());
+      },
+      onCancel() {},
+    });
+  };
+
   return (
-    <Styled.NotifyDropdown>
+    <Styled.NotifyDropdown onClick={(e) => e.stopPropagation()}>
       <div className="header">
         <span className="title">Thông báo</span>
-        <span className="check">
-          <i className="bx bx-check-double"></i>
-          {` Đánh dấu đã đọc`}
-        </span>
+        <Box gap="10px" alignItems="center">
+          <span className="check" onClick={handleDeleteAll}>
+            <i className="bx bx-check-double"></i>
+            {` Đánh dấu đã đọc`}
+          </span>
+          {sound ? (
+            <span
+              style={{ color: colors.primary }}
+              className="check"
+              onClick={() => dispatch(setSound(false))}
+            >
+              <i className="bx bxs-bell-ring"></i>
+            </span>
+          ) : (
+            <span
+              style={{ color: colors.primary }}
+              className="check"
+              onClick={() => dispatch(setSound(true))}
+            >
+              <i className="bx bxs-bell-off"></i>
+            </span>
+          )}
+        </Box>
       </div>
       <div className="list">
         {data.length === 0 ? (
@@ -118,7 +169,9 @@ const NotifyUser = ({ user }: any) => {
         ) : (
           data.map((item: any, key: number) => (
             <Box
-              className="hover-item"
+              className={classNames("hover-item", {
+                "notify-not-read": item.isRead === false,
+              })}
               style={{
                 padding: 10,
                 cursor: "pointer",
@@ -126,6 +179,7 @@ const NotifyUser = ({ user }: any) => {
               key={key}
               gap="10px"
               onClick={() => {
+                handleIsRead(item);
                 if (item.url) {
                   navigate(item.url);
                 }
@@ -152,12 +206,20 @@ const NotifyUser = ({ user }: any) => {
                   >
                     {item.content}
                   </Typography.Paragraph>
+                  <small>
+                    <strong>
+                      {item.createdAt
+                        ? moment(item.createdAt).fromNow()
+                        : moment(Date.now()).fromNow()}
+                    </strong>
+                  </small>
                 </Box>
                 <ImageLazy
+                  style={{ borderRadius: 5 }}
                   hover={false}
                   src={item.image}
-                  width="65px"
-                  height="65px"
+                  width="70px"
+                  height="70px"
                   alt={item.content}
                 />
               </Box>

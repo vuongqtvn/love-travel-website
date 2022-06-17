@@ -10,7 +10,7 @@ interface NotifyState {
 const initialState: NotifyState = {
   loading: false,
   data: [],
-  sound: false,
+  sound: true,
 };
 
 export const createNotify = createAsyncThunk(
@@ -98,6 +98,9 @@ const notifySlice = createSlice({
     addNotify(state: any, action: any) {
       state.data = [action.payload, ...state.data];
     },
+    setSound(state: any, action: any) {
+      state.sound = action.payload;
+    },
     deleteNotify(state: any, action: any) {
       const notifies = [...state.data];
       const idx = notifies.findIndex((item) => {
@@ -118,6 +121,6 @@ const notifySlice = createSlice({
   },
 });
 
-export const { addNotify, deleteNotify } = notifySlice.actions;
+export const { addNotify, deleteNotify, setSound } = notifySlice.actions;
 
 export default notifySlice.reducer;

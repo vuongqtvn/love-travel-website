@@ -78,6 +78,11 @@ h6 {
   bottom: 100px !important;
 }
 
+.notify-not-read {
+  color: #e03;
+  background: #eee;
+}
+
 .hover-item:hover {
   color: #e03;
   background: #f6f6f6;
