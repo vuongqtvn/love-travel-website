@@ -23,6 +23,7 @@ type Props = {
   flexWrap?: Wrap;
   gap?: string | number;
   className?: string;
+  onClick?: any;
 };
 
 const Box = ({
@@ -35,6 +36,7 @@ const Box = ({
   flexWrap,
   gap,
   className,
+  onClick,
 }: Props) => {
   return (
     <Styled.BoxWrap
@@ -46,6 +48,7 @@ const Box = ({
       gap={gap}
       style={style}
       className={className}
+      onClick={onClick}
     >
       {children}
     </Styled.BoxWrap>

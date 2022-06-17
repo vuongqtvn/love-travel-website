@@ -10,6 +10,7 @@ import * as Styled from "./styles";
 
 const UserItem = ({ user }: { user: any }) => {
   const auth = useAppSelector((state) => state.auth);
+  const { socket } = useAppSelector((state) => state.socket);
 
   const navigate = useNavigate();
 
@@ -40,7 +41,7 @@ const UserItem = ({ user }: { user: any }) => {
     }
 
     setLoading(true);
-    dispatch(followUser(user))
+    dispatch(followUser({ user: user, socket: socket }))
       .unwrap()
       .then(() => {
         setFollowed(true);
@@ -57,7 +58,12 @@ const UserItem = ({ user }: { user: any }) => {
     }
 
     setLoading(true);
-    dispatch(unFollowUser(user))
+    dispatch(
+      unFollowUser({
+        user: user,
+        socket: socket,
+      })
+    )
       .unwrap()
       .then(() => {
         setFollowed(false);

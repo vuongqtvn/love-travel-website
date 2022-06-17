@@ -12,6 +12,8 @@ import { useNavigate } from "react-router-dom";
 
 const ReviewForm = () => {
   const { placeSelected } = useAppSelector((state) => state.review);
+  const { user } = useAppSelector((state) => state.auth);
+  const { socket } = useAppSelector((state) => state.socket);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const [loading, setLoading] = useState<boolean>(false);
@@ -89,10 +91,14 @@ const ReviewForm = () => {
     const media = await imageUpload(images);
     dispatch(
       reviewPlace({
-        ...rate,
-        place: placeSelected._id,
-        images: media,
-        content,
+        data: {
+          ...rate,
+          place: placeSelected._id,
+          images: media,
+          content,
+        },
+        socket,
+        user,
       })
     )
       .unwrap()

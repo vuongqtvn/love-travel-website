@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { setToken, userApi } from "../../api";
 import authApi from "../../api/authApi";
+import { createNotify, removeNotify } from "../../redux/notifySlice";
 import { RootState } from "../../redux/store";
 import { RequestState } from "../../types";
 import { ILogin, IRegister, IUser } from "../../types/auth.type";
@@ -75,10 +76,22 @@ export const refreshToken = createAsyncThunk(
 
 export const followUser = createAsyncThunk(
   "auth/followUser",
-  async (user: any, { rejectWithValue, getState }) => {
+  async (
+    { user, socket }: { user: any; socket: any },
+    { rejectWithValue, getState, dispatch }
+  ) => {
     const state = getState() as RootState;
     try {
       const res = await userApi.follow(user._id);
+      // notify
+      const message = {
+        id: state.auth.user?._id,
+        text: "đã theo dõi bạn.",
+        recipients: [user._id],
+        url: `/profile/${state.auth.user?._id}`,
+      };
+
+      dispatch(createNotify({ message, user: state.auth.user, socket }));
       return { ...res, user, auth: state.auth.user };
     } catch (error) {
       return rejectWithValue(error);
@@ -88,11 +101,21 @@ export const followUser = createAsyncThunk(
 
 export const unFollowUser = createAsyncThunk(
   "auth/unFollowUser",
-  async (user: any, { rejectWithValue, getState }) => {
+  async (
+    { user, socket }: { user: any; socket: any },
+    { rejectWithValue, getState, dispatch }
+  ) => {
     const state = getState() as RootState;
     try {
       const res = await userApi.unFollow(user._id);
+      // notify
+      const message = {
+        id: state.auth.user?._id,
+        recipients: [user._id],
+        url: `/profile/${state.auth.user?._id}`,
+      };
 
+      dispatch(removeNotify({ message, socket }));
       return { ...res, user, auth: state.auth.user };
     } catch (error) {
       return rejectWithValue(error);

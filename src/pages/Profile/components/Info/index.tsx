@@ -6,7 +6,17 @@ import * as Styled from "./styles";
 import { updateUser } from "../../profileSlice";
 import { imageUpload } from "../../../../utils/imageUpload";
 
-const Info = () => {
+const Info = ({
+  showEdit,
+  followed,
+  follow,
+  unFollow,
+}: {
+  showEdit: any;
+  followed: any;
+  follow: any;
+  unFollow: any;
+}) => {
   const { user } = useAppSelector((state) => state.auth);
   const { profile } = useAppSelector((state) => state.profile);
 
@@ -70,17 +80,25 @@ const Info = () => {
             </h1>
             <div className="action">
               <ul>
-                {user?._id !== profile?._id && (
-                  <li>
-                    <button className="follow">
-                      <i className="bx bx-rss"></i>
-                      Theo dõi
-                    </button>
-                  </li>
-                )}
+                {user?._id !== profile?._id &&
+                  (followed ? (
+                    <li>
+                      <button className="active" onClick={unFollow}>
+                        <i className="bx bxs-user-check"></i>
+                        Đang theo dõi
+                      </button>
+                    </li>
+                  ) : (
+                    <li>
+                      <button className="follow" onClick={follow}>
+                        <i className="bx bx-rss"></i>
+                        Theo dõi
+                      </button>
+                    </li>
+                  ))}
                 {user?._id === profile?._id && (
                   <li>
-                    <button>
+                    <button onClick={showEdit}>
                       <i className="bx bx-pencil"></i> Chỉnh sửa
                     </button>
                   </li>

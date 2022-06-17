@@ -218,10 +218,10 @@ const ReviewItem = ({ review }: { review: IReview }) => {
             </div>
             <div className="images">
               {review.images.length <= 3
-                ? review.images.map((image: any) => (
+                ? review.images.map((image: any, index: number) => (
                     <div onClick={() => setIsOpen(true)}>
                       <ImageLazy
-                        key={image.public_id}
+                        key={index}
                         className="image"
                         radius="6px"
                         alt="avatar"
@@ -234,7 +234,7 @@ const ReviewItem = ({ review }: { review: IReview }) => {
                       return (
                         <div onClick={() => setIsOpen(true)}>
                           <ImageLazy
-                            key={image.public_id}
+                            key={index}
                             className="image"
                             radius="6px"
                             alt={review.content}
@@ -252,7 +252,7 @@ const ReviewItem = ({ review }: { review: IReview }) => {
                       return (
                         <div onClick={() => setIsOpen(true)}>
                           <ImageLazy
-                            key={image.public_id}
+                            key={index}
                             className="image"
                             radius="6px"
                             alt={review.content}
@@ -360,7 +360,7 @@ const ReviewItem = ({ review }: { review: IReview }) => {
           {showMore && (
             <Styled.ReviewReplyContainer>
               {review.comments.map((comment: any, key: any) => (
-                <ReplyItem comment={comment} />
+                <ReplyItem key={key} comment={comment} />
               ))}
             </Styled.ReviewReplyContainer>
           )}

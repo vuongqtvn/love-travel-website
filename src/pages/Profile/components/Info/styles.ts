@@ -136,6 +136,11 @@ export const ProfileInfo = styled.div`
           transition: all 0.15s ease;
           color: #000;
           background: #efefef;
+          &.active {
+            color: #fff;
+            background-color: #e03;
+          }
+
           &:hover {
             color: #000;
             background-color: #e0e0e0;

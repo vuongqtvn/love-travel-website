@@ -153,6 +153,11 @@ export const ProfileInfo = styled.div`
             color: #fff;
             background-color: #e03;
           }
+
+          &.active {
+            color: #fff !important;
+            background-color: #e03 !important;
+          }
         }
       }
     }
@@ -235,6 +240,10 @@ export const ProfileNavigation = styled.div`
         }
 
         &.follow:hover {
+          color: #fff;
+          background-color: #e03;
+        }
+        &.active {
           color: #fff;
           background-color: #e03;
         }

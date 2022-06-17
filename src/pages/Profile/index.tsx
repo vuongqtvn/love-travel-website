@@ -12,10 +12,12 @@ import Places from "./components/Places";
 import Saved from "./components/Saved";
 import Followers from "./components/Followers";
 import Following from "./components/Following";
+import { followUser, openAuth, unFollowUser } from "../Auth/authSlice";
 
 const Profile = () => {
   const { id } = useParams();
   const { user } = useAppSelector((state) => state.auth);
+  const { socket } = useAppSelector((state) => state.socket);
   const { profile } = useAppSelector((state) => state.profile);
 
   const [tab, setTab] = useState<
@@ -23,6 +25,9 @@ const Profile = () => {
   >("review");
 
   const [isModal, setIsModal] = useState<boolean>(false);
+
+  const [followed, setFollowed] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const dispatch = useAppDispatch();
 
@@ -34,6 +39,63 @@ const Profile = () => {
       dispatch(clearProfile());
     };
   }, [id, dispatch]);
+
+  React.useEffect(() => {
+    if (user?.following) {
+      if (user?.following?.find((item: any) => item._id === profile?._id)) {
+        setFollowed(true);
+      }
+    }
+
+    return () => {
+      setFollowed(false);
+    };
+  }, [user?.following, profile?._id]);
+
+  const handleFollow = () => {
+    if (loading) return;
+
+    if (!user) return;
+
+    if (!user) {
+      return dispatch(openAuth());
+    }
+
+    setLoading(true);
+    dispatch(
+      followUser({
+        user: profile,
+        socket: socket,
+      })
+    )
+      .unwrap()
+      .then(() => {
+        setFollowed(true);
+      })
+      .finally(() => setLoading(false));
+  };
+  const handleUnFollow = () => {
+    if (loading) return;
+
+    if (!user) return;
+
+    if (!user) {
+      return dispatch(openAuth());
+    }
+
+    setLoading(true);
+    dispatch(
+      unFollowUser({
+        user: profile,
+        socket: socket,
+      })
+    )
+      .unwrap()
+      .then(() => {
+        setFollowed(false);
+      })
+      .finally(() => setLoading(false));
+  };
 
   const renderPanel = (
     tab: "review" | "place" | "saved" | "followers" | "following"
@@ -57,7 +119,12 @@ const Profile = () => {
   return (
     <Section>
       <Styled.ProfileWrapper>
-        <Info />
+        <Info
+          followed={followed}
+          follow={handleFollow}
+          unFollow={handleUnFollow}
+          showEdit={() => setIsModal(true)}
+        />
 
         <Styled.ProfileNavigationWrap>
           <Styled.ProfileNavigation>
@@ -94,14 +161,22 @@ const Profile = () => {
               </li>
             </ul>
             <ul>
-              {user?._id !== profile?._id && (
-                <li>
-                  <button className="follow">
-                    <i className="bx bx-rss"></i>
-                    Theo dõi
-                  </button>
-                </li>
-              )}
+              {user?._id !== profile?._id &&
+                (followed ? (
+                  <li>
+                    <button className="active" onClick={handleUnFollow}>
+                      <i className="bx bxs-user-check"></i>
+                      Đang theo dõi
+                    </button>
+                  </li>
+                ) : (
+                  <li>
+                    <button className="follow" onClick={handleFollow}>
+                      <i className="bx bx-rss"></i>
+                      Theo dõi
+                    </button>
+                  </li>
+                ))}
               {user?._id === profile?._id && (
                 <li>
                   <button onClick={() => setIsModal(true)}>

@@ -325,8 +325,11 @@ const PlaceDetail = (props: Props) => {
                         <p>{`Chưa có đánh giá nào cho ${place?.name}. Hãy là người đầu tiên làm chuyện ấy!`}</p>
                       </div>
                     ) : (
-                      place?.posts.map((review: IReview) => (
-                        <ReviewItem key={review._id} review={review} />
+                      place?.posts.map((review: IReview, key: number) => (
+                        <ReviewItem
+                          key={`review-item-${key}`}
+                          review={review}
+                        />
                       ))
                     )}
                   </React.Fragment>

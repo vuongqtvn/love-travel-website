@@ -3,7 +3,7 @@ import { CloseOutlined, CameraOutlined } from "@ant-design/icons";
 import { Button, Input, message, Rate } from "antd";
 import { PlaceType } from "../../types";
 import { useNavigate } from "react-router-dom";
-import { useAppDispatch } from "../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { imageUpload } from "../../utils/imageUpload";
 import { reviewPlace } from "../../pages/Review/reviewSlice";
 import * as Styled from "./styles";
@@ -11,6 +11,10 @@ import { colors } from "../../theme/colors";
 import { imageShow, videoShow } from "../../utils/mediaShow";
 
 const AddForm = ({ place, onClose }: { place: PlaceType; onClose: any }) => {
+  const {
+    auth,
+    socket: { socket },
+  } = useAppSelector((state) => state);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const desc = ["Tệ", "Khá tệ", "Trung bình", "Tốt", "Tuyệt vời"];
@@ -88,10 +92,14 @@ const AddForm = ({ place, onClose }: { place: PlaceType; onClose: any }) => {
     const media = await imageUpload(images);
     dispatch(
       reviewPlace({
-        ...rate,
-        place: place._id,
-        images: media,
-        content,
+        data: {
+          ...rate,
+          place: place._id,
+          images: media,
+          content,
+        },
+        socket: socket,
+        user: auth.user,
       })
     )
       .unwrap()

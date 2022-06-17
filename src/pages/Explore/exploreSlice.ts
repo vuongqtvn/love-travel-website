@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { commentApi, placeApi, userApi } from "../../api";
 import exploreApi from "../../api/exploreApi";
 import reviewApi from "../../api/reviewApi";
+import { createNotify, removeNotify } from "../../redux/notifySlice";
 import { DeleteData, EditData } from "../../utils/helper";
 
 const initialState = {
@@ -30,9 +31,23 @@ export const getDiscover = createAsyncThunk(
 
 export const likeReview = createAsyncThunk(
   "explore/likeReview",
-  async ({ id, socket }: { id: any; socket: any }, { rejectWithValue }) => {
+  async (
+    { review, socket, user }: { review: any; socket: any; user: any },
+    { rejectWithValue, dispatch }
+  ) => {
     try {
-      const res = await reviewApi.likeReview(id);
+      const res = await reviewApi.likeReview(review._id);
+      // notify
+      const message = {
+        id: user._id,
+        text: "đã thích bài viết.",
+        recipients: [review.user._id],
+        url: `/review/${review._id}`,
+        content: review.content,
+        image: review.images?.[0]?.url,
+      };
+
+      dispatch(createNotify({ message, user, socket }));
       return res;
     } catch (error) {
       return rejectWithValue(error);
@@ -42,9 +57,21 @@ export const likeReview = createAsyncThunk(
 
 export const unlikeReview = createAsyncThunk(
   "explore/unlikeReview",
-  async ({ id, socket }: { id: any; socket: any }, { rejectWithValue }) => {
+  async (
+    { review, socket, user }: { review: any; socket: any; user: any },
+    { rejectWithValue, dispatch }
+  ) => {
     try {
-      const res = await reviewApi.unlikeReview(id);
+      const res = await reviewApi.unlikeReview(review._id);
+      // notify
+      const message = {
+        id: user._id,
+        text: "không thích bài viết",
+        recipients: [review.user._id],
+        url: `/review/${review._id}`,
+      };
+
+      dispatch(removeNotify({ message, socket }));
       return res;
     } catch (error) {
       return rejectWithValue(error);
@@ -111,15 +138,34 @@ export const getUserPositive = createAsyncThunk(
 export const createReviewComment = createAsyncThunk(
   "explore/createReviewComment",
   async (
-    { review, comment, socket }: { comment: any; review: any; socket: any },
-    { rejectWithValue }
+    {
+      review,
+      comment,
+      socket,
+      user,
+    }: { comment: any; review: any; socket: any; user: any },
+    { rejectWithValue, dispatch }
   ) => {
     try {
-      const res = await commentApi.createComment({
+      const res: any = await commentApi.createComment({
         ...comment,
         postId: review._id,
         postUserId: review.user._id,
       });
+      // notify
+      const message = {
+        id: res.newComment._id,
+        text: comment.reply
+          ? "đã trả lời bình luận của bạn"
+          : "đã bình luận bài viết.",
+        recipients: comment.reply ? [comment.tag._id] : [review.user._id],
+        url: `/review/${review._id}`,
+        content: review.content,
+        image: review.images?.[0]?.url,
+      };
+
+      dispatch(createNotify({ message, socket, user }));
+
       return res;
     } catch (error) {
       return rejectWithValue(error);

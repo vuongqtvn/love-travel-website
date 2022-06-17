@@ -56,7 +56,6 @@ const Saved = ({ id }: { id: any }) => {
               onChange={onChange}
               total={saved.total}
             />
-            ;
           </div>
         </React.Fragment>
       </React.Fragment>

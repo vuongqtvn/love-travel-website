@@ -11,6 +11,7 @@ import {
 import Auth from "../../pages/Auth";
 import { useAppSelector } from "../../redux/hooks";
 import { NotAuth } from "../../components";
+// import SocketClient from "../../components/SocketClient";
 
 type Props = {
   children: JSX.Element | JSX.Element[];
@@ -46,6 +47,7 @@ const UserLayout = ({ children }: Props) => {
         {children}
         <Footer />
         <BackTop />
+        {/* <SocketClient /> */}
         {open && <Auth />}
       </div>
     </ErrorBoundary>

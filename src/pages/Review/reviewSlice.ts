@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import reviewApi from "../../api/reviewApi";
+import { createNotify } from "../../redux/notifySlice";
 import { PlaceType, RequestState } from "../../types";
 
 export interface SearchState {
@@ -21,9 +22,24 @@ const initialState: SearchState = {
 
 export const reviewPlace = createAsyncThunk(
   "review/reviewPlace",
-  async (data: any, thunkApi) => {
+  async (
+    { data, socket, user }: { data: any; socket: any; user: any },
+    thunkApi
+  ) => {
     try {
-      const res = await reviewApi.addReview(data);
+      const res: any = await reviewApi.addReview(data);
+
+      // notify
+      const message = {
+        id: res.newPost._id,
+        text: "thêm bài viết đánh giá mới",
+        recipients: res.newPost.user.followers,
+        url: `/review/${res.newPost._id}`,
+        content: data.content,
+        image: data.images?.[0]?.url,
+      };
+
+      thunkApi.dispatch(createNotify({ message, user, socket }));
       return res;
     } catch (error) {
       return thunkApi.rejectWithValue(error);

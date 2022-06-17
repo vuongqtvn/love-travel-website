@@ -76,6 +76,7 @@ const Setting = ({
 
 const FeedCard = ({ feed, openUpdate }: Props) => {
   const { user } = useAppSelector((state) => state.auth);
+  const { socket } = useAppSelector((state) => state.socket);
   const dispatch = useAppDispatch();
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
   const [content, setContent] = useState<string>("");
@@ -196,7 +197,7 @@ const FeedCard = ({ feed, openUpdate }: Props) => {
     }
     if (loadLike) return;
     setLoadLike(true);
-    await dispatch(likeReview({ id: feed._id, socket: null }));
+    await dispatch(likeReview({ review: feed, socket: socket, user: user }));
     setLoadLike(false);
   };
 
@@ -206,7 +207,7 @@ const FeedCard = ({ feed, openUpdate }: Props) => {
     }
     if (loadLike) return;
     setLoadLike(true);
-    await dispatch(unlikeReview({ id: feed._id, socket: null }));
+    await dispatch(unlikeReview({ review: feed, socket: socket, user: user }));
     setLoadLike(false);
   };
 
@@ -228,7 +229,8 @@ const FeedCard = ({ feed, openUpdate }: Props) => {
       createReviewComment({
         review: feed,
         comment: newComment,
-        socket: null,
+        socket: socket,
+        user: user,
       })
     );
 

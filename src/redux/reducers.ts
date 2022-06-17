@@ -15,6 +15,8 @@ import AdminGeneralSlice from "../pages/Admin/General/generalAdminSlice";
 import savedSlice from "../pages/Saved/savedSlice";
 import profileSlice from "../pages/Profile/profileSlice";
 import updatePlaceSlice from "../pages/UpdatePlace/updatePlaceSlice";
+import socketSlice from "../components/SocketClient/socketSlice";
+import notifySlice from "./notifySlice";
 
 const rootReducer = {
   mapModal: mapModalSlice,
@@ -33,6 +35,8 @@ const rootReducer = {
   updatePlace: updatePlaceSlice,
   saved: savedSlice,
   profile: profileSlice,
+  socket: socketSlice,
+  notify: notifySlice,
   app: appSlice,
 };
 

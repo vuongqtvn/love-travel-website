@@ -1,11 +1,12 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { images } from "../../assets";
 import * as Styled from "./styles";
 import * as Icons from "@ant-design/icons";
 import {
   Avatar,
+  Badge,
   Button,
   Drawer,
   Dropdown,
@@ -20,6 +21,8 @@ import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { logout, openAuth } from "../../pages/Auth/authSlice";
 import { colors } from "../../theme/colors";
 import moment from "moment";
+import { getNotifies } from "../../redux/notifySlice";
+import ImageLazy from "../ImageLazy";
 
 type Props = {};
 
@@ -95,7 +98,8 @@ const UserSetting = ({ user }: any) => {
 
 const NotifyUser = ({ user }: any) => {
   // const dispatch = useAppDispatch();
-  // const navigate = useNavigate();
+  const { data } = useAppSelector((state) => state.notify);
+  const navigate = useNavigate();
 
   return (
     <Styled.NotifyDropdown>
@@ -107,9 +111,59 @@ const NotifyUser = ({ user }: any) => {
         </span>
       </div>
       <div className="list">
-        <div className="content">
-          <span className="empty">Không có thông báo nào</span>
-        </div>
+        {data.length === 0 ? (
+          <div className="content">
+            <span className="empty">Không có thông báo nào</span>
+          </div>
+        ) : (
+          data.map((item: any, key: number) => (
+            <Box
+              className="hover-item"
+              style={{
+                padding: 10,
+                cursor: "pointer",
+              }}
+              key={key}
+              gap="10px"
+              onClick={() => {
+                if (item.url) {
+                  navigate(item.url);
+                }
+              }}
+            >
+              <ImageLazy
+                hover={false}
+                src={item.user.avatar}
+                width="50px"
+                height="50px"
+                style={{ borderRadius: "50%", flexShrink: 0 }}
+                alt={item.content}
+              />
+              <Box gap="10px">
+                <Box flexDirection="column" flex={1}>
+                  <Typography.Title ellipsis level={5}>
+                    {`${item.user.name} ${item.text}`}
+                  </Typography.Title>
+                  <Typography.Paragraph
+                    style={{ marginBottom: 0 }}
+                    ellipsis={{
+                      rows: 2,
+                    }}
+                  >
+                    {item.content}
+                  </Typography.Paragraph>
+                </Box>
+                <ImageLazy
+                  hover={false}
+                  src={item.image}
+                  width="65px"
+                  height="65px"
+                  alt={item.content}
+                />
+              </Box>
+            </Box>
+          ))
+        )}
       </div>
     </Styled.NotifyDropdown>
   );
@@ -121,8 +175,15 @@ const Header = (props: Props) => {
   const location = useLocation();
 
   const { user } = useAppSelector((state) => state.auth);
+  const { data } = useAppSelector((state) => state.notify);
 
   const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    if (user) {
+      dispatch(getNotifies());
+    }
+  }, [user, dispatch]);
 
   const showDrawer = () => {
     setVisible(true);
@@ -193,19 +254,26 @@ const Header = (props: Props) => {
                   </Tooltip>
                 </div>
                 <Dropdown
+                  destroyPopupOnHide
                   overlay={<NotifyUser user={user} />}
                   placement="bottomRight"
                   trigger={["click"]}
                 >
                   <div className="nav-item">
-                    <Styled.IconButton>
-                      <Icons.BellFilled
-                        style={{
-                          fontSize: 20,
-                          color: colors.primary,
-                        }}
-                      />
-                    </Styled.IconButton>
+                    <Badge
+                      count={data.length}
+                      overflowCount={9}
+                      offset={[-2, 7.5]}
+                    >
+                      <Styled.IconButton>
+                        <Icons.BellFilled
+                          style={{
+                            fontSize: 20,
+                            color: colors.primary,
+                          }}
+                        />
+                      </Styled.IconButton>
+                    </Badge>
                   </div>
                 </Dropdown>
               </React.Fragment>
