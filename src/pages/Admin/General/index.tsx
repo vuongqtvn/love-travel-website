@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Spin, Tabs } from "antd";
+import { Tabs } from "antd";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import { getGeneral, resetGeneral } from "./generalAdminSlice";
 import Benefits from "./components/Benefits";
@@ -27,7 +27,6 @@ const AdminGeneral = () => {
 
   return (
     <Wrapper>
-<!--       <Spin spinning={loading}> -->
         <Tabs destroyInactiveTabPane defaultActiveKey="1" onChange={onChange}>
           <Tabs.TabPane tab="Khu vực" key="1">
             <Regions />
@@ -45,7 +44,6 @@ const AdminGeneral = () => {
             <Tags />
           </Tabs.TabPane>
         </Tabs>
-//       </Spin>
     </Wrapper>
   );
 };
