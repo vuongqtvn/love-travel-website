@@ -27,7 +27,7 @@ const AdminGeneral = () => {
 
   return (
     <Wrapper>
-      <Spin spinning={loading}>
+<!--       <Spin spinning={loading}> -->
         <Tabs destroyInactiveTabPane defaultActiveKey="1" onChange={onChange}>
           <Tabs.TabPane tab="Khu vực" key="1">
             <Regions />
@@ -45,7 +45,7 @@ const AdminGeneral = () => {
             <Tags />
           </Tabs.TabPane>
         </Tabs>
-      </Spin>
+//       </Spin>
     </Wrapper>
   );
 };
