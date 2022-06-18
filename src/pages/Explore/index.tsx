@@ -174,10 +174,18 @@ const Explore = (props: Props) => {
               <div>
                 <h3>Quảng Cáo</h3>
               </div>
-              <div className="ads-image">
+              {/* <div className="ads-image">
                 <div className="ads">
-                  <ImageLazy hover={false} src={images.ads} alt="ads" />
+               
                 </div>
+              </div> */}
+              <div>
+                <ImageLazy
+                  height="300px"
+                  hover={false}
+                  src={images.ads}
+                  alt="ads"
+                />
               </div>
             </Styled.ExploreSidebarBox>
           </Styled.ExploreSidebar>

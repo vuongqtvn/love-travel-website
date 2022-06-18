@@ -146,6 +146,7 @@ const UpdateForm = ({ profile, onClose }: { profile: any; onClose: any }) => {
           loading={loading}
           type="primary"
           shape="round"
+          size="large"
         >
           Cập nhật thông tin
         </Button>

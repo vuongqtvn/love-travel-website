@@ -315,6 +315,18 @@ const Header = (props: Props) => {
                     </Styled.IconButton>
                   </Tooltip>
                 </div>
+                <div className="nav-item">
+                  <Tooltip title="Tin nhắn">
+                    <Styled.IconButton onClick={() => navigate("/message")}>
+                      <Icons.MessageFilled
+                        style={{
+                          fontSize: 20,
+                          color: colors.primary,
+                        }}
+                      />
+                    </Styled.IconButton>
+                  </Tooltip>
+                </div>
                 <Dropdown
                   destroyPopupOnHide
                   overlay={<NotifyUser user={user} />}

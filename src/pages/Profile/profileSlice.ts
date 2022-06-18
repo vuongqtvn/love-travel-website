@@ -28,11 +28,13 @@ export interface ProfileState {
     loading: boolean;
   };
   loading: boolean;
+  error: boolean;
   profile: IUser | null;
 }
 
 const initialState: ProfileState = {
   loading: false,
+  error: false,
   saved: {
     data: [],
     total: 0,
@@ -142,6 +144,7 @@ const profileSlice = createSlice({
     builder
       .addCase(getProfile.pending, (state) => {
         state.loading = true;
+        state.error = false;
       })
       .addCase(getProfile.fulfilled, (state, action: any) => {
         const { user } = action.payload;
@@ -150,6 +153,7 @@ const profileSlice = createSlice({
       })
       .addCase(getProfile.rejected, (state, action) => {
         state.loading = false;
+        state.error = true;
       })
       .addCase(likeReview.fulfilled, (state, action: any) => {
         const posts = EditData(

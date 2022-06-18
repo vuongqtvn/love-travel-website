@@ -323,6 +323,7 @@ const UpdateForm = ({ review, onClose }: { review: any; onClose: any }) => {
           loading={loading}
           type="primary"
           shape="round"
+          size="large"
         >
           Gửi đánh giá
         </Button>

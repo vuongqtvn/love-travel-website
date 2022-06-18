@@ -18,7 +18,12 @@ import {
   TagsOutlined,
   CheckCircleOutlined,
 } from "@ant-design/icons";
-import React, { useEffect, useLayoutEffect, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useState,
+} from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import {
   Box,
@@ -51,7 +56,29 @@ const PlaceDetail = (props: Props) => {
   const navigate = useNavigate();
 
   const [showMap, setShowMap] = useState<boolean>(false);
+  const [close, setClose] = useState(true);
   const [addReview, setAddReview] = useState<boolean>(false);
+
+  const openPlace = useCallback(() => {
+    if (place) {
+      var d = new Date();
+      var currentTime = d.getHours() * 60 * 60 + d.getMinutes() * 60;
+      const [hoursFrom, minutesFrom] = place.time.from.split(":");
+      const [hoursTo, minutesTo] = place.time.to.split(":");
+      const totalSecondsFrom = Number(hoursFrom * 60 * 60 + minutesFrom * 60);
+      const totalSecondsTo = Number(hoursTo * 60 * 60 + minutesTo * 60);
+
+      if (totalSecondsFrom < currentTime && totalSecondsTo > currentTime) {
+        setClose(true);
+      } else {
+        setClose(false);
+      }
+    }
+  }, [place]);
+
+  useEffect(() => {
+    openPlace();
+  }, [openPlace]);
 
   useLayoutEffect(() => {
     document.documentElement.scrollTo(0, 0);
@@ -67,6 +94,22 @@ const PlaceDetail = (props: Props) => {
       dispatch(clearPlace());
     };
   }, [id, dispatch]);
+
+  if (
+    api.getPlace.status === "rejected" ||
+    api.getReviews.status === "rejected" ||
+    api.getPlaceRelated.status === "rejected"
+  ) {
+    return (
+      <Section>
+        <Styled.PlaceError>
+          <img src={images.empty} alt="empty" />
+          <p>Opps, địa điểm này không tồn tại!</p>
+        </Styled.PlaceError>
+      </Section>
+    );
+  }
+
   return (
     <Section>
       <Styled.PlaceWrapper>
@@ -111,9 +154,15 @@ const PlaceDetail = (props: Props) => {
                 <Space align="center">
                   <ClockCircleOutlined className="icon" />
                   <Space>
-                    <Typography.Text className="status time-close">
-                      Đang mở cửa
-                    </Typography.Text>
+                    {close ? (
+                      <Typography.Text className="status">
+                        Đang mở cửa
+                      </Typography.Text>
+                    ) : (
+                      <Typography.Text className="status">
+                        Đang đóng cửa
+                      </Typography.Text>
+                    )}
 
                     <Typography.Text strong className="ant-dropdown-link">
                       {api.getPlace.status === "pending" ? (

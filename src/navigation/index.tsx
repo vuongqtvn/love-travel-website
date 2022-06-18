@@ -27,21 +27,50 @@ const Promo = lazy(() => import("../pages/Promo"));
 const Review = lazy(() => import("../pages/Review"));
 const Saved = lazy(() => import("../pages/Saved"));
 const Profile = lazy(() => import("../pages/Profile"));
+const Message = lazy(() => import("../pages/Message"));
+const MessageDetail = lazy(() => import("../pages/Message/MessageDetail"));
 const NotFound = lazy(() => import("../pages/NotFound"));
 
 const publicRoute = [
-  { path: path.home, component: Home, layout: MainLayout },
-  { path: path.search, component: Search, layout: MainLayout },
-  { path: path.explore, component: Explore, layout: MainLayout },
-  { path: path.review, component: Review, layout: UserLayout },
-  { path: path.placeDetail, component: Place, layout: MainLayout },
-  { path: path.promo, component: Promo, layout: MainLayout },
-  { path: path.map, component: Map, layout: MainLayout },
-  { path: path.profile, component: Profile, layout: UserLayout },
-  { path: "/edit-place/:id", component: UpdatePlace, layout: UserLayout },
-  { path: path.saved, component: Saved, layout: UserLayout },
-  { path: path.addPlace, component: AddPlace, layout: UserLayout },
-  { path: path.notFound, component: NotFound, layout: MainLayout },
+  { path: path.home, component: Home, layout: MainLayout, footer: true },
+  { path: path.search, component: Search, layout: MainLayout, footer: true },
+  { path: path.explore, component: Explore, layout: MainLayout, footer: true },
+  { path: path.review, component: Review, layout: UserLayout, footer: true },
+  {
+    path: path.placeDetail,
+    component: Place,
+    layout: MainLayout,
+    footer: true,
+  },
+  { path: path.promo, component: Promo, layout: MainLayout, footer: true },
+  { path: path.map, component: Map, layout: MainLayout, footer: true },
+  { path: path.profile, component: Profile, layout: UserLayout, footer: true },
+  {
+    path: "/edit-place/:id",
+    component: UpdatePlace,
+    layout: UserLayout,
+    footer: true,
+  },
+  { path: "/message", component: Message, layout: UserLayout, footer: false },
+  {
+    path: "/message/:id",
+    component: MessageDetail,
+    layout: UserLayout,
+    footer: false,
+  },
+  { path: path.saved, component: Saved, layout: UserLayout, footer: true },
+  {
+    path: path.addPlace,
+    component: AddPlace,
+    layout: UserLayout,
+    footer: true,
+  },
+  {
+    path: path.notFound,
+    component: NotFound,
+    layout: MainLayout,
+    footer: true,
+  },
 ];
 
 const adminRoute = [
@@ -69,7 +98,7 @@ const Navigation = () => {
             key={index}
             path={route.path}
             element={
-              <Layout>
+              <Layout footer={route.footer}>
                 <Suspense fallback={<FallBack />}>
                   <Page />
                 </Suspense>

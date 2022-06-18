@@ -52,7 +52,7 @@ export const Logo = styled.div`
 
 export const NavMobile = styled.div`
   display: none;
-  @media (max-width: 991px) {
+  @media (max-width: 1024px) {
     display: flex;
   }
   .nav-icon {
@@ -94,7 +94,7 @@ export const Nav = styled.div`
   justify-content: space-between;
   flex: 1;
   color: ${colors.white};
-  @media (max-width: 991px) {
+  @media (max-width: 1024px) {
     display: none;
   }
 `;

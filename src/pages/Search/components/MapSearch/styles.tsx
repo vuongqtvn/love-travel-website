@@ -28,6 +28,7 @@ export const SearchViewMap = styled.div`
     background-color: ${colors.white};
     border: 2px solid ${colors.black};
     transition: all 0.15s ease;
+    cursor: pointer;
     :hover {
       color: ${colors.black};
       background-color: ${colors.grey};

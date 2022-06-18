@@ -11,13 +11,15 @@ import {
 import Auth from "../../pages/Auth";
 import { useAppSelector } from "../../redux/hooks";
 import { NotAuth } from "../../components";
-// import SocketClient from "../../components/SocketClient";
+import SocketClient from "../../components/SocketClient";
+import * as Styled from "./styles";
 
 type Props = {
   children: JSX.Element | JSX.Element[];
+  footer?: boolean;
 };
 
-const UserLayout = ({ children }: Props) => {
+const UserLayout = ({ children, footer = true }: Props) => {
   const { user, api, open } = useAppSelector((state) => state.auth);
 
   if (api.refreshToken.status === "pending") {
@@ -41,15 +43,15 @@ const UserLayout = ({ children }: Props) => {
 
   return (
     <ErrorBoundary>
-      <div>
+      <Styled.LayoutWrapper>
         <Header />
         <Navbar />
-        {children}
-        <Footer />
+        <div className="content">{children}</div>
+        {footer && <Footer />}
         <BackTop />
-        {/* <SocketClient /> */}
+        <SocketClient />
         {open && <Auth />}
-      </div>
+      </Styled.LayoutWrapper>
     </ErrorBoundary>
   );
 };

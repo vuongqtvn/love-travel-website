@@ -305,6 +305,7 @@ const AddForm = ({ place, onClose }: { place: PlaceType; onClose: any }) => {
           loading={loading}
           type="primary"
           shape="round"
+          size="large"
         >
           Gửi đánh giá
         </Button>

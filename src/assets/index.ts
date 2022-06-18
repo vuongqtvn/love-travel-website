@@ -14,6 +14,8 @@ import ute from "./images/ute.png";
 import bookmark from "./images/bookmarks.svg";
 import ads from "./images/ads.png";
 import empty from "./images/empty.svg";
+import send from "./images/send.svg";
+import emoji from "./images/emoji.svg";
 
 export const images = {
   logo,
@@ -32,4 +34,6 @@ export const images = {
   bookmark,
   ads,
   empty,
+  send,
+  emoji,
 };

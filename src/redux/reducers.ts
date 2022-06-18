@@ -17,6 +17,7 @@ import profileSlice from "../pages/Profile/profileSlice";
 import updatePlaceSlice from "../pages/UpdatePlace/updatePlaceSlice";
 import socketSlice from "../components/SocketClient/socketSlice";
 import notifySlice from "./notifySlice";
+import messageSlice from "../pages/Message/messageSlice";
 
 const rootReducer = {
   mapModal: mapModalSlice,
@@ -37,6 +38,7 @@ const rootReducer = {
   profile: profileSlice,
   socket: socketSlice,
   notify: notifySlice,
+  message: messageSlice,
   app: appSlice,
 };
 

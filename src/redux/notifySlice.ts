@@ -21,15 +21,17 @@ export const createNotify = createAsyncThunk(
   ) => {
     try {
       const res: any = await notifyApi.createNotify(message);
-      console.log(res.notify);
-      socket.emit("createNotify", {
-        ...res.notify,
-        user: {
-          email: user.email,
-          avatar: user.avatar,
-          name: user.name,
-        },
-      });
+
+      if (socket) {
+        socket.emit("createNotify", {
+          ...res.notify,
+          user: {
+            email: user.email,
+            avatar: user.avatar,
+            name: user.name,
+          },
+        });
+      }
       return res;
     } catch (error) {
       return rejectWithValue(error);
@@ -45,7 +47,9 @@ export const removeNotify = createAsyncThunk(
   ) => {
     try {
       const res: any = await notifyApi.deleteNotify(message);
-      socket.emit("removeNotify", message);
+      if (socket) {
+        socket.emit("removeNotify", message);
+      }
       return res;
     } catch (error) {
       return rejectWithValue(error);

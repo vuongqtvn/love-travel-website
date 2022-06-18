@@ -13,12 +13,13 @@ import Saved from "./components/Saved";
 import Followers from "./components/Followers";
 import Following from "./components/Following";
 import { followUser, openAuth, unFollowUser } from "../Auth/authSlice";
+import { images } from "../../assets";
 
 const Profile = () => {
   const { id } = useParams();
   const { user } = useAppSelector((state) => state.auth);
   const { socket } = useAppSelector((state) => state.socket);
-  const { profile } = useAppSelector((state) => state.profile);
+  const { profile, error } = useAppSelector((state) => state.profile);
 
   const [tab, setTab] = useState<
     "review" | "place" | "saved" | "followers" | "following"
@@ -115,6 +116,17 @@ const Profile = () => {
         return null;
     }
   };
+
+  if (error) {
+    return (
+      <Section>
+        <Styled.PlaceError>
+          <img src={images.empty} alt="empty" />
+          <p>Opps, người dùng này không tồn tại!</p>
+        </Styled.PlaceError>
+      </Section>
+    );
+  }
 
   return (
     <Section>

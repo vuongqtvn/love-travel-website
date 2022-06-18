@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { addNotify, deleteNotify } from "../../redux/notifySlice";
 import audioSound from "../../assets/audio/iphone_notification.mp3";
+import { addMessage, addUserMessage } from "../../pages/Message/messageSlice";
 // import { useDispatch, useSelector } from "react-redux";
 // import { GLOBAL_TYPES } from "./redux/actions/globalTypes";
 // import { NOTIFY_TYPE } from "./redux/actions/notifyAction";
@@ -163,26 +164,23 @@ const SocketClient = () => {
     }
   }, [socket, dispatch]);
 
-  //   // add Message Client
-  //   useEffect(() => {
-  //     socket.on("addMessageClient", (message) => {
-  //       dispatch({
-  //         type: MESSAGE_TYPE.ADD_MESSAGE,
-  //         payload: message,
-  //       });
+  // add Message Client
+  useEffect(() => {
+    if (socket) {
+      socket.on("addMessageClient", (message: any) => {
+        dispatch(addMessage(message));
+        dispatch(
+          addUserMessage({
+            ...message.user,
+            text: message.text,
+            media: message.media,
+          })
+        );
+      });
 
-  //       dispatch({
-  //         type: MESSAGE_TYPE.ADD_USER,
-  //         payload: {
-  //           ...message.user,
-  //           text: message.text,
-  //           media: message.media,
-  //         },
-  //       });
-  //     });
-
-  //     return () => socket.off("addMessageClient");
-  //   }, [socket, dispatch]);
+      return () => socket.off("addMessageClient");
+    }
+  }, [socket, dispatch]);
 
   //   // Check user online/offline
   //   useEffect(() => {
