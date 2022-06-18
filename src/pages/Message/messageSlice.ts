@@ -73,6 +73,7 @@ export const loadMoreMessages = createAsyncThunk(
         ...res,
         messages: res.messages.reverse(),
       };
+      console.log(newData);
 
       const data = { ...newData, _id: id, page };
 
@@ -216,7 +217,7 @@ const messageSlice = createSlice({
         state.data = EditData(state.data, action.payload._id, {
           ...item,
           ...action.payload,
-          messages: [...item.messages, action.payload.messages],
+          messages: [...action.payload.messages, ...item.messages],
         });
       })
       .addCase(deleteConversation.fulfilled, (state, action) => {

@@ -74,9 +74,9 @@ export const isReadNotify = createAsyncThunk(
   "notify/isReadNotify",
   async ({ message }: { message: any }, { rejectWithValue }) => {
     try {
-      const res: any = await notifyApi.readNotify(message._id);
+      await notifyApi.readNotify(message._id);
 
-      return res;
+      return message;
     } catch (error) {
       return rejectWithValue(error);
     }
@@ -121,6 +121,16 @@ const notifySlice = createSlice({
       })
       .addCase(deleteAllNotifies.fulfilled, (state) => {
         state.data = [];
+      })
+      .addCase(isReadNotify.fulfilled, (state, action) => {
+        const data = state.data.map((item: any) => {
+          if (item._id === action.payload._id) {
+            return { ...item, isRead: true };
+          } else {
+            return item;
+          }
+        });
+        state.data = data;
       });
   },
 });

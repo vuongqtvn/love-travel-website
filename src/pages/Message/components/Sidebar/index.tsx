@@ -8,6 +8,7 @@ import ConverSationModal from "../ConversationModal";
 import { userApi } from "../../../../api";
 import { addUserMessage, getConversations } from "../../messageSlice";
 import UserCard from "../UserCard";
+import { UserItemLoading } from "../../../../components";
 
 const SideBar: FC = () => {
   const [isOpenConversation, setIsOpenConversation] = useState(false);
@@ -65,21 +66,36 @@ const SideBar: FC = () => {
           <h3>Tin nhắn</h3>
           <Button
             type="primary"
-            onClick={() => setIsOpenConversation(true)}
+            onClick={() => {
+              if (isLoading) return;
+              setIsOpenConversation(true);
+            }}
             icon={<Icons.PlusOutlined />}
             shape="circle"
           />
         </Styled.ConversationHeader>
         <Styled.ConversationBody>
-          {message.users.map((user: any, key: any) => (
-            <UserCard
-              active={user._id === id}
-              user={user}
-              onClick={() => handleAddUser(user)}
-              message={true}
-              key={key}
-            />
-          ))}
+          {isLoading ? (
+            <div
+              style={{
+                padding: "0 10px",
+              }}
+            >
+              {[1, 2, 3].map((item) => (
+                <UserItemLoading key={item} />
+              ))}
+            </div>
+          ) : (
+            message.users.map((user: any, key: any) => (
+              <UserCard
+                active={user._id === id}
+                user={user}
+                onClick={() => handleAddUser(user)}
+                message={true}
+                key={key}
+              />
+            ))
+          )}
         </Styled.ConversationBody>
       </Styled.ConversationPane>
       {isOpenConversation && (

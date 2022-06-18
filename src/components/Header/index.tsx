@@ -214,14 +214,16 @@ const NotifyUser = ({ user }: any) => {
                     </strong>
                   </small>
                 </Box>
-                <ImageLazy
-                  style={{ borderRadius: 5 }}
-                  hover={false}
-                  src={item.image}
-                  width="70px"
-                  height="70px"
-                  alt={item.content}
-                />
+                {item.image && (
+                  <ImageLazy
+                    style={{ borderRadius: 5 }}
+                    hover={false}
+                    src={item.image}
+                    width="70px"
+                    height="70px"
+                    alt={item.content}
+                  />
+                )}
               </Box>
             </Box>
           ))
@@ -335,7 +337,9 @@ const Header = (props: Props) => {
                 >
                   <div className="nav-item">
                     <Badge
-                      count={data.length}
+                      count={
+                        data.filter((item: any) => item.isRead === false).length
+                      }
                       overflowCount={9}
                       offset={[-2, 7.5]}
                     >

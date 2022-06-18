@@ -105,7 +105,7 @@ export const ModalHeader = styled.div`
 export const ModalBody = styled.div`
   min-height: 200px;
   overflow-y: auto;
-  padding: 16px;
+  /* padding: 16px; */
   @media (max-width: 991px) {
     flex-grow: 1;
   }

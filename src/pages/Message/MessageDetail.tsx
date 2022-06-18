@@ -29,6 +29,7 @@ const MessageDetail = () => {
   const [media, setMedia] = useState<any>([]);
   const [data, setData] = useState([]);
   const [loadingMedia, setLoadingMedia] = useState(false);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
 
   const [total, setTotal] = useState(9);
   const [page, setPage] = useState(0);
@@ -91,9 +92,11 @@ const MessageDetail = () => {
     getMessagesData();
   }, [id, dispatch, auth, message.data]);
 
-  const handleLoadMore = () => {
+  const handleLoadMore = async () => {
     if (total >= 12) {
-      dispatch(loadMoreMessages({ id, page: page + 1 }));
+      setIsLoadingMore(true);
+      await dispatch(loadMoreMessages({ id, page: page + 1 }));
+      setIsLoadingMore(false);
     }
   };
 
@@ -153,9 +156,16 @@ const MessageDetail = () => {
               <div className="chat">
                 <ScrollToBottom className="scroll">
                   {total >= 12 && (
-                    <Button type="ghost" onClick={handleLoadMore}>
-                      Xem thêm
-                    </Button>
+                    <div style={{ textAlign: "center" }}>
+                      <Button
+                        loading={isLoadingMore}
+                        type="ghost"
+                        onClick={handleLoadMore}
+                        style={{ margin: "10px auto" }}
+                      >
+                        Xem thêm
+                      </Button>
+                    </div>
                   )}
                   {data.map((msg: any, key: any) => (
                     <div key={key}>

@@ -113,7 +113,7 @@ export const ContentBody = styled.div`
     .scroll {
       overflow-y: auto;
       > div {
-        padding: 0 10px;
+        padding: 10px 10px 0;
       }
     }
   }
