@@ -1,1 +1,36 @@
 @import "~antd/dist/antd.less";
+
+.ant-input,
+.ant-input-number-input,
+.ant-select-selector,
+.ant-input-affix-wrapper {
+  border-radius: 6px;
+}
+
+.ant-input {
+  padding: 6px 12px;
+}
+
+.ant-input-number {
+  height: 36px;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.ant-input-number-input {
+  height: 36px;
+}
+
+.ant-select:not(.ant-select-customize-input) .ant-select-selector {
+  border-radius: 6px !important;
+  min-height: 36px !important;
+}
+
+.ant-select-single .ant-select-selector {
+  height: 36px !important;
+}
+
+.ant-select-single .ant-select-selector .ant-select-selection-item,
+.ant-select-single .ant-select-selector .ant-select-selection-placeholder {
+  line-height: 34px !important;
+}

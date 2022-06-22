@@ -284,8 +284,8 @@ const EditPlace = () => {
           </Space>
         </Box>
 
-        <Row gutter={10}>
-          <Col span={12}>
+        <Row gutter={{ xs: 0, sm: 0, md: 0, lg: 15 }}>
+          <Col xs={24} sm={24} md={24} lg={12} xl={12}>
             {loading ? (
               <Spin />
             ) : (
@@ -295,7 +295,7 @@ const EditPlace = () => {
                 form={form}
                 onFinish={handleSubmitForm}
               >
-                <div style={{ paddingRight: 15 }}>
+                <div>
                   <Form.Item
                     name="name"
                     label="Tên địa điểm"
@@ -649,7 +649,7 @@ const EditPlace = () => {
             )}
           </Col>
 
-          <Col span={12}>
+          <Col xs={0} sm={0} md={0} lg={12} xl={12}>
             <div style={{ height: 700, position: "sticky", top: 0 }}>
               {loading ? <Spin /> : <MapBox location={location} />}
             </div>

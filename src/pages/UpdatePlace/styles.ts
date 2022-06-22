@@ -16,7 +16,7 @@ export const AddPlaceForm = styled.div`
   padding: 12px 20px;
   background-color: #fff;
   border-radius: 10px;
-  box-shadow: 0 2px 8pxrgba (0, 0, 0, 0.15);
+  box-shadow: 0 2px 8px rgb(0 0 0 / 15%);
   @media (max-width: 991px) {
     padding: 12px 16px;
   }

@@ -15,7 +15,7 @@ const WIDTH = 992;
 
 const menuList: TMenuList = [
   {
-    label: "Dashboard",
+    label: "Thống kê",
     code: path.admin.home,
     path: path.admin.home,
     icon: Icons.HomeOutlined,
@@ -137,7 +137,14 @@ const AdminLayout = ({ children }: { children: JSX.Element }) => {
             >
               <BreadcrumbLayout />
             </div>
-            <div className="content-page">{children}</div>
+            <div
+              className="content-page"
+              style={{
+                background: "transparent",
+              }}
+            >
+              {children}
+            </div>
           </div>
         </Content>
       </Layout>

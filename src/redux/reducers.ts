@@ -18,6 +18,7 @@ import updatePlaceSlice from "../pages/UpdatePlace/updatePlaceSlice";
 import socketSlice from "../components/SocketClient/socketSlice";
 import notifySlice from "./notifySlice";
 import messageSlice from "../pages/Message/messageSlice";
+import dashboardSlice from "../pages/Admin/Home/dashboardSlice";
 
 const rootReducer = {
   mapModal: mapModalSlice,
@@ -39,6 +40,7 @@ const rootReducer = {
   socket: socketSlice,
   notify: notifySlice,
   message: messageSlice,
+  dashboard: dashboardSlice,
   app: appSlice,
 };
 

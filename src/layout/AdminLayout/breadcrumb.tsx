@@ -7,7 +7,7 @@ import path from "../../constants/path";
 
 const BREADCRUMB_MENU = [
   {
-    title: "Dashboard",
+    title: "Thống kê",
     path: path.admin.home,
     icon: <Icons.HomeOutlined />,
   },

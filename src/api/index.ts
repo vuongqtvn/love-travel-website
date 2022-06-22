@@ -11,3 +11,4 @@ export { default as userApi } from "./userApi";
 export { default as commentApi } from "./commentApi";
 export { default as notifyApi } from "./notifyApi";
 export { default as messageApi } from "./messageApi";
+export { default as dashboardApi } from "./dashboardApi";

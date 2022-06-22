@@ -41,13 +41,6 @@ const InfoBasic = [
     option: false,
     require: true,
   },
-  {
-    name: "description",
-    label: "Giới thiệu",
-    placeholder: "Nhập giới thiệu về quán",
-    option: false,
-    require: false,
-  },
 ];
 
 const Contact = [
@@ -259,7 +252,15 @@ const AddForm = () => {
             <div className="title">
               <h2>Thông tin cơ bản</h2>
             </div>
-            <div className="content">{renderInfoField()}</div>
+            <div className="content">
+              {renderInfoField()}
+              <Form.Item name="description" label="Giới thiệu">
+                <Input.TextArea
+                  placeholder="Nhập giới thiệu về quán"
+                  autoSize={{ minRows: 3, maxRows: 6 }}
+                />
+              </Form.Item>
+            </div>
           </Styled.FormSection>
           <Styled.FormSection>
             <div className="title">

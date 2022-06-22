@@ -15,6 +15,7 @@ import EditPlace from "../pages/Admin/Place/features/EditPlace";
 import AdminReview from "../pages/Admin/Review";
 import AdminGeneral from "../pages/Admin/General";
 import UserLayout from "../layout/UserLayout";
+import ReviewDetail from "../pages/ReviewDetail";
 
 const Home = lazy(() => import("../pages/Home"));
 const Search = lazy(() => import("../pages/Search"));
@@ -57,6 +58,12 @@ const publicRoute = [
     component: MessageDetail,
     layout: UserLayout,
     footer: false,
+  },
+  {
+    path: "/review/:id",
+    component: ReviewDetail,
+    layout: MainLayout,
+    footer: true,
   },
   { path: path.saved, component: Saved, layout: UserLayout, footer: true },
   {

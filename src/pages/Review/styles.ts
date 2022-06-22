@@ -22,7 +22,7 @@ export const NewReview = styled.div`
     justify-content: center;
     align-items: flex-start;
     .review-place {
-      width: 50%;
+      width: calc(50% - 30px);
       margin-left: 30px;
       order: 2;
       .review-input {
