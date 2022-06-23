@@ -103,8 +103,8 @@ const ReviewForm = () => {
     )
       .unwrap()
       .then(() => {
+        navigate(`/place/${placeSelected._id}`);
         message.success("review địa điểm thành công!");
-        navigate(`/place/${placeSelected._id}`, { replace: true });
         setContent("");
         setImages([]);
         setLoading(false);
