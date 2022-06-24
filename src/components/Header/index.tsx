@@ -162,72 +162,72 @@ const NotifyUser = ({ user }: any) => {
         </Box>
       </div>
       <div className="list">
-        {data.length === 0 ? (
-          <div className="content">
+        <div className="content">
+          {data.length === 0 ? (
             <span className="empty">Không có thông báo nào</span>
-          </div>
-        ) : (
-          data.map((item: any, key: number) => (
-            <Box
-              className={classNames("hover-item", {
-                "notify-not-read": item.isRead === false,
-              })}
-              style={{
-                padding: 10,
-                cursor: "pointer",
-              }}
-              key={key}
-              gap="10px"
-              onClick={() => {
-                handleIsRead(item);
-                if (item.url) {
-                  navigate(item.url);
-                }
-              }}
-            >
-              <ImageLazy
-                hover={false}
-                src={item.user.avatar}
-                width="50px"
-                height="50px"
-                style={{ borderRadius: "50%", flexShrink: 0 }}
-                alt={item.content}
-              />
-              <Box gap="10px">
-                <Box flexDirection="column" flex={1}>
-                  <Typography.Title ellipsis level={5}>
-                    {`${item.user.name} ${item.text}`}
-                  </Typography.Title>
-                  <Typography.Paragraph
-                    style={{ marginBottom: 0 }}
-                    ellipsis={{
-                      rows: 2,
-                    }}
-                  >
-                    {item.content}
-                  </Typography.Paragraph>
-                  <small>
-                    <strong>
-                      {item.createdAt
-                        ? moment(item.createdAt).fromNow()
-                        : moment(Date.now()).fromNow()}
-                    </strong>
-                  </small>
+          ) : (
+            data.map((item: any, key: number) => (
+              <Box
+                className={classNames("hover-item", {
+                  "notify-not-read": item.isRead === false,
+                })}
+                style={{
+                  padding: 10,
+                  cursor: "pointer",
+                }}
+                key={key}
+                gap="10px"
+                onClick={() => {
+                  handleIsRead(item);
+                  if (item.url) {
+                    navigate(item.url);
+                  }
+                }}
+              >
+                <ImageLazy
+                  hover={false}
+                  src={item.user.avatar}
+                  width="50px"
+                  height="50px"
+                  style={{ borderRadius: "50%", flexShrink: 0 }}
+                  alt={item.content}
+                />
+                <Box gap="10px">
+                  <Box flexDirection="column" flex={1}>
+                    <Typography.Title ellipsis level={5}>
+                      {`${item.user.name} ${item.text}`}
+                    </Typography.Title>
+                    <Typography.Paragraph
+                      style={{ marginBottom: 0 }}
+                      ellipsis={{
+                        rows: 2,
+                      }}
+                    >
+                      {item.content}
+                    </Typography.Paragraph>
+                    <small>
+                      <strong>
+                        {item.createdAt
+                          ? moment(item.createdAt).fromNow()
+                          : moment(Date.now()).fromNow()}
+                      </strong>
+                    </small>
+                  </Box>
+                  {item.image && (
+                    <ImageLazy
+                      style={{ borderRadius: 5 }}
+                      hover={false}
+                      src={item.image}
+                      width="70px"
+                      height="70px"
+                      alt={item.content}
+                    />
+                  )}
                 </Box>
-                {item.image && (
-                  <ImageLazy
-                    style={{ borderRadius: 5 }}
-                    hover={false}
-                    src={item.image}
-                    width="70px"
-                    height="70px"
-                    alt={item.content}
-                  />
-                )}
               </Box>
-            </Box>
-          ))
-        )}
+            ))
+          )}
+        </div>
       </div>
     </Styled.NotifyDropdown>
   );

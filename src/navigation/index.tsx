@@ -16,6 +16,7 @@ import AdminReview from "../pages/Admin/Review";
 import AdminGeneral from "../pages/Admin/General";
 import UserLayout from "../layout/UserLayout";
 import ReviewDetail from "../pages/ReviewDetail";
+import AdminPromo from "../pages/Admin/Promo";
 
 const Home = lazy(() => import("../pages/Home"));
 const Search = lazy(() => import("../pages/Search"));
@@ -29,6 +30,7 @@ const Review = lazy(() => import("../pages/Review"));
 const Saved = lazy(() => import("../pages/Saved"));
 const Profile = lazy(() => import("../pages/Profile"));
 const Message = lazy(() => import("../pages/Message"));
+const Notification = lazy(() => import("../pages/Notification"));
 const MessageDetail = lazy(() => import("../pages/Message/MessageDetail"));
 const NotFound = lazy(() => import("../pages/NotFound"));
 
@@ -46,6 +48,12 @@ const publicRoute = [
   { path: path.promo, component: Promo, layout: MainLayout, footer: true },
   { path: path.map, component: Map, layout: MainLayout, footer: true },
   { path: path.profile, component: Profile, layout: UserLayout, footer: true },
+  {
+    path: "/notification",
+    component: Notification,
+    layout: UserLayout,
+    footer: true,
+  },
   {
     path: "/edit-place/:id",
     component: UpdatePlace,
@@ -87,7 +95,7 @@ const adminRoute = [
   { path: path.admin.addPlace, component: AddPlaceAdmin, layout: AdminLayout },
   { path: path.admin.editPlace, component: EditPlace, layout: AdminLayout },
   { path: path.admin.post, component: AdminReview, layout: AdminLayout },
-  { path: path.admin.promo, component: AdminHome, layout: AdminLayout },
+  { path: path.admin.promo, component: AdminPromo, layout: AdminLayout },
   { path: path.admin.accept, component: AdminAccept, layout: AdminLayout },
   { path: path.admin.general, component: AdminGeneral, layout: AdminLayout },
   { path: path.login, component: LoginAdmin, layout: AuthLayout },

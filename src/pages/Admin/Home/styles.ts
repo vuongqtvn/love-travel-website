@@ -1,3 +1,4 @@
+import { Table } from "antd";
 import styled from "styled-components";
 
 export const AdminBox = styled.div`
@@ -12,5 +13,14 @@ export const AdminBox = styled.div`
     font-size: 20px;
     text-align: center;
     padding-bottom: 14px;
+  }
+`;
+
+export const CustomTable = styled(Table)`
+  & th {
+    text-transform: uppercase;
+    background-color: #096dd9 !important;
+    color: white !important;
+    white-space: nowrap;
   }
 `;

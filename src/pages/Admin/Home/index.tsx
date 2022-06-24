@@ -3,6 +3,7 @@ import { Card, Col, Row, Spin, Tabs, Typography } from "antd";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import RegionChart from "./components/RegionChart";
 import { getDashboardInfo } from "./dashboardSlice";
+import PlaceTable from "./components/PlaceTable";
 
 const AdminHome = () => {
   const { info } = useAppSelector((state) => state.dashboard);
@@ -68,7 +69,7 @@ const AdminHome = () => {
             </div>
           </Tabs.TabPane>
           <Tabs.TabPane tab="Địa điểm" key="2">
-            Content of Tab Pane 2
+            <PlaceTable />
           </Tabs.TabPane>
           <Tabs.TabPane tab="Bài viết" key="3">
             Content of Tab Pane 3

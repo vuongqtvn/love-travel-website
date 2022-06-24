@@ -4,6 +4,9 @@ export const SidebarWrapper = styled.div`
   width: 350px;
   flex-shrink: 0;
   height: 100%;
+  @media (max-width: 991px) {
+    width: auto;
+  }
 `;
 
 export const ConversationPane = styled.div`

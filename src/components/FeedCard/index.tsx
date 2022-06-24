@@ -1,5 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Dropdown, Input, message, Modal, Rate, Typography } from "antd";
+import {
+  Dropdown,
+  Input,
+  message,
+  Modal,
+  Popover,
+  Rate,
+  Typography,
+} from "antd";
 import { Link } from "react-router-dom";
 import { colors } from "../../theme/colors";
 import ImageLazy from "../ImageLazy";
@@ -17,6 +25,7 @@ import {
 } from "../../pages/Explore/exploreSlice";
 import classNames from "classnames";
 import { openAuth } from "../../pages/Auth/authSlice";
+import ShareModal from "./ShareModal";
 
 type Props = {
   feed: any;
@@ -51,6 +60,12 @@ const Setting = ({
     });
   };
 
+  const handleCopyLink = () => {
+    navigator.clipboard
+      .writeText(`https://love-travel-website.vercel.app/review/${review._id}`)
+      .then(() => message.success("Sao chép liên kết thành công"));
+  };
+
   return (
     <Styled.SettingDropdown>
       {user._id === auth.user?._id && (
@@ -66,7 +81,7 @@ const Setting = ({
         </span>
       )}
 
-      <span className="item">
+      <span className="item" onClick={handleCopyLink}>
         <i className="bx bx-link"></i>
         Sao chép liên kết
       </span>
@@ -179,7 +194,6 @@ const FeedCard = ({ feed, openUpdate }: Props) => {
 
   const [isLike, setIsLike] = useState(false);
   const [loadLike, setLoadLike] = useState(false);
-  // const [isShare, setIsShare] = useState(false);
 
   useEffect(() => {
     if (feed?.likes && user?._id) {
@@ -272,7 +286,9 @@ const FeedCard = ({ feed, openUpdate }: Props) => {
               </span>
               <i className="dot">●</i>
               <span className="time">
-                <span>{moment(feed.createdAt).fromNow()}</span>
+                <Link to={`/review/${feed._id}`}>
+                  {moment(feed.createdAt).fromNow()}
+                </Link>
               </span>
             </div>
           </div>
@@ -319,11 +335,22 @@ const FeedCard = ({ feed, openUpdate }: Props) => {
           <i className="bx bx-comment"></i>
           <span>Bình luận</span>
         </button>
-        <button>
-          <i className="bx bx-share"></i>
-          <span>Chia sẽ</span>
-        </button>
+        <Popover
+          content={
+            <ShareModal
+              url={`https://love-travel-website.vercel.app/review/${feed._id}`}
+            />
+          }
+          destroyTooltipOnHide
+          trigger="click"
+        >
+          <button>
+            <i className="bx bx-share"></i>
+            <span>Chia sẽ</span>
+          </button>
+        </Popover>
       </Styled.FeedCardAction>
+
       {user && (
         <Styled.FeedCardNewReply>
           <ImageLazy className="avatar" src={user.avatar} alt={user.name} />
@@ -348,6 +375,7 @@ const FeedCard = ({ feed, openUpdate }: Props) => {
           </div>
         </Styled.FeedCardNewReply>
       )}
+
       {showComment && (
         <Styled.FeedCardReplies>
           {feed?.comments?.map((comment: any, key: any) => (

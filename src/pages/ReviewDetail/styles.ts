@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { colors } from "../../theme/colors";
 
 export const ReviewDetailWrapper = styled.div`
   padding-top: 10px;
@@ -39,81 +40,12 @@ export const ReviewDetailContainer = styled.div`
 
 export const ReviewDetailContent = styled.div`
   width: 66.66%;
-  flex-grow: 1;
-  padding: 16px 24px;
   position: relative;
-  background-color: #fff;
   border-radius: 10px;
-  box-shadow: 0 2px 8px rgb(0 0 0 / 15%);
   @media (max-width: 991px) {
     width: 100%;
-    padding: 8px;
-    box-shadow: 0 1px 4px rgb(0 0 0 / 15%);
   }
 `;
-
-export const ReviewContentHeader = styled.div`
-  padding-bottom: 4px;
-  .info {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    position: relative;
-    .avatar {
-      cursor: pointer;
-      width: 46px;
-      height: 46px;
-      border-radius: 50%;
-      overflow: hidden;
-    }
-    .content {
-      margin: 0 36px 0 8px;
-      flex-grow: 1;
-      .author {
-        a {
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-          font-size: 18px;
-          font-weight: 600;
-          letter-spacing: 0.4px;
-          margin-right: 5px;
-          color: #000;
-          @media (max-width: 991px) {
-            font-size: 16px;
-          }
-        }
-      }
-      .text {
-        @media (max-width: 991px) {
-          font-size: 12px;
-        }
-        span {
-          color: #898c95;
-        }
-        a {
-          color: #e03;
-        }
-      }
-    }
-    .option {
-      position: absolute;
-      top: 0;
-      right: 4px;
-      bottom: auto;
-      left: auto;
-      cursor: pointer;
-      font-size: 20px;
-      width: 30px;
-      height: 30px;
-      line-height: 30px;
-      text-align: center;
-      color: #a5a5a5;
-    }
-  }
-`;
-
-export const ReviewContentImages = styled.div``;
 
 export const ReviewDetailSidebar = styled.div`
   width: 33.33%;
@@ -122,8 +54,13 @@ export const ReviewDetailSidebar = styled.div`
   position: sticky;
   top: 16px;
   margin-left: 20px;
+  background-color: #fff;
+  overflow: hidden;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 15%);
   @media (max-width: 991px) {
     width: 100%;
+    box-shadow: 0 1px 4px rgb(0 0 0 / 15%);
     margin-left: 0;
   }
 `;

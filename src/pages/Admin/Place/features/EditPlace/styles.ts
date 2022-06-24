@@ -4,6 +4,8 @@ import { colors } from "../../../../../theme/colors";
 
 export const AddPlace = styled.div`
   height: 100%;
+  background-color: #fff;
+  padding: 10px;
   .ant-spin-nested-loading {
     height: 100%;
     .ant-spin-container {

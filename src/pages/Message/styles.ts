@@ -7,7 +7,10 @@ export const MessageWrapper = styled.div`
   background: rgb(248, 248, 248);
   padding: 15px;
   display: flex;
-
+  @media (max-width: 991px) {
+    height: calc(100vh - 121px);
+    padding: 5px;
+  }
   .chat_row {
     display: grid;
     grid-template-columns: 70%;
@@ -51,12 +54,18 @@ export const MessageContainer = styled.div`
   overflow: hidden;
   display: flex;
   height: 100%;
+  @media (max-width: 991px) {
+    padding: 5px;
+  }
 `;
 
 export const ContentContainer = styled.div`
   flex: 1;
   height: 100%;
   margin-left: 16px;
+  @media (max-width: 991px) {
+    margin-left: 5px;
+  }
 `;
 
 export const ContentPane = styled.div`

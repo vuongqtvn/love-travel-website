@@ -89,7 +89,7 @@ export const FeedHeaderInfo = styled.div`
         margin: 0 6px;
       }
       .time {
-        span {
+        a {
           color: #898c95;
         }
       }

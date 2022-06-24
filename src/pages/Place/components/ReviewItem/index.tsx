@@ -191,7 +191,7 @@ const ReviewItem = ({ review }: { review: IReview }) => {
                     <i className="bx bxs-check-circle"></i>
                   )}
                 </Link>
-                <Link to={`/profile/${review.user._id}`}>
+                <Link to={`/review/${review._id}`}>
                   <span>Đã đánh giá {moment(review.createdAt).fromNow()} </span>
                 </Link>
               </div>
