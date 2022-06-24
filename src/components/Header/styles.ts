@@ -322,6 +322,7 @@ export const NotifyDropdown = styled.div`
     .content {
       max-height: 400px;
       overflow-y: auto;
+      overflow-x: hidden;
       .empty {
         display: flex;
         align-items: center;
