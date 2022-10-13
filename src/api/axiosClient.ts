@@ -2,8 +2,7 @@ import axios from "axios";
 import { message } from "antd";
 
 export const axiosClient = axios.create({
-  // baseURL: "http://localhost:5000/api",
-  baseURL: "https://love-travel-api-production.up.railway.app/api",
+  baseURL: "https://love-travel-api.vercel.app/api",
   headers: {
     "Content-Type": "application/json",
   },
