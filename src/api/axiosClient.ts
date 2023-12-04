@@ -2,7 +2,7 @@ import axios from "axios";
 import { message } from "antd";
 
 export const axiosClient = axios.create({
-  baseURL: "https://love-travel-api.vercel.app/api",
+  baseURL: "https://love-travel-api.onrender.com/api",
   headers: {
     "Content-Type": "application/json",
   },
